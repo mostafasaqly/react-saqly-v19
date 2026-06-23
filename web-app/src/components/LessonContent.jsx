@@ -23,9 +23,6 @@ function LessonContent({ section }) {
         <div className="lesson__meta">
           <span className="badge">القسم {section.id}</span>
           {section.level && <span className="badge badge--soft">{section.level}</span>}
-          {section.duration && (
-            <span className="badge badge--soft">⏱️ {section.duration}</span>
-          )}
         </div>
         <h1 className="lesson__title">{section.title}</h1>
         {section.intro && <p className="lesson__intro">{section.intro}</p>}
