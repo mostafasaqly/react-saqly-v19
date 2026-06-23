@@ -1,0 +1,17 @@
+/* Button.module.css
+   A CSS Module: these class names are LOCAL to the component that imports them.
+   React rewrites .button to a unique name so it never clashes with other files. */
+
+.button {
+  background: royalblue;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.button:hover {
+  background: #2f4fd0;
+}

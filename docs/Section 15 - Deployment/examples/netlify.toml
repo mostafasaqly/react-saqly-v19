@@ -1,0 +1,12 @@
+# netlify.toml — place in your project root.
+# Tells Netlify how to build, and fixes single-page-app routing.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Send every path to index.html so React Router can handle it.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

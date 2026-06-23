@@ -1,0 +1,6 @@
+{
+  "// note": "Place in your project root. Rewrites all paths to index.html so React Router works.",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

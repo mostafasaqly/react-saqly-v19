@@ -1,11 +1,13 @@
-## React 19 Crash Course — Sections & Lesson Titles Only
+## React 19 Crash Course — Updated Sections & Lesson Titles Only
 
 ### Section 1: Course Introduction
 
 1. Welcome to React 19 Crash Course
 2. What You Will Build in This Course
 3. Prerequisites and Course Roadmap
-4. React 19 Overview and What’s New
+4. React 19 Overview
+5. What’s New in React 19
+6. How to Get the Most from This Course
 
 ---
 
@@ -14,54 +16,64 @@
 1. Installing Node.js and npm
 2. Creating a React 19 Project with Vite
 3. Project Folder Structure
-4. Running and Building the App
-5. Recommended VS Code Extensions
+4. Running the Development Server
+5. Building the App for Production
+6. Recommended VS Code Extensions
+7. Installing React Developer Tools
 
 ---
 
 ### Section 3: React Fundamentals
 
 1. What is React?
-2. Components and JSX
-3. Rendering Elements
-4. Props
-5. Children Props
-6. Conditional Rendering
-7. Rendering Lists
-8. Handling Events
+2. How React Works
+3. Components and JSX
+4. Rendering Elements
+5. Props
+6. Children Props
+7. Conditional Rendering
+8. Rendering Lists
+9. Handling Events
+10. Component Reusability
 
 ---
 
 ### Section 4: Styling React Apps
 
-1. CSS Modules
-2. Global CSS
+1. Global CSS
+2. CSS Modules
 3. Dynamic Classes
 4. Inline Styles
-5. Responsive Layout Basics
+5. Conditional Styling
+6. Responsive Layout Basics
+7. Organizing Styles in React Projects
 
 ---
 
 ### Section 5: State and Interactivity
 
 1. Understanding State
-2. `useState` Hook
-3. Updating Objects in State
-4. Updating Arrays in State
-5. Derived State
-6. Controlled Inputs
-7. Lifting State Up
+2. useState Hook
+3. Updating Primitive State
+4. Updating Objects in State
+5. Updating Arrays in State
+6. Derived State
+7. Controlled Inputs
+8. Lifting State Up
+9. Sharing State Between Components
+10. Common State Mistakes
 
 ---
 
 ### Section 6: Effects and Lifecycle
 
 1. What is a Side Effect?
-2. `useEffect` Hook
+2. useEffect Hook
 3. Effect Dependencies
 4. Cleanup Functions
-5. Common `useEffect` Mistakes
-6. Fetching Data with `useEffect`
+5. Fetching Data with useEffect
+6. Common useEffect Mistakes
+7. When You Don’t Need useEffect
 
 ---
 
@@ -69,122 +81,258 @@
 
 1. Controlled Forms Review
 2. Form Submission
-3. React 19 Actions
-4. `useActionState`
-5. `useFormStatus`
-6. Form Validation
+3. Manual Form Validation
+4. React 19 Actions
+5. useActionState
+6. useFormStatus
 7. Pending and Error States
 8. Resetting Forms
+9. Handling Form Errors
+10. React 19 Form Best Practices
 
 ---
 
-### Section 8: Async UI and Optimistic Updates
+### Section 8: React Hook Form
 
-1. Async Transitions in React 19
-2. `useTransition`
-3. Pending UI Patterns
-4. `useOptimistic`
-5. Optimistic Add, Update, and Delete
-6. Error Handling in Async Actions
+1. Why React Hook Form?
+2. Installing React Hook Form
+3. Creating Your First Form
+4. Registering Inputs
+5. Handling Submit
+6. Required Field Validation
+7. Pattern and Min Length Validation
+8. Showing Error Messages
+9. Default Values
+10. Resetting Forms
+11. React Hook Form with API Submit
+12. React Hook Form vs React 19 Actions
 
 ---
 
-### Section 9: Component Communication
+### Section 9: Async UI and Optimistic Updates
+
+1. Async UI in React 19
+2. Understanding Transitions
+3. useTransition
+4. Pending UI Patterns
+5. useOptimistic
+6. Optimistic Add
+7. Optimistic Update
+8. Optimistic Delete
+9. Error Handling in Async Actions
+10. When to Use Optimistic Updates
+
+---
+
+### Section 10: Component Communication
 
 1. Props Drilling Problem
 2. Composition Pattern
 3. Context API
-4. `useContext`
-5. Reading Context with React 19 `use`
-6. Custom Hooks
+4. Creating Context
+5. Providing Context
+6. Reading Context with useContext
+7. Updating Context Data
+8. Context API Practical Example
+9. Reading Context with React 19 use
+10. Custom Hooks
+11. When to Use Context and When Not To
 
 ---
 
-### Section 10: Routing
+### Section 11: Routing with React Router DOM
 
-1. Installing React Router
-2. Creating Routes
-3. Layout Routes
-4. Navigation Links
-5. Dynamic Routes
-6. Route Params
-7. Not Found Page
-8. Protected Routes
+1. What is Client Side Routing?
+2. Installing React Router DOM
+3. BrowserRouter, Routes, and Route
+4. Creating Pages
+5. Layout Routes
+6. Link vs NavLink
+7. Active Navigation Styling with NavLink
+8. Programmatic Navigation with useNavigate
+9. Redirecting Users After Actions
+10. Sending Data with navigate State
+11. Reading Sent Data with useLocation
+12. Dynamic Routes
+13. Route Params with useParams
+14. Query Params Basics
+15. Not Found Page
+16. Protected Routes
+17. Redirecting Users After Login
 
 ---
 
-### Section 11: Data Fetching
+### Section 12: Data Fetching and Axios
 
 1. Fetch API Basics
 2. Loading and Error States
-3. Reusable Data Fetching Hook
-4. Working with REST APIs
-5. CRUD Operations
-6. Suspense Introduction
-7. React 19 `use` with Promises
+3. Introduction to Axios
+4. Installing Axios
+5. GET Requests with Axios
+6. POST Requests with Axios
+7. PUT and PATCH Requests with Axios
+8. DELETE Requests with Axios
+9. Creating a Reusable API Service
+10. Working with REST APIs
+11. CRUD Operations
+12. Handling API Errors
+13. Environment Variables for API URLs
+14. Reusable Data Fetching Hook
 
 ---
 
-### Section 12: Performance and Best Practices
+### Section 13: Suspense and React 19 use
+
+1. What is Suspense?
+2. Suspense for Loading UI
+3. Suspense Boundaries
+4. React 19 use Hook Overview
+5. Using use with Promises
+6. Using use with Context
+7. Loading and Error Boundaries
+8. Suspense Best Practices
+
+---
+
+### Section 14: State Management with Redux Toolkit
+
+1. Why Redux?
+2. Context API vs Redux
+3. Installing Redux Toolkit and React Redux
+4. Creating the Redux Store
+5. Providing the Store to React
+6. Creating a Slice with createSlice
+7. Initial State
+8. Reducers and Actions
+9. Reading State with useSelector
+10. Updating State with useDispatch
+11. Multiple Slices
+12. Combining Reducers
+13. Redux DevTools
+14. Cart Example with Redux
+15. Favorites Example with Redux
+
+---
+
+### Section 15: Async Redux with createAsyncThunk
+
+1. Why Async Logic in Redux?
+2. Understanding pending, fulfilled, and rejected
+3. Creating Async Actions with createAsyncThunk
+4. Fetching Data from API with createAsyncThunk
+5. isLoading State
+6. isError State
+7. Error Message State
+8. Handling API Success
+9. Handling API Failure
+10. CRUD Operations with createAsyncThunk
+11. Using Axios with Redux Toolkit
+12. Refactoring Async Redux Code
+
+---
+
+### Section 16: Performance and Best Practices
 
 1. React Rendering Basics
-2. Avoiding Unnecessary Re-renders
-3. `memo`
-4. `useMemo`
-5. `useCallback`
-6. React Compiler Overview
-7. Code Splitting with Lazy Loading
+2. Why Components Re-render
+3. Avoiding Unnecessary Re-renders
+4. React.memo
+5. useMemo
+6. useCallback
+7. memo vs useMemo vs useCallback
+8. When Not to Use Memoization
+9. React Compiler Overview
+10. Code Splitting with Lazy Loading
+11. Lazy and Suspense
+12. Folder Structure Best Practices
+13. Clean Component Design
 
 ---
 
-### Section 13: Project — Task Manager App
+### Section 17: Project 1 — Task Manager App
 
 1. Project Overview
 2. Creating the App Layout
 3. Creating Reusable Components
-4. Adding Tasks
-5. Updating Tasks
-6. Deleting Tasks
-7. Filtering Tasks
-8. Persisting Data
-9. Adding Form Actions
-10. Adding Optimistic Updates
+4. Creating Task Data Model
+5. Adding Tasks
+6. Updating Tasks
+7. Deleting Tasks
+8. Marking Tasks as Completed
+9. Filtering Tasks
+10. Searching Tasks
+11. Persisting Data in Local Storage
+12. Adding React 19 Form Actions
+13. Adding Pending UI
+14. Adding Optimistic Updates
+15. Final Refactoring
 
 ---
 
-### Section 14: Project — API Dashboard
+### Section 18: Project 2 — API Dashboard
 
 1. Project Overview
 2. Building the Dashboard Layout
-3. Fetching API Data
-4. Search and Filter
-5. Details Page
-6. Loading Skeletons
-7. Error UI
-8. Reusable API Service
-9. Final Refactoring
+3. Creating Dashboard Cards
+4. Fetching API Data with Axios
+5. Loading State
+6. Error State
+7. Search and Filter
+8. Creating Details Page
+9. Dynamic Route for Details
+10. Sending Data with navigate
+11. Reading Data with useLocation
+12. Route Params Alternative
+13. Loading Skeletons
+14. Reusable API Service
+15. Final Refactoring
 
 ---
 
-### Section 15: Deployment
+### Section 19: Project 3 — E-commerce Mini App with Redux
+
+1. Project Overview
+2. Creating Products Page
+3. Creating Product Card Component
+4. Fetching Products from API
+5. Creating Cart Slice
+6. Adding Products to Cart
+7. Reading Cart with useSelector
+8. Updating Cart with useDispatch
+9. Removing Items from Cart
+10. Creating Favorites Slice
+11. Adding Favorites with Context or Redux
+12. Async Products with createAsyncThunk
+13. Loading and Error UI
+14. Cart Total with useMemo
+15. Final Refactoring
+
+---
+
+### Section 20: Deployment
 
 1. Preparing the App for Production
 2. Environment Variables
 3. Building the App
-4. Deploying to Netlify
-5. Deploying to Vercel
-6. Common Deployment Issues
+4. Testing Production Build Locally
+5. Deploying to Netlify
+6. Deploying to Vercel
+7. Fixing React Router Refresh Issues
+8. Common Deployment Issues
 
 ---
 
-### Section 16: Final Review and Next Steps
+### Section 21: Final Review and Next Steps
 
 1. React 19 Recap
-2. Common Interview Questions
-3. What to Learn After React
+2. Most Important React Concepts
+3. Common Interview Questions
 4. React vs Next.js
-5. Final Project Ideas
-6. Course Conclusion
+5. What Changes When Moving to Next.js
+6. What to Learn After React
+7. Final Project Ideas
+8. Course Conclusion
 
-[1]: https://react.dev/versions?utm_source=chatgpt.com "React Versions"
-[2]: https://react.dev/blog/2024/12/05/react-19?utm_source=chatgpt.com "React v19"
+
+
+
