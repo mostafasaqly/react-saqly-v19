@@ -1,0 +1,190 @@
+## React 19 Crash Course — Sections & Lesson Titles Only
+
+### Section 1: Course Introduction
+
+1. Welcome to React 19 Crash Course
+2. What You Will Build in This Course
+3. Prerequisites and Course Roadmap
+4. React 19 Overview and What’s New
+
+---
+
+### Section 2: Development Environment Setup
+
+1. Installing Node.js and npm
+2. Creating a React 19 Project with Vite
+3. Project Folder Structure
+4. Running and Building the App
+5. Recommended VS Code Extensions
+
+---
+
+### Section 3: React Fundamentals
+
+1. What is React?
+2. Components and JSX
+3. Rendering Elements
+4. Props
+5. Children Props
+6. Conditional Rendering
+7. Rendering Lists
+8. Handling Events
+
+---
+
+### Section 4: Styling React Apps
+
+1. CSS Modules
+2. Global CSS
+3. Dynamic Classes
+4. Inline Styles
+5. Responsive Layout Basics
+
+---
+
+### Section 5: State and Interactivity
+
+1. Understanding State
+2. `useState` Hook
+3. Updating Objects in State
+4. Updating Arrays in State
+5. Derived State
+6. Controlled Inputs
+7. Lifting State Up
+
+---
+
+### Section 6: Effects and Lifecycle
+
+1. What is a Side Effect?
+2. `useEffect` Hook
+3. Effect Dependencies
+4. Cleanup Functions
+5. Common `useEffect` Mistakes
+6. Fetching Data with `useEffect`
+
+---
+
+### Section 7: Forms in React 19
+
+1. Controlled Forms Review
+2. Form Submission
+3. React 19 Actions
+4. `useActionState`
+5. `useFormStatus`
+6. Form Validation
+7. Pending and Error States
+8. Resetting Forms
+
+---
+
+### Section 8: Async UI and Optimistic Updates
+
+1. Async Transitions in React 19
+2. `useTransition`
+3. Pending UI Patterns
+4. `useOptimistic`
+5. Optimistic Add, Update, and Delete
+6. Error Handling in Async Actions
+
+---
+
+### Section 9: Component Communication
+
+1. Props Drilling Problem
+2. Composition Pattern
+3. Context API
+4. `useContext`
+5. Reading Context with React 19 `use`
+6. Custom Hooks
+
+---
+
+### Section 10: Routing
+
+1. Installing React Router
+2. Creating Routes
+3. Layout Routes
+4. Navigation Links
+5. Dynamic Routes
+6. Route Params
+7. Not Found Page
+8. Protected Routes
+
+---
+
+### Section 11: Data Fetching
+
+1. Fetch API Basics
+2. Loading and Error States
+3. Reusable Data Fetching Hook
+4. Working with REST APIs
+5. CRUD Operations
+6. Suspense Introduction
+7. React 19 `use` with Promises
+
+---
+
+### Section 12: Performance and Best Practices
+
+1. React Rendering Basics
+2. Avoiding Unnecessary Re-renders
+3. `memo`
+4. `useMemo`
+5. `useCallback`
+6. React Compiler Overview
+7. Code Splitting with Lazy Loading
+
+---
+
+### Section 13: Project — Task Manager App
+
+1. Project Overview
+2. Creating the App Layout
+3. Creating Reusable Components
+4. Adding Tasks
+5. Updating Tasks
+6. Deleting Tasks
+7. Filtering Tasks
+8. Persisting Data
+9. Adding Form Actions
+10. Adding Optimistic Updates
+
+---
+
+### Section 14: Project — API Dashboard
+
+1. Project Overview
+2. Building the Dashboard Layout
+3. Fetching API Data
+4. Search and Filter
+5. Details Page
+6. Loading Skeletons
+7. Error UI
+8. Reusable API Service
+9. Final Refactoring
+
+---
+
+### Section 15: Deployment
+
+1. Preparing the App for Production
+2. Environment Variables
+3. Building the App
+4. Deploying to Netlify
+5. Deploying to Vercel
+6. Common Deployment Issues
+
+---
+
+### Section 16: Final Review and Next Steps
+
+1. React 19 Recap
+2. Common Interview Questions
+3. What to Learn After React
+4. React vs Next.js
+5. Final Project Ideas
+6. Course Conclusion
+
+[1]: https://react.dev/versions?utm_source=chatgpt.com "React Versions"
+[2]: https://react.dev/blog/2024/12/05/react-19?utm_source=chatgpt.com "React v19"
