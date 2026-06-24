@@ -110,6 +110,10 @@
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
+
+:root[lang="en"] .nav-item {
+  text-align: left;
+}
 .nav-item:hover {
   background: var(--surface-2);
   color: var(--text);
