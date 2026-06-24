@@ -180,9 +180,12 @@
   font-weight: 700;
 }
 
-/* غطاء معتم للموبايل */
+/* غطاء معتم للموبايل — يُصيَّر فقط عند فتح القائمة (JSX conditional) */
 .overlay {
-  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 25;
 }
 
 /* ===================== رأس الدرس ===================== */
@@ -862,8 +865,8 @@
 
 /* ===================== Responsive ===================== */
 
-/* ── Tablet (≤ 1024px): narrow the sidebar a bit ── */
-@media (max-width: 1024px) {
+/* ── Tablet (≤ 1024px): narrow the sidebar slightly ── */
+@media (max-width: 1024px) and (min-width: 861px) {
   .sidebar {
     width: 260px;
   }
@@ -872,39 +875,55 @@
   }
 }
 
-/* ── Small tablet / large phone (≤ 860px): sidebar becomes a drawer ── */
+/* ── Small tablet / large phone (≤ 860px): sidebar becomes a full-height drawer ── */
 @media (max-width: 860px) {
+  /* Show the topbar menu button */
   .topbar {
     display: flex;
   }
 
-  .sidebar {
+  /* RTL (Arabic): sidebar anchored to the right, slides off to the right when closed */
+  [dir="rtl"] .sidebar {
     position: fixed;
-    width: 300px;
-    inset-inline-end: 0;
+    width: min(300px, 85vw);
+    right: 0;
+    left: auto;
     top: 0;
+    height: 100vh;
     z-index: 30;
-    --sidebar-slide: 100%;
-    transform: translateX(var(--sidebar-slide));
-    transition: transform 0.25s ease;
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+    overflow-y: auto;
   }
-  [dir="ltr"] .sidebar {
-    --sidebar-slide: -100%;
-  }
-  .sidebar--open {
+  [dir="rtl"] .sidebar--open {
     transform: translateX(0);
   }
 
-  .overlay {
-    display: block;
+  /* LTR (English): sidebar anchored to the left, slides off to the left when closed */
+  [dir="ltr"] .sidebar {
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 25;
+    width: min(300px, 85vw);
+    left: 0;
+    right: auto;
+    top: 0;
+    height: 100vh;
+    z-index: 30;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    overflow-y: auto;
+  }
+  [dir="ltr"] .sidebar--open {
+    transform: translateX(0);
+  }
+
+  /* Content takes full width with no sidebar gap */
+  .content {
+    width: 100%;
   }
 
   .content__inner {
     padding: 24px 20px 60px;
+    max-width: 100%;
   }
 
   .lesson__title {
@@ -937,11 +956,6 @@
 
 /* ── Phone (≤ 600px) ── */
 @media (max-width: 600px) {
-  .sidebar {
-    width: 85vw;
-    max-width: 320px;
-  }
-
   .topbar {
     padding: 10px 14px;
   }
@@ -1045,10 +1059,6 @@
 
 /* ── Very small phone (≤ 380px) ── */
 @media (max-width: 380px) {
-  .sidebar {
-    width: 92vw;
-  }
-
   .content__inner {
     padding: 16px 12px 48px;
   }
