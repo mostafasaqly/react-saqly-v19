@@ -1,6 +1,7 @@
 // LessonContent.jsx — يعرض محتوى القسم حسب نوع كل "block".
 
 import QABlock from "./QABlock";
+import CodeBlock from "./CodeBlock";
 
 function LessonContent({ section }) {
   if (section.comingSoon) {
@@ -60,11 +61,7 @@ function Block({ block }) {
     case "paragraph":
       return <p className="block-paragraph">{block.text}</p>;
     case "code":
-      return (
-        <pre className="block-code">
-          <code>{block.code}</code>
-        </pre>
-      );
+      return <CodeBlock code={block.code} />;
     case "tip":
       return (
         <div className="callout callout--tip">
