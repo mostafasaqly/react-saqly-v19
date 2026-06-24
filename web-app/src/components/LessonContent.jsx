@@ -1,12 +1,19 @@
 import QABlock from "./QABlock";
 import CodeBlock from "./CodeBlock";
 import { useLang } from "../context/LangContext";
+import { useProgress } from "../context/ProgressContext";
+import { useNotes } from "../context/NotesContext";
 
 function LessonContent({ section }) {
   const { lang } = useLang();
+  const { isComplete, toggleComplete } = useProgress();
+  const { getNote, setNote } = useNotes();
   const isAr = lang === "ar";
 
   if (!section) return null;
+
+  const done = isComplete(section.id);
+  const note = getNote(section.id);
 
   const title   = isAr ? section.title   : (section.titleEn   || section.title);
   const intro   = isAr ? section.intro   : (section.introEn   || section.intro);
@@ -54,6 +61,34 @@ function LessonContent({ section }) {
         {content.map((block, i) => (
           <Block key={i} block={block} />
         ))}
+      </div>
+
+      {/* Notes */}
+      <div className="lesson__notes">
+        <label className="lesson__notes-label" htmlFor={`notes-${section.id}`}>
+          📝 {isAr ? "ملاحظاتي" : "My Notes"}
+        </label>
+        <textarea
+          id={`notes-${section.id}`}
+          className="lesson__notes-textarea"
+          value={note}
+          onChange={(e) => setNote(section.id, e.target.value)}
+          placeholder={isAr ? "اكتب ملاحظاتك هنا… تُحفظ تلقائياً." : "Write your notes here… saved automatically."}
+          rows={4}
+        />
+      </div>
+
+      {/* Mark Complete */}
+      <div className="lesson__complete">
+        <button
+          className={`complete-btn ${done ? "complete-btn--done" : ""}`}
+          onClick={() => toggleComplete(section.id)}
+          aria-pressed={done}
+        >
+          {done
+            ? (isAr ? "✓ أتممت هذا القسم" : "✓ Section completed")
+            : (isAr ? "وضّع علامة مكتمل" : "Mark as complete")}
+        </button>
       </div>
     </article>
   );

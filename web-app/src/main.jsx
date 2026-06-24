@@ -4,6 +4,9 @@ import App from "./App.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import { LangProvider } from "./context/LangContext.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { ProgressProvider } from "./context/ProgressContext.jsx";
+import { SearchProvider } from "./context/SearchContext.jsx";
+import { NotesProvider } from "./context/NotesContext.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
@@ -11,7 +14,13 @@ createRoot(document.getElementById("root")).render(
     <ErrorBoundary>
       <ThemeProvider>
         <LangProvider>
-          <App />
+          <ProgressProvider>
+            <SearchProvider>
+              <NotesProvider>
+                <App />
+              </NotesProvider>
+            </SearchProvider>
+          </ProgressProvider>
         </LangProvider>
       </ThemeProvider>
     </ErrorBoundary>

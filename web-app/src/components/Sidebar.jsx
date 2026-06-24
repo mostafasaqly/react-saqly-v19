@@ -1,10 +1,14 @@
 import { sections } from "../data/sections";
 import { useLang } from "../context/LangContext";
 import { useTheme } from "../context/ThemeContext";
+import { useProgress } from "../context/ProgressContext";
+import { useSearch } from "../context/SearchContext";
 
 function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
   const { lang, toggle } = useLang();
   const { theme, toggle: toggleTheme } = useTheme();
+  const { isComplete, percent, completed, total } = useProgress();
+  const { query, setQuery, results, clearSearch, indexReady } = useSearch();
   const isAr = lang === "ar";
 
   return (
@@ -53,19 +57,73 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
           </button>
         </div>
 
+        {/* Progress bar */}
+        <div className="progress-box" aria-label={isAr ? `تقدمك: ${percent}%` : `Progress: ${percent}%`}>
+          <div className="progress-box__header">
+            <span>{isAr ? "تقدمك" : "Progress"}</span>
+            <span className="progress-box__nums">{completed.length}/{total}</span>
+          </div>
+          <div className="progress-bar" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+            <div className="progress-bar__fill" style={{ width: `${percent}%` }} />
+          </div>
+          <span className="progress-box__pct">{percent}%</span>
+        </div>
+
+        {/* Search */}
+        <div className="sidebar__search">
+          <input
+            className="search-input"
+            type="search"
+            placeholder={indexReady ? (isAr ? "ابحث في الكورس…" : "Search course…") : (isAr ? "جارٍ التحميل…" : "Loading…")}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label={isAr ? "بحث" : "Search"}
+            disabled={!indexReady}
+          />
+          {query && (
+            <button className="search-clear" onClick={clearSearch} aria-label={isAr ? "مسح البحث" : "Clear search"}>✕</button>
+          )}
+        </div>
+
+        {/* Search results */}
+        {query && (
+          <div className="search-results" role="listbox">
+            {results.length === 0 ? (
+              <p className="search-empty">{isAr ? "لا نتائج" : "No results"}</p>
+            ) : (
+              results.map((r) => (
+                <button
+                  key={r.id}
+                  className="search-result-item"
+                  role="option"
+                  onClick={() => { onSelect(r.id); clearSearch(); onClose(); }}
+                >
+                  <span className="search-result-item__title">
+                    {isAr ? r.title : r.titleEn}
+                  </span>
+                  {r.snippets.map((s, i) => (
+                    <span key={i} className="search-result-item__snippet">{s}</span>
+                  ))}
+                </button>
+              ))
+            )}
+          </div>
+        )}
+
         <nav className="sidebar__nav" aria-label={isAr ? "الأقسام" : "Sections"}>
           {sections.map((section) => {
             const title = isAr
               ? section.title
               : (section.titleEn || section.title);
             const isActive = section.id === activeId;
+            const done = isComplete(section.id);
             return (
               <button
                 key={section.id}
                 ref={isActive ? activeNavRef : null}
                 className={`nav-item ${isActive ? "nav-item--active" : ""} ${
                   section.comingSoon ? "nav-item--soon" : ""
-                }`}
+                } ${done ? "nav-item--done" : ""}`}
                 onClick={() => {
                   if (!section.comingSoon) {
                     onSelect(section.id);
@@ -74,9 +132,11 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
                 }}
                 aria-current={isActive ? "page" : undefined}
                 aria-disabled={section.comingSoon ? "true" : undefined}
-                aria-label={`${isAr ? "القسم" : "Section"} ${section.id}: ${title}${section.comingSoon ? (isAr ? " — قريباً" : " — coming soon") : ""}`}
+                aria-label={`${isAr ? "القسم" : "Section"} ${section.id}: ${title}${section.comingSoon ? (isAr ? " — قريباً" : " — coming soon") : ""}${done ? (isAr ? " — مكتمل" : " — completed") : ""}`}
               >
-                <span className="nav-item__num" aria-hidden="true">{section.id}</span>
+                <span className="nav-item__num" aria-hidden="true">
+                  {done ? "✓" : section.id}
+                </span>
                 <span className="nav-item__text">{title}</span>
                 {section.comingSoon && (
                   <span className="nav-item__badge" aria-hidden="true">
