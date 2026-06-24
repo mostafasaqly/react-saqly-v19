@@ -376,7 +376,7 @@ function SubmitButton() {
   if (password.length < 6) next.password = "At least 6 characters";
   setErrors(next);
   return Object.keys(next).length === 0;
-}`},{type:"heading",text:"4. React 19 Actions",term:"React 19 Actions"},{type:"paragraph",text:`Pass an async function to the form's action prop. React calls it with the form data and manages the pending state. No preventDefault, no manual state. Read inputs with formData.get("name").`},{type:"code",code:`function CommentForm() {
+}`},{type:"heading",text:"4. React 19 Actions"},{type:"paragraph",text:`Pass an async function to the form's action prop. React calls it with the form data and manages the pending state. No preventDefault, no manual state. Read inputs with formData.get("name").`},{type:"code",code:`function CommentForm() {
   async function submitComment(formData) {
     const text = formData.get("text");
     await saveToServer(text);
@@ -387,7 +387,7 @@ function SubmitButton() {
       <button type="submit">Post</button>
     </form>
   );
-}`},{type:"heading",text:"5. useActionState",term:"useActionState"},{type:"paragraph",text:"This hook wraps your action and returns: the state (result), the wrapped action, and a pending boolean."},{type:"code",code:`const [state, formAction, isPending] = useActionState(
+}`},{type:"heading",text:"5. useActionState"},{type:"paragraph",text:"This hook wraps your action and returns: the state (result), the wrapped action, and a pending boolean."},{type:"code",code:`const [state, formAction, isPending] = useActionState(
   async (prevState, formData) => {
     const text = formData.get("text");
     if (!text) return { error: "Text is required" };
@@ -395,7 +395,7 @@ function SubmitButton() {
     return { success: "Posted!" };
   },
   null
-);`},{type:"heading",text:"6. useFormStatus",term:"useFormStatus"},{type:"paragraph",text:"Lets a child component read the state of the form above it without props. Note: imported from react-dom, and the component must be inside the form."},{type:"code",code:`import { useFormStatus } from "react-dom";
+);`},{type:"heading",text:"6. useFormStatus"},{type:"paragraph",text:"Lets a child component read the state of the form above it without props. Note: imported from react-dom, and the component must be inside the form."},{type:"code",code:`import { useFormStatus } from "react-dom";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
