@@ -26,12 +26,16 @@ export default {
   content: [
     { type: "heading", text: "1. نظرة عامة على المشروع" },
     {
+      type: "paragraph",
+      text: "قبل كتابة أي سطر، افهم ما الذي تبنيه. صورة واضحة للهدف النهائي تجعل كل خطوة مقصودة.",
+    },
+    {
       type: "list",
       items: [
         "إضافة مهمة، وتعليمها مكتملة/نشطة، وتعديلها، وحذفها",
         "فلترة (الكل / النشطة / المكتملة) وبحث بالنص",
-        "حفظ في localStorage",
-        "إجراءات النماذج + واجهة انتظار + إضافة تفاؤلية",
+        "حفظ في localStorage لتبقى المهام بعد إعادة التحميل",
+        "إجراءات النماذج + واجهة انتظار + إضافة تفاؤلية (مزايا رياكت 19)",
       ],
     },
     {
@@ -47,11 +51,19 @@ export default {
 ├── hooks/useLocalStorage.jsx
 └── utils/task.js`,
     },
+    {
+      type: "tip",
+      text: "الخطوة الأولى دائماً: ارسم شجرة المكوّنات على ورقة قبل فتح المحرّر. توفّر عليك ساعات.",
+    },
 
     { type: "heading", text: "2. إنشاء تخطيط التطبيق" },
     {
       type: "paragraph",
-      text: "App.jsx هو «العقل». يملك المهام والفلتر والبحث، ويمرّر البيانات والدوال لأسفل (رفع الحالة لأعلى).",
+      text: "App.jsx هو «العقل». يملك قائمة المهام والفلتر النشط وكلمة البحث، ثم يمرّر البيانات ودوال المعالجة لأسفل. هذا نمط «رفع الحالة لأعلى» في العمل.",
+    },
+    {
+      type: "tip",
+      text: "القاعدة: ضع الحالة في أعلى مكوّن يحتاجها، لا أعلى من ذلك. App.jsx هو المكان الصحيح هنا لأن كل الأبناء يحتاجون بيانات المهام.",
     },
 
     { type: "heading", text: "3. إنشاء مكوّنات قابلة لإعادة الاستخدام" },
@@ -79,21 +91,41 @@ export default {
 
     { type: "heading", text: "5. إضافة المهام" },
     {
+      type: "paragraph",
+      text: "أنشئ كائن مهمة جديد وأضفه لنهاية القائمة. أنتج دائماً مصفوفة جديدة — لا تعدّل الحالة مباشرةً أبداً.",
+    },
+    {
       type: "code",
       code: `function addTask(text) {
   setTasks([...tasks, createTask(text)]);
 }`,
     },
+    {
+      type: "paragraph",
+      text: "TaskForm ينادي onAdd(text) عند الإرسال. هو لا يملك قائمة المهام — يطلق حدثاً لأعلى فقط.",
+    },
 
     { type: "heading", text: "6. تحديث المهام" },
+    {
+      type: "paragraph",
+      text: "ابحث عن المهمة بالـ id واستبدل حقل النص فقط. map() هي الأداة الصحيحة — تُرجع مصفوفة جديدة بعنصر واحد مُبدَّل.",
+    },
     {
       type: "code",
       code: `function editTask(id, newText) {
   setTasks(tasks.map((t) => (t.id === id ? { ...t, text: newText } : t)));
 }`,
     },
+    {
+      type: "tip",
+      text: "النمط: { ...t, text: newText } يبقي كل الحقول الأخرى (done و createdAt) ويغيّر النص فقط.",
+    },
 
     { type: "heading", text: "7. حذف المهام" },
+    {
+      type: "paragraph",
+      text: "filter() تُرجع كل مهمة لا يطابق id الخاص بها — أي تحذف المهمة المستهدفة فعلياً.",
+    },
     {
       type: "code",
       code: `function deleteTask(id) {
@@ -103,6 +135,10 @@ export default {
 
     { type: "heading", text: "8. تعليم المهام كمكتملة" },
     {
+      type: "paragraph",
+      text: "بدّل القيمة المنطقية done. map() مجدّداً — ابحث بالـ id، اقلب done، وأبقِ الباقي كما هو.",
+    },
+    {
       type: "code",
       code: `function toggleTask(id) {
   setTasks(tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
@@ -110,6 +146,10 @@ export default {
     },
 
     { type: "heading", text: "9. فلترة المهام" },
+    {
+      type: "paragraph",
+      text: "اشتقّ القائمة المرئية من مصفوفة المهام الكاملة والفلتر النشط. هذه حالة مشتقّة — لا تخزّن القائمة المفلترة بشكل منفصل.",
+    },
     {
       type: "code",
       code: `const byFilter = tasks.filter((task) => {
@@ -121,10 +161,18 @@ export default {
 
     { type: "heading", text: "10. البحث في المهام" },
     {
+      type: "paragraph",
+      text: "ابنِ البحث فوق القائمة المفلترة بالفعل. خطوتان مشتقّتان، وقائمة مرئية نهائية واحدة.",
+    },
+    {
       type: "code",
       code: `const visibleTasks = byFilter.filter((task) =>
   task.text.toLowerCase().includes(search.toLowerCase())
 );`,
+    },
+    {
+      type: "tip",
+      text: "كلٌّ من الفلتر والبحث حالة مشتقّة — تُحسَب أثناء الرسم في App.jsx، ولا تُخزَّن كمصفوفة منفصلة أبداً.",
     },
 
     { type: "heading", text: "11. حفظ البيانات في Local Storage" },
@@ -137,7 +185,11 @@ export default {
       code: `const [tasks, setTasks] = useLocalStorage("tasks", []);`,
     },
 
-    { type: "heading", text: "12. إضافة إجراءات النماذج" },
+    { type: "heading", text: "12. إضافة إجراءات النماذج (رياكت 19)" },
+    {
+      type: "paragraph",
+      text: "رياكت 19 يسمح لخاصية action في النموذج بقبول دالة غير متزامنة. هذا يستبدل نمط onSubmit + e.preventDefault() اليدوي ويتكامل مع useFormStatus.",
+    },
     {
       type: "code",
       code: `async function handleAdd(formData) {
@@ -149,6 +201,10 @@ export default {
 
     { type: "heading", text: "13. إضافة واجهة الانتظار" },
     {
+      type: "paragraph",
+      text: "useFormStatus (من react-dom) يعطيك حالة الانتظار لأقرب نموذج أب. ضع SubmitButton داخل النموذج ليتمكّن من قراءة تلك الحالة.",
+    },
+    {
       type: "code",
       code: `import { useFormStatus } from "react-dom";
 function SubmitButton() {
@@ -156,8 +212,16 @@ function SubmitButton() {
   return <button disabled={pending}>{pending ? "جارٍ..." : "إضافة"}</button>;
 }`,
     },
+    {
+      type: "tip",
+      text: "يجب أن يكون SubmitButton ابناً لعنصر form — لأن useFormStatus يقرأ أقرب نموذج سابق له.",
+    },
 
     { type: "heading", text: "14. إضافة التحديثات التفاؤلية" },
+    {
+      type: "paragraph",
+      text: "useOptimistic يعرض المهمة الجديدة فوراً بينما الإجراء غير المتزامن ما زال يعمل. إذا فشل الإجراء، يتراجع رياكت إلى الحالة الحقيقية تلقائياً.",
+    },
     {
       type: "code",
       code: `const [optimisticTasks, addOptimisticTask] = useOptimistic(
@@ -184,7 +248,19 @@ function SubmitButton() {
     { type: "heading", text: "🎉 ما بنيته" },
     {
       type: "paragraph",
-      text: "تطبيق إدارة مهام كامل ودائم يستخدم رياكت الأساسي مع إجراءات رياكت 19 وواجهة الانتظار والتحديثات التفاؤلية. يستحق معرض الأعمال!",
+      text: "تطبيق إدارة مهام كامل ودائم يستخدم رياكت الأساسي مع إجراءات رياكت 19 وواجهة الانتظار والتحديثات التفاؤلية. كل نمط هنا — رفع الحالة، الحالة المشتقّة، الخطّافات المخصّصة، تركيب المكوّنات — يظهر في الأكواد الاحترافية يومياً. يستحق معرض الأعمال!",
+    },
+    {
+      type: "qa",
+      question: "1. لماذا يملك App.jsx كل الحالة بدلاً من كل مكوّن على حدة؟",
+      answer:
+        "لأن الفلتر والبحث والمهام كلها تؤثّر في نفس القائمة المرئية. امتلاكها في مكان واحد يبقي مصدراً واحداً للحقيقة ويتجنّب أخطاء المزامنة بين الأشقّاء.",
+    },
+    {
+      type: "qa",
+      question: "2. ما الفرق بين التحديثات التفاؤلية وواجهة الانتظار؟",
+      answer:
+        "واجهة الانتظار تعطّل الزر أثناء الانتظار (صادقة لكنها تبدو بطيئة). التحديثات التفاؤلية تعرض النتيجة فوراً وتتراجع إن فشل شيء (تبدو سريعة لكنها تحتاج إجراءً غير متزامن حقيقياً).",
     },
 
     { type: "heading", text: "ملفات المشروع الكاملة" },

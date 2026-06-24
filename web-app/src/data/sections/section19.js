@@ -26,12 +26,16 @@ export default {
   content: [
     { type: "heading", text: "1. نظرة عامة على المشروع" },
     {
+      type: "paragraph",
+      text: "هذا أعقد مشروع في الكورس. خطّط بعناية قبل البرمجة — افهم أين تعيش كل حالة ولماذا.",
+    },
+    {
       type: "list",
       items: [
-        "تصفّح منتجات مجلوبة من API",
-        "إضافة منتجات للسلّة (مع كمّيات)",
-        "تعليم المنتجات كمفضّلة",
-        "إجمالي سلّة حيّ + حالات تحميل وخطأ (Redux غير متزامن)",
+        "تصفّح منتجات مجلوبة من API حقيقي (Fake Store API)",
+        "إضافة منتجات للسلّة مع تتبّع الكمّيات",
+        "تعليم المنتجات كمفضّلة (تبديل أيقونة القلب)",
+        "إجمالي سلّة حيّ + حالات تحميل وخطأ يديرها Redux",
       ],
     },
     {
@@ -47,8 +51,16 @@ export default {
     ├── ProductCard.jsx
     └── Cart.jsx`,
     },
+    {
+      type: "tip",
+      text: "شريحة واحدة = اهتمام واحد. المنتجات والسلّة والمفضّلات شرائح منفصلة لتتطوّر كل منها باستقلال.",
+    },
 
     { type: "heading", text: "2. إنشاء صفحة المنتجات" },
+    {
+      type: "paragraph",
+      text: "Products.jsx هي الصفحة الرئيسية. تُطلق الـ thunk غير المتزامن عند التركيب وتقرأ قائمة المنتجات من متجر Redux.",
+    },
     {
       type: "code",
       code: `function Products() {
@@ -60,6 +72,10 @@ export default {
     },
 
     { type: "heading", text: "3. مكوّن بطاقة المنتج" },
+    {
+      type: "paragraph",
+      text: "ProductCard يعرض منتجاً واحداً ويتيح إضافته للسلّة أو تبديله كمفضّل. يُطلق الإجراءات (dispatch) — ولا يملك أي حالة.",
+    },
     {
       type: "code",
       code: `function ProductCard({ product }) {
@@ -78,14 +94,26 @@ export default {
 
     { type: "heading", text: "4. جلب المنتجات من API" },
     {
+      type: "paragraph",
+      text: "createAsyncThunk يدير دورة الحياة غير المتزامنة تلقائياً: pending ← fulfilled ← rejected. تكتب المنطق غير المتزامن مرة واحدة، ويولّد Redux أنواع الإجراءات.",
+    },
+    {
       type: "code",
       code: `export const fetchProducts = createAsyncThunk("products/fetch", async () => {
   const { data } = await axios.get("https://fakestoreapi.com/products");
   return data;
 });`,
     },
+    {
+      type: "tip",
+      text: "أول وسيط لـ createAsyncThunk (\"products/fetch\") هو بادئة نوع الإجراء. يولّد Redux Toolkit تلقائياً products/fetch/pending و /fulfilled و /rejected.",
+    },
 
     { type: "heading", text: "5. إنشاء شريحة السلّة" },
+    {
+      type: "paragraph",
+      text: "createSlice يولّد مُنشئات الإجراءات والمختزِل في مكان واحد. ويحدّد initialState شكل حالة السلّة بالضبط.",
+    },
     {
       type: "code",
       code: `const cartSlice = createSlice({
@@ -94,8 +122,16 @@ export default {
   reducers: { addToCart, removeFromCart, clearCart },
 });`,
     },
+    {
+      type: "tip",
+      text: "Redux Toolkit يستخدم Immer تحت الغطاء، فيمكنك تعديل الحالة مباشرةً داخل المختزِل — ويُترجَم إلى تحديثات غير قابلة للتغيير تلقائياً.",
+    },
 
     { type: "heading", text: "6. إضافة منتجات للسلّة" },
+    {
+      type: "paragraph",
+      text: "إن كان المنتج موجوداً في السلّة، زِد كمّيته. وإلا أضف عنصراً جديداً بـ qty: 1. هذا أهم منطق في السلّة.",
+    },
     {
       type: "code",
       code: `addToCart: (state, action) => {
@@ -107,11 +143,19 @@ export default {
 
     { type: "heading", text: "7. قراءة السلّة بـ useSelector" },
     {
+      type: "paragraph",
+      text: "useSelector يشترك في متجر Redux. كلما تغيّرت الشريحة المختارة من الحالة، يُعاد رسم المكوّن تلقائياً.",
+    },
+    {
       type: "code",
       code: `const items = useSelector((state) => state.cart.items);`,
     },
 
     { type: "heading", text: "8. تحديث السلّة بـ useDispatch" },
+    {
+      type: "paragraph",
+      text: "useDispatch يعطيك دالة dispatch الخاصة بالمتجر. ناديها بمُنشئ إجراء لتحديث الحالة. مُنشئات الإجراءات مجرّد دوال تُرجع كائن إجراء.",
+    },
     {
       type: "code",
       code: `dispatch(addToCart(product));
@@ -119,6 +163,10 @@ dispatch(removeFromCart(product.id));`,
     },
 
     { type: "heading", text: "9. حذف عناصر من السلّة" },
+    {
+      type: "paragraph",
+      text: "removeFromCart يفلتر العنصر بالـ id. الحمولة هي id المنتج (رقم)، وليست كائن المنتج كاملاً. أبقِ الحمولات صغيرة.",
+    },
     {
       type: "code",
       code: `removeFromCart: (state, action) => {
@@ -147,6 +195,10 @@ dispatch(removeFromCart(product.id));`,
 
     { type: "heading", text: "12. منتجات غير متزامنة بـ createAsyncThunk" },
     {
+      type: "paragraph",
+      text: "اربط دورة حياة الـ thunk (pending / fulfilled / rejected) بالشريحة عبر extraReducers. هكذا يعرف Redux متى يحدّث isLoading و items عند انتهاء الجلب.",
+    },
+    {
       type: "code",
       code: `.addCase(fetchProducts.fulfilled, (state, action) => {
   state.isLoading = false;
@@ -156,6 +208,10 @@ dispatch(removeFromCart(product.id));`,
 
     { type: "heading", text: "13. واجهة التحميل والخطأ" },
     {
+      type: "paragraph",
+      text: "اقرأ isLoading و isError من المتجر واعرض الواجهة المناسبة. ارجع مبكّراً لكي تُرسَم شبكة المنتجات فقط عند جاهزية البيانات.",
+    },
+    {
       type: "code",
       code: `if (isLoading) return <p>جارٍ تحميل المنتجات...</p>;
 if (isError) return <p>خطأ: {message}</p>;`,
@@ -163,11 +219,19 @@ if (isError) return <p>خطأ: {message}</p>;`,
 
     { type: "heading", text: "14. إجمالي السلّة بـ useMemo" },
     {
+      type: "paragraph",
+      text: "إجمالي السلّة مشتقّ من مصفوفة items. useMemo يخزّن النتيجة ولا يُعيد حسابها إلا عند تغيّر items — مهمّ عندما تحوي السلّة عناصر كثيرة.",
+    },
+    {
       type: "code",
       code: `const total = useMemo(
   () => items.reduce((sum, item) => sum + item.price * item.qty, 0),
   [items]
 );`,
+    },
+    {
+      type: "tip",
+      text: "toFixed(2) يصيغ السعر إلى منزلتين عشريتين. بدونه ينتج حساب الفاصلة العائمة قيماً مثل $29.990000000003.",
     },
 
     { type: "heading", text: "15. إعادة الهيكلة النهائية" },
@@ -184,7 +248,19 @@ if (isError) return <p>خطأ: {message}</p>;`,
     { type: "heading", text: "🎉 ما بنيته" },
     {
       type: "paragraph",
-      text: "جوهر متجر إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة.",
+      text: "جوهر واجهة متجر إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي حيّ، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة. أضِف مصادقة وإتمام شراء وخادماً، فيصير تطبيق إنتاج.",
+    },
+    {
+      type: "qa",
+      question: "1. لماذا نستخدم createAsyncThunk بدلاً من الجلب داخل useEffect؟",
+      answer:
+        "‏createAsyncThunk يتكامل مع Redux: حالة التحميل/الخطأ تعيش في المتجر ويمكن الوصول إليها من أي مكوّن. أما useEffect فيُبقي منطق الجلب محلياً في مكوّن واحد ويتطلّب إدارة حالة التحميل/الخطأ يدوياً.",
+    },
+    {
+      type: "qa",
+      question: "2. لماذا يُحسَب إجمالي السلّة بـ useMemo بدلاً من تخزينه في شريحة cartTotal؟",
+      answer:
+        "لأن الإجمالي قابل للاشتقاق دائماً من items. تخزينه منفصلاً يخلق خطر خروجه عن المزامنة مع البيانات الحقيقية. الحالة المشتقّة (المحسوبة من مصدر الحقيقة) أفضل دائماً من الحالة المكرّرة.",
     },
 
     { type: "heading", text: "ملفات المشروع الكاملة" },
@@ -686,7 +762,7 @@ function SomeComponent({ product }) {
     { type: "heading", text: "10. Creating the Favorites Slice" },
     {
       type: "paragraph",
-      text: "Favorites are just an array of product ids. The toggleFavorite reducer adds the id if it's not there, removes it if it is.",
+      text: "Favorites are just an array of product ids. The toggleFavorite reducer removes the id if it's already there, otherwise adds it. Here we return a brand-new array — when a reducer returns a value, Redux Toolkit uses it as the next state.",
     },
     {
       type: "code",
@@ -699,12 +775,9 @@ const favoritesSlice = createSlice({
   reducers: {
     toggleFavorite: (state, action) => {
       const id = action.payload;
-      const index = state.indexOf(id);
-      if (index >= 0) {
-        state.splice(index, 1);   // remove
-      } else {
-        state.push(id);           // add
-      }
+      return state.includes(id)
+        ? state.filter((x) => x !== id)   // remove
+        : [...state, id];                 // add
     },
   },
 });

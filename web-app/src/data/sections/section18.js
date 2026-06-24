@@ -26,12 +26,16 @@ export default {
   content: [
     { type: "heading", text: "1. نظرة عامة على المشروع" },
     {
+      type: "paragraph",
+      text: "خطّط للمزايا وهيكل الملفات قبل لمس الكود. معرفة مسؤولية كل ملف قبل إنشائه تمنع المعمارية المتشابكة.",
+    },
+    {
       type: "list",
       items: [
-        "عرض المستخدمين كبطاقات",
-        "بحث وفلترة بالاسم",
-        "النقر على مستخدم لرؤية صفحة تفاصيله",
-        "هياكل تحميل وواجهة أخطاء لطيفة",
+        "عرض المستخدمين كبطاقات مجلوبة من API عام",
+        "بحث وفلترة بالاسم في الوقت الحقيقي",
+        "النقر على بطاقة للانتقال إلى صفحة تفاصيل مخصّصة",
+        "هياكل تحميل وواجهة أخطاء لطيفة مع زر إعادة المحاولة",
       ],
     },
     {
@@ -48,6 +52,10 @@ export default {
     ├── SearchBar.jsx
     ├── Skeleton.jsx
     └── ErrorMessage.jsx`,
+    },
+    {
+      type: "tip",
+      text: "افصل الاهتمامات من اليوم الأول: services/ لنداءات الشبكة، hooks/ للمنطق القابل لإعادة الاستخدام، pages/ لمكوّنات المسارات، components/ لقطع الواجهة.",
     },
 
     { type: "heading", text: "2. بناء تخطيط اللوحة" },
@@ -78,11 +86,19 @@ export default {
 
     { type: "heading", text: "4. جلب بيانات API بـ Axios" },
     {
+      type: "paragraph",
+      text: "خطّاف useFetch المخصّص يغلّف منطق التحميل/الخطأ/البيانات، فيستطيع أي مكوّن يحتاج بيانات استخدامه في سطر واحد.",
+    },
+    {
       type: "code",
       code: `const { data: users, loading, error } = useFetch(URLS.users);`,
     },
 
     { type: "heading", text: "5. حالة التحميل" },
+    {
+      type: "paragraph",
+      text: "أثناء تنفيذ الطلب، اعرض هياكل تحميل بدلاً من شاشة فارغة. الهياكل تحافظ على التخطيط وتُشعر المستخدم أن المحتوى قادم.",
+    },
     {
       type: "code",
       code: `{loading && (
@@ -92,16 +108,28 @@ export default {
 
     { type: "heading", text: "6. حالة الخطأ" },
     {
+      type: "paragraph",
+      text: "طلبات الشبكة تفشل. اعرض رسالة مفهومة وزرّ إعادة محاولة — لا تترك المستخدم أمام شاشة فارغة دون مخرج.",
+    },
+    {
       type: "code",
       code: `{error && <ErrorMessage message={error} onRetry={reload} />}`,
     },
 
     { type: "heading", text: "7. البحث والفلترة" },
     {
+      type: "paragraph",
+      text: "البحث حالة مشتقّة — افلتر القائمة المجلوبة أثناء الرسم. لا تُرسل طلب شبكة جديداً مع كل ضغطة مفتاح.",
+    },
+    {
       type: "code",
       code: `const visibleUsers = (users || []).filter((user) =>
   user.name.toLowerCase().includes(search.toLowerCase())
 );`,
+    },
+    {
+      type: "tip",
+      text: "‏users || [] يحمي من الحالة الأولية null قبل اكتمال أول جلب.",
     },
 
     { type: "heading", text: "8. إنشاء صفحة التفاصيل" },
@@ -171,7 +199,19 @@ export const URLS = { users: "/users", user: (id) => \`/users/\${id}\` };`,
     { type: "heading", text: "🎉 ما بنيته" },
     {
       type: "paragraph",
-      text: "لوحة بيانات حقيقية بتوجيه وبحث وصفحات تفاصيل وهياكل تحميل ومعالجة أخطاء — جوهر عدد لا يُحصى من تطبيقات الإنتاج.",
+      text: "لوحة بيانات حقيقية بتوجيه وبحث وصفحات تفاصيل وهياكل تحميل ومعالجة أخطاء — جوهر عدد لا يُحصى من تطبيقات الإنتاج. كل نمط هنا (الخطّافات المخصّصة، طبقة الخدمات، حالة التنقّل + المعاملات كبديل) يُستخدم في أكواد رياكت الاحترافية يومياً.",
+    },
+    {
+      type: "qa",
+      question: "1. لماذا يعيش useFetch في مجلد hooks/ بدلاً من داخل المكوّن؟",
+      answer:
+        "لأن منطق التحميل/الخطأ/البيانات واحد لكل جلب — استخراجه في خطّاف يعني أن تكتبه مرة وتستخدمه في كل مكان. ويبقى المكوّن مركّزاً على الرسم.",
+    },
+    {
+      type: "qa",
+      question: "2. لماذا نحتاج معاملات المسار كبديل إن كنا نمرّر البيانات عبر حالة التنقّل أصلاً؟",
+      answer:
+        "حالة التنقّل توجد فقط عند الوصول عبر تنقّل داخلي في نفس الجلسة. الرابط المُشارَك أو المحفوظ أو إعادة تحميل الصفحة لا يحمل state — معاملات المسار + جلب جديد هي الطريق الوحيد لتحميل البيانات الصحيحة.",
     },
 
     { type: "heading", text: "ملفات المشروع الكاملة" },
@@ -572,11 +612,11 @@ function UserCard({ user }) {
       type: "code",
       code: `// hooks/useFetch.jsx
 import { useState, useEffect, useCallback } from "react";
-import api from "../services/api";
+import axios from "axios";
 
 export function useFetch(url) {
   const [data,    setData]    = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(Boolean(url));
   const [error,   setError]   = useState(null);
 
   const load = useCallback(async () => {
@@ -584,8 +624,8 @@ export function useFetch(url) {
     setLoading(true);
     setError(null);
     try {
-      const { data: result } = await api.get(url);
-      setData(result);
+      const res = await axios.get(url);
+      setData(res.data);
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
