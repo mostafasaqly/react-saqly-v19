@@ -2,14 +2,16 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <!-- Apply saved language before React mounts to avoid an RTL→LTR flash (FOUC) -->
+    <!-- Apply saved lang + theme before React mounts to avoid flash (FOUC) -->
     <script>
       (function () {
         try {
-          var lang = localStorage.getItem("lang") || "ar";
           var el = document.documentElement;
+          var lang = localStorage.getItem("lang") || "ar";
           el.lang = lang;
           el.dir = lang === "ar" ? "rtl" : "ltr";
+          var theme = localStorage.getItem("theme") || "dark";
+          el.setAttribute("data-theme", theme);
         } catch (e) {}
       })();
     </script>
@@ -17,8 +19,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>كورس رياكت 19</title>
     <!-- Cairo font is self-hosted in /public/fonts/ — no external request -->
-    <script type="module" crossorigin src="/react-saqly-v19/assets/index-BomYUUBa.js"></script>
-    <link rel="stylesheet" crossorigin href="/react-saqly-v19/assets/index-DkolJ7Gs.css">
+    <script type="module" crossorigin src="/react-saqly-v19/assets/index-DJGXL_we.js"></script>
+    <link rel="stylesheet" crossorigin href="/react-saqly-v19/assets/index-WiwuJUbd.css">
   </head>
   <body>
     <div id="root"></div>
