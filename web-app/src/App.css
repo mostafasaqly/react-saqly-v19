@@ -332,19 +332,38 @@
 }
 
 .block-code {
-  background: var(--code-bg);
-  border: 1px solid var(--border);
+  background: #0d1117;
+  border: 1px solid #30363d;
   border-radius: var(--radius);
-  padding: 18px 80px 18px 20px;
+  padding: 20px 80px 20px 24px;
   margin: 16px 0;
   overflow-x: auto;
   font-size: 14.5px;
-  line-height: 1.7;
+  line-height: 1.85;
 }
 .block-code code {
-  color: #c8d3f5;
+  color: #e6edf3;
   white-space: pre;
 }
+
+/* ── JS/JSX syntax tokens ── */
+.tok-keyword  { color: #ff7b72; }                            /* red    — import export const */
+.tok-builtin  { color: #d2a8ff; }                            /* purple — useState useEffect  */
+.tok-string   { color: #a5d6ff; }                            /* blue   — "text" `template`   */
+.tok-comment  { color: #6e7681; font-style: italic; }        /* grey   — // comment          */
+.tok-number   { color: #79c0ff; }                            /* blue   — 0 42                */
+.tok-tag      { color: #7ee787; }                            /* green  — <div> </Component>  */
+.tok-attr     { color: #ffa657; }                            /* orange — onClick className   */
+.tok-fn       { color: #e6edf3; }                            /* white  — function calls      */
+.tok-punct    { color: #8b949e; }                            /* grey   — { } ( ) => ;        */
+.tok-plain    { color: #e6edf3; }                            /* default text                 */
+
+/* ── Shell / terminal tokens ── */
+.tok-sh-cmd    { color: #7ee787; font-weight: 700; }         /* green bold  — npm npx cd git */
+.tok-sh-sub    { color: #ffa657; font-weight: 600; }         /* orange      — install run i  */
+.tok-sh-pkg    { color: #f0e68c; }                           /* yellow      — react-router-dom axios */
+.tok-sh-flag   { color: #79c0ff; }                           /* blue        — --save-dev -D  */
+.tok-sh-prompt { color: #6e7681; user-select: none; }        /* grey        — $ (non-selectable) */
 
 /* تنبيهات */
 .callout {
