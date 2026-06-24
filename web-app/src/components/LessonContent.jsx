@@ -87,6 +87,15 @@ function Block({ block }) {
           ))}
         </ul>
       );
+    case "cta":
+      return (
+        <p className="block-paragraph">
+          {block.text}{" "}
+          <a href={block.link} target="_blank" rel="noopener noreferrer" className="cta-link">
+            {block.linkLabel}
+          </a>
+        </p>
+      );
     case "qa":
       return <QABlock question={block.question} answer={block.answer} />;
     default:

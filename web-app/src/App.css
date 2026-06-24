@@ -207,6 +207,15 @@
   padding-bottom: 8px;
   border-bottom: 2px solid var(--surface-2);
 }
+.cta-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cta-link:hover {
+  opacity: 0.8;
+}
 .block-subheading {
   font-size: 19px;
   font-weight: 600;
