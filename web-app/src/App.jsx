@@ -17,7 +17,7 @@ function App() {
     <div className="layout">
       <Sidebar
         activeId={activeId}
-        onSelect={setActiveId}
+        onSelect={(id) => { setActiveId(id); window.scrollTo({ top: 0, behavior: "instant" }); }}
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
       />
