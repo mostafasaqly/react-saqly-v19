@@ -9,7 +9,7 @@ function QABlock({ question, answer }) {
     <div className="qa">
       <button className="qa__question" onClick={() => setOpen((o) => !o)}>
         <span>{question}</span>
-        <span className="qa__icon">{open ? "−" : "+"}</span>
+        <span className={`qa__icon ${open ? "qa__icon--open" : ""}`}>▼</span>
       </button>
       {open && <div className="qa__answer">{answer}</div>}
     </div>
