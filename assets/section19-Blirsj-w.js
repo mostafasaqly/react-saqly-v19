@@ -1,4 +1,4 @@
-const t={id:19,title:"المشروع الثالث: متجر مصغّر بـ Redux",level:"مشروع",lessons:["نظرة عامة على المشروع","إنشاء صفحة المنتجات","مكوّن بطاقة المنتج","جلب المنتجات من API","إنشاء شريحة السلّة","إضافة منتجات للسلّة","قراءة السلّة بـ useSelector","تحديث السلّة بـ useDispatch","حذف عناصر من السلّة","إنشاء شريحة المفضّلات","المفضّلات بالسياق أو Redux","منتجات غير متزامنة بـ createAsyncThunk","واجهة التحميل والخطأ","إجمالي السلّة بـ useMemo","إعادة الهيكلة النهائية","ملفات المشروع الكاملة"],intro:"مشروعنا الثالث والأكبر: متجر صغير. يجلب المنتجات من API بـ Redux غير المتزامن، ويتيح إضافة عناصر للسلّة وقائمة مفضّلات، ويعرض إجمالي سلّة حيّ. يجمع Redux Toolkit والـ thunks وكل ما سبق.",content:[{type:"heading",text:"1. نظرة عامة على المشروع"},{type:"list",items:["تصفّح منتجات مجلوبة من API","إضافة منتجات للسلّة (مع كمّيات)","تعليم المنتجات كمفضّلة","إجمالي سلّة حيّ + حالات تحميل وخطأ (Redux غير متزامن)"]},{type:"code",code:`src/
+const t={id:19,title:"المشروع الثالث: متجر مصغّر بـ Redux",level:"مشروع",lessons:["نظرة عامة على المشروع","إنشاء صفحة المنتجات","مكوّن بطاقة المنتج","جلب المنتجات من API","إنشاء شريحة السلّة","إضافة منتجات للسلّة","قراءة السلّة بـ useSelector","تحديث السلّة بـ useDispatch","حذف عناصر من السلّة","إنشاء شريحة المفضّلات","المفضّلات بالسياق أو Redux","منتجات غير متزامنة بـ createAsyncThunk","واجهة التحميل والخطأ","إجمالي السلّة بـ useMemo","إعادة الهيكلة النهائية","ملفات المشروع الكاملة"],intro:"مشروعنا الثالث والأكبر: متجر صغير. يجلب المنتجات من API بـ Redux غير المتزامن، ويتيح إضافة عناصر للسلّة وقائمة مفضّلات، ويعرض إجمالي سلّة حيّ. يجمع Redux Toolkit والـ thunks وكل ما سبق.",content:[{type:"heading",text:"1. نظرة عامة على المشروع"},{type:"paragraph",text:"هذا أعقد مشروع في الكورس. خطّط بعناية قبل البرمجة — افهم أين تعيش كل حالة ولماذا."},{type:"list",items:["تصفّح منتجات مجلوبة من API حقيقي (Fake Store API)","إضافة منتجات للسلّة مع تتبّع الكمّيات","تعليم المنتجات كمفضّلة (تبديل أيقونة القلب)","إجمالي سلّة حيّ + حالات تحميل وخطأ يديرها Redux"]},{type:"code",code:`src/
 ├── store/
 │   ├── store.js
 │   ├── productsSlice.js   ← thunk غير متزامن
@@ -7,12 +7,12 @@ const t={id:19,title:"المشروع الثالث: متجر مصغّر بـ Redu
 ├── pages/Products.jsx
 └── components/
     ├── ProductCard.jsx
-    └── Cart.jsx`},{type:"heading",text:"2. إنشاء صفحة المنتجات"},{type:"code",code:`function Products() {
+    └── Cart.jsx`},{type:"tip",text:"شريحة واحدة = اهتمام واحد. المنتجات والسلّة والمفضّلات شرائح منفصلة لتتطوّر كل منها باستقلال."},{type:"heading",text:"2. إنشاء صفحة المنتجات"},{type:"paragraph",text:"Products.jsx هي الصفحة الرئيسية. تُطلق الـ thunk غير المتزامن عند التركيب وتقرأ قائمة المنتجات من متجر Redux."},{type:"code",code:`function Products() {
   const dispatch = useDispatch();
   const { items, isLoading } = useSelector((s) => s.products);
   useEffect(() => { dispatch(fetchProducts()); }, [dispatch]);
   // ...
-}`},{type:"heading",text:"3. مكوّن بطاقة المنتج"},{type:"code",code:`function ProductCard({ product }) {
+}`},{type:"heading",text:"3. مكوّن بطاقة المنتج"},{type:"paragraph",text:"ProductCard يعرض منتجاً واحداً ويتيح إضافته للسلّة أو تبديله كمفضّل. يُطلق الإجراءات (dispatch) — ولا يملك أي حالة."},{type:"code",code:`function ProductCard({ product }) {
   const dispatch = useDispatch();
   return (
     <div className="card">
@@ -23,31 +23,31 @@ const t={id:19,title:"المشروع الثالث: متجر مصغّر بـ Redu
       <button onClick={() => dispatch(toggleFavorite(product.id))}>❤️</button>
     </div>
   );
-}`},{type:"heading",text:"4. جلب المنتجات من API"},{type:"code",code:`export const fetchProducts = createAsyncThunk("products/fetch", async () => {
+}`},{type:"heading",text:"4. جلب المنتجات من API"},{type:"paragraph",text:"createAsyncThunk يدير دورة الحياة غير المتزامنة تلقائياً: pending ← fulfilled ← rejected. تكتب المنطق غير المتزامن مرة واحدة، ويولّد Redux أنواع الإجراءات."},{type:"code",code:`export const fetchProducts = createAsyncThunk("products/fetch", async () => {
   const { data } = await axios.get("https://fakestoreapi.com/products");
   return data;
-});`},{type:"heading",text:"5. إنشاء شريحة السلّة"},{type:"code",code:`const cartSlice = createSlice({
+});`},{type:"tip",text:'أول وسيط لـ createAsyncThunk ("products/fetch") هو بادئة نوع الإجراء. يولّد Redux Toolkit تلقائياً products/fetch/pending و /fulfilled و /rejected.'},{type:"heading",text:"5. إنشاء شريحة السلّة"},{type:"paragraph",text:"createSlice يولّد مُنشئات الإجراءات والمختزِل في مكان واحد. ويحدّد initialState شكل حالة السلّة بالضبط."},{type:"code",code:`const cartSlice = createSlice({
   name: "cart",
   initialState: { items: [] },
   reducers: { addToCart, removeFromCart, clearCart },
-});`},{type:"heading",text:"6. إضافة منتجات للسلّة"},{type:"code",code:`addToCart: (state, action) => {
+});`},{type:"tip",text:"Redux Toolkit يستخدم Immer تحت الغطاء، فيمكنك تعديل الحالة مباشرةً داخل المختزِل — ويُترجَم إلى تحديثات غير قابلة للتغيير تلقائياً."},{type:"heading",text:"6. إضافة منتجات للسلّة"},{type:"paragraph",text:"إن كان المنتج موجوداً في السلّة، زِد كمّيته. وإلا أضف عنصراً جديداً بـ qty: 1. هذا أهم منطق في السلّة."},{type:"code",code:`addToCart: (state, action) => {
   const found = state.items.find((i) => i.id === action.payload.id);
   if (found) found.qty += 1;
   else state.items.push({ ...action.payload, qty: 1 });
-}`},{type:"heading",text:"7. قراءة السلّة بـ useSelector"},{type:"code",code:"const items = useSelector((state) => state.cart.items);"},{type:"heading",text:"8. تحديث السلّة بـ useDispatch"},{type:"code",code:`dispatch(addToCart(product));
-dispatch(removeFromCart(product.id));`},{type:"heading",text:"9. حذف عناصر من السلّة"},{type:"code",code:`removeFromCart: (state, action) => {
+}`},{type:"heading",text:"7. قراءة السلّة بـ useSelector"},{type:"paragraph",text:"useSelector يشترك في متجر Redux. كلما تغيّرت الشريحة المختارة من الحالة، يُعاد رسم المكوّن تلقائياً."},{type:"code",code:"const items = useSelector((state) => state.cart.items);"},{type:"heading",text:"8. تحديث السلّة بـ useDispatch"},{type:"paragraph",text:"useDispatch يعطيك دالة dispatch الخاصة بالمتجر. ناديها بمُنشئ إجراء لتحديث الحالة. مُنشئات الإجراءات مجرّد دوال تُرجع كائن إجراء."},{type:"code",code:`dispatch(addToCart(product));
+dispatch(removeFromCart(product.id));`},{type:"heading",text:"9. حذف عناصر من السلّة"},{type:"paragraph",text:"removeFromCart يفلتر العنصر بالـ id. الحمولة هي id المنتج (رقم)، وليست كائن المنتج كاملاً. أبقِ الحمولات صغيرة."},{type:"code",code:`removeFromCart: (state, action) => {
   state.items = state.items.filter((i) => i.id !== action.payload);
 }`},{type:"heading",text:"10. إنشاء شريحة المفضّلات"},{type:"code",code:`toggleFavorite: (state, action) => {
   const id = action.payload;
   return state.includes(id) ? state.filter((x) => x !== id) : [...state, id];
-}`},{type:"heading",text:"11. المفضّلات بالسياق أو Redux"},{type:"paragraph",text:"السياق يصلح لأن المفضّلات بيانات بسيطة. لكن Redux أنسب هنا لأن التطبيق يستخدمه أصلاً للسلّة والمنتجات. إبقاء كل الحالة العامة في مكان واحد أنظف."},{type:"tip",text:"الدرس: نادراً ما يوجد جواب «صحيح» واحد. اختر الأداة التي تبقي تطبيقك متّسقاً."},{type:"heading",text:"12. منتجات غير متزامنة بـ createAsyncThunk"},{type:"code",code:`.addCase(fetchProducts.fulfilled, (state, action) => {
+}`},{type:"heading",text:"11. المفضّلات بالسياق أو Redux"},{type:"paragraph",text:"السياق يصلح لأن المفضّلات بيانات بسيطة. لكن Redux أنسب هنا لأن التطبيق يستخدمه أصلاً للسلّة والمنتجات. إبقاء كل الحالة العامة في مكان واحد أنظف."},{type:"tip",text:"الدرس: نادراً ما يوجد جواب «صحيح» واحد. اختر الأداة التي تبقي تطبيقك متّسقاً."},{type:"heading",text:"12. منتجات غير متزامنة بـ createAsyncThunk"},{type:"paragraph",text:"اربط دورة حياة الـ thunk (pending / fulfilled / rejected) بالشريحة عبر extraReducers. هكذا يعرف Redux متى يحدّث isLoading و items عند انتهاء الجلب."},{type:"code",code:`.addCase(fetchProducts.fulfilled, (state, action) => {
   state.isLoading = false;
   state.items = action.payload;
-})`},{type:"heading",text:"13. واجهة التحميل والخطأ"},{type:"code",code:`if (isLoading) return <p>جارٍ تحميل المنتجات...</p>;
-if (isError) return <p>خطأ: {message}</p>;`},{type:"heading",text:"14. إجمالي السلّة بـ useMemo"},{type:"code",code:`const total = useMemo(
+})`},{type:"heading",text:"13. واجهة التحميل والخطأ"},{type:"paragraph",text:"اقرأ isLoading و isError من المتجر واعرض الواجهة المناسبة. ارجع مبكّراً لكي تُرسَم شبكة المنتجات فقط عند جاهزية البيانات."},{type:"code",code:`if (isLoading) return <p>جارٍ تحميل المنتجات...</p>;
+if (isError) return <p>خطأ: {message}</p>;`},{type:"heading",text:"14. إجمالي السلّة بـ useMemo"},{type:"paragraph",text:"إجمالي السلّة مشتقّ من مصفوفة items. useMemo يخزّن النتيجة ولا يُعيد حسابها إلا عند تغيّر items — مهمّ عندما تحوي السلّة عناصر كثيرة."},{type:"code",code:`const total = useMemo(
   () => items.reduce((sum, item) => sum + item.price * item.qty, 0),
   [items]
-);`},{type:"heading",text:"15. إعادة الهيكلة النهائية"},{type:"list",items:["كل شريحة في ملفها (products، cart، favorites)","التحميل/الخطأ غير المتزامن في المتجر عبر الـ thunks","إجمالي السلّة مشتقّ بـ useMemo","كل الحالة العامة في نظام واحد (Redux) للاتّساق"]},{type:"heading",text:"🎉 ما بنيته"},{type:"paragraph",text:"جوهر متجر إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة."},{type:"heading",text:"ملفات المشروع الكاملة"},{type:"paragraph",text:"فيما يلي الكود الكامل لكل ملف في المشروع. كل مقطع مُعنوَن باسم الملف الذي ينتمي إليه."},{type:"heading",text:"store/productsSlice.js"},{type:"code",code:`// store/productsSlice.js
+);`},{type:"tip",text:"toFixed(2) يصيغ السعر إلى منزلتين عشريتين. بدونه ينتج حساب الفاصلة العائمة قيماً مثل $29.990000000003."},{type:"heading",text:"15. إعادة الهيكلة النهائية"},{type:"list",items:["كل شريحة في ملفها (products، cart، favorites)","التحميل/الخطأ غير المتزامن في المتجر عبر الـ thunks","إجمالي السلّة مشتقّ بـ useMemo","كل الحالة العامة في نظام واحد (Redux) للاتّساق"]},{type:"heading",text:"🎉 ما بنيته"},{type:"paragraph",text:"جوهر واجهة متجر إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي حيّ، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة. أضِف مصادقة وإتمام شراء وخادماً، فيصير تطبيق إنتاج."},{type:"qa",question:"1. لماذا نستخدم createAsyncThunk بدلاً من الجلب داخل useEffect؟",answer:"‏createAsyncThunk يتكامل مع Redux: حالة التحميل/الخطأ تعيش في المتجر ويمكن الوصول إليها من أي مكوّن. أما useEffect فيُبقي منطق الجلب محلياً في مكوّن واحد ويتطلّب إدارة حالة التحميل/الخطأ يدوياً."},{type:"qa",question:"2. لماذا يُحسَب إجمالي السلّة بـ useMemo بدلاً من تخزينه في شريحة cartTotal؟",answer:"لأن الإجمالي قابل للاشتقاق دائماً من items. تخزينه منفصلاً يخلق خطر خروجه عن المزامنة مع البيانات الحقيقية. الحالة المشتقّة (المحسوبة من مصدر الحقيقة) أفضل دائماً من الحالة المكرّرة."},{type:"heading",text:"ملفات المشروع الكاملة"},{type:"paragraph",text:"فيما يلي الكود الكامل لكل ملف في المشروع. كل مقطع مُعنوَن باسم الملف الذي ينتمي إليه."},{type:"heading",text:"store/productsSlice.js"},{type:"code",code:`// store/productsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -357,7 +357,7 @@ function SomeComponent({ product }) {
 }`},{type:"heading",text:"9. Removing Items from Cart"},{type:"paragraph",text:"removeFromCart filters out the item by id. The payload is the product's id (a number), not the whole product object."},{type:"code",code:`removeFromCart: (state, action) => {
   // action.payload = product id
   state.items = state.items.filter((i) => i.id !== action.payload);
-},`},{type:"tip",text:"When dispatching: dispatch(removeFromCart(product.id)) — pass just the id, not the whole object. Keep payloads minimal."},{type:"heading",text:"10. Creating the Favorites Slice"},{type:"paragraph",text:"Favorites are just an array of product ids. The toggleFavorite reducer adds the id if it's not there, removes it if it is."},{type:"code",code:`// store/favoritesSlice.js
+},`},{type:"tip",text:"When dispatching: dispatch(removeFromCart(product.id)) — pass just the id, not the whole object. Keep payloads minimal."},{type:"heading",text:"10. Creating the Favorites Slice"},{type:"paragraph",text:"Favorites are just an array of product ids. The toggleFavorite reducer removes the id if it's already there, otherwise adds it. Here we return a brand-new array — when a reducer returns a value, Redux Toolkit uses it as the next state."},{type:"code",code:`// store/favoritesSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const favoritesSlice = createSlice({
@@ -366,12 +366,9 @@ const favoritesSlice = createSlice({
   reducers: {
     toggleFavorite: (state, action) => {
       const id = action.payload;
-      const index = state.indexOf(id);
-      if (index >= 0) {
-        state.splice(index, 1);   // remove
-      } else {
-        state.push(id);           // add
-      }
+      return state.includes(id)
+        ? state.filter((x) => x !== id)   // remove
+        : [...state, id];                 // add
     },
   },
 });

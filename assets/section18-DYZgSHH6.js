@@ -1,4 +1,4 @@
-const e={id:18,title:"المشروع الثاني: لوحة بيانات API",level:"مشروع",lessons:["نظرة عامة على المشروع","بناء تخطيط اللوحة","إنشاء بطاقات اللوحة","جلب بيانات API بـ Axios","حالة التحميل","حالة الخطأ","البحث والفلترة","إنشاء صفحة التفاصيل","مسار ديناميكي للتفاصيل","إرسال بيانات مع navigate","قراءة البيانات بـ useLocation","بديل معاملات المسار","هياكل التحميل (Skeletons)","خدمة API قابلة لإعادة الاستخدام","إعادة الهيكلة النهائية","ملفات المشروع الكاملة"],intro:"مشروعنا الثاني يجلب بيانات حقيقية بـ Axios ويعرضها في لوحة أنيقة: بطاقات، وبحث، وصفحة تفاصيل، وهياكل تحميل، ومعالجة أخطاء سليمة. هذا نوع التطبيقات التي ستبنيها في عمل حقيقي.",content:[{type:"heading",text:"1. نظرة عامة على المشروع"},{type:"list",items:["عرض المستخدمين كبطاقات","بحث وفلترة بالاسم","النقر على مستخدم لرؤية صفحة تفاصيله","هياكل تحميل وواجهة أخطاء لطيفة"]},{type:"code",code:`src/
+const e={id:18,title:"المشروع الثاني: لوحة بيانات API",level:"مشروع",lessons:["نظرة عامة على المشروع","بناء تخطيط اللوحة","إنشاء بطاقات اللوحة","جلب بيانات API بـ Axios","حالة التحميل","حالة الخطأ","البحث والفلترة","إنشاء صفحة التفاصيل","مسار ديناميكي للتفاصيل","إرسال بيانات مع navigate","قراءة البيانات بـ useLocation","بديل معاملات المسار","هياكل التحميل (Skeletons)","خدمة API قابلة لإعادة الاستخدام","إعادة الهيكلة النهائية","ملفات المشروع الكاملة"],intro:"مشروعنا الثاني يجلب بيانات حقيقية بـ Axios ويعرضها في لوحة أنيقة: بطاقات، وبحث، وصفحة تفاصيل، وهياكل تحميل، ومعالجة أخطاء سليمة. هذا نوع التطبيقات التي ستبنيها في عمل حقيقي.",content:[{type:"heading",text:"1. نظرة عامة على المشروع"},{type:"paragraph",text:"خطّط للمزايا وهيكل الملفات قبل لمس الكود. معرفة مسؤولية كل ملف قبل إنشائه تمنع المعمارية المتشابكة."},{type:"list",items:["عرض المستخدمين كبطاقات مجلوبة من API عام","بحث وفلترة بالاسم في الوقت الحقيقي","النقر على بطاقة للانتقال إلى صفحة تفاصيل مخصّصة","هياكل تحميل وواجهة أخطاء لطيفة مع زر إعادة المحاولة"]},{type:"code",code:`src/
 ├── App.jsx
 ├── services/api.js     ← نسخة axios + دوال
 ├── hooks/useFetch.jsx  ← تحميل/خطأ/بيانات (Axios)
@@ -9,7 +9,7 @@ const e={id:18,title:"المشروع الثاني: لوحة بيانات API",le
     ├── UserCard.jsx
     ├── SearchBar.jsx
     ├── Skeleton.jsx
-    └── ErrorMessage.jsx`},{type:"heading",text:"2. بناء تخطيط اللوحة"},{type:"code",code:`<Routes>
+    └── ErrorMessage.jsx`},{type:"tip",text:"افصل الاهتمامات من اليوم الأول: services/ لنداءات الشبكة، hooks/ للمنطق القابل لإعادة الاستخدام، pages/ لمكوّنات المسارات، components/ لقطع الواجهة."},{type:"heading",text:"2. بناء تخطيط اللوحة"},{type:"code",code:`<Routes>
   <Route path="/" element={<Dashboard />} />
   <Route path="/users/:id" element={<UserDetail />} />
 </Routes>`},{type:"heading",text:"3. إنشاء بطاقات اللوحة"},{type:"paragraph",text:"البطاقة تعرض مستخدماً واحداً في صندوق أنيق وترتبط بصفحة تفاصيله. البطاقات تجعل القائمة سهلة المسح والنقر."},{type:"code",code:`function UserCard({ user }) {
@@ -19,13 +19,13 @@ const e={id:18,title:"المشروع الثاني: لوحة بيانات API",le
       <div>{user.email}</div>
     </Link>
   );
-}`},{type:"heading",text:"4. جلب بيانات API بـ Axios"},{type:"code",code:"const { data: users, loading, error } = useFetch(URLS.users);"},{type:"heading",text:"5. حالة التحميل"},{type:"code",code:`{loading && (
+}`},{type:"heading",text:"4. جلب بيانات API بـ Axios"},{type:"paragraph",text:"خطّاف useFetch المخصّص يغلّف منطق التحميل/الخطأ/البيانات، فيستطيع أي مكوّن يحتاج بيانات استخدامه في سطر واحد."},{type:"code",code:"const { data: users, loading, error } = useFetch(URLS.users);"},{type:"heading",text:"5. حالة التحميل"},{type:"paragraph",text:"أثناء تنفيذ الطلب، اعرض هياكل تحميل بدلاً من شاشة فارغة. الهياكل تحافظ على التخطيط وتُشعر المستخدم أن المحتوى قادم."},{type:"code",code:`{loading && (
   <div><Skeleton /><Skeleton /><Skeleton /></div>
-)}`},{type:"heading",text:"6. حالة الخطأ"},{type:"code",code:"{error && <ErrorMessage message={error} onRetry={reload} />}"},{type:"heading",text:"7. البحث والفلترة"},{type:"code",code:`const visibleUsers = (users || []).filter((user) =>
+)}`},{type:"heading",text:"6. حالة الخطأ"},{type:"paragraph",text:"طلبات الشبكة تفشل. اعرض رسالة مفهومة وزرّ إعادة محاولة — لا تترك المستخدم أمام شاشة فارغة دون مخرج."},{type:"code",code:"{error && <ErrorMessage message={error} onRetry={reload} />}"},{type:"heading",text:"7. البحث والفلترة"},{type:"paragraph",text:"البحث حالة مشتقّة — افلتر القائمة المجلوبة أثناء الرسم. لا تُرسل طلب شبكة جديداً مع كل ضغطة مفتاح."},{type:"code",code:`const visibleUsers = (users || []).filter((user) =>
   user.name.toLowerCase().includes(search.toLowerCase())
-);`},{type:"heading",text:"8. إنشاء صفحة التفاصيل"},{type:"paragraph",text:"النقر على بطاقة ينتقل إلى /users/:id. صفحة التفاصيل تجلب وتعرض ذلك المستخدم الواحد."},{type:"heading",text:"9. مسار ديناميكي للتفاصيل"},{type:"code",code:'<Route path="/users/:id" element={<UserDetail />} />'},{type:"heading",text:"10. إرسال بيانات مع navigate"},{type:"paragraph",text:"بما أن بيانات المستخدم موجودة في اللوحة، نمرّرها مع الانتقال لتجنّب جلبها مرة أخرى."},{type:"code",code:"navigate(`/users/${user.id}`, { state: { user } });"},{type:"heading",text:"11. قراءة البيانات بـ useLocation"},{type:"code",code:`const passedUser = location.state?.user;
+);`},{type:"tip",text:"‏users || [] يحمي من الحالة الأولية null قبل اكتمال أول جلب."},{type:"heading",text:"8. إنشاء صفحة التفاصيل"},{type:"paragraph",text:"النقر على بطاقة ينتقل إلى /users/:id. صفحة التفاصيل تجلب وتعرض ذلك المستخدم الواحد."},{type:"heading",text:"9. مسار ديناميكي للتفاصيل"},{type:"code",code:'<Route path="/users/:id" element={<UserDetail />} />'},{type:"heading",text:"10. إرسال بيانات مع navigate"},{type:"paragraph",text:"بما أن بيانات المستخدم موجودة في اللوحة، نمرّرها مع الانتقال لتجنّب جلبها مرة أخرى."},{type:"code",code:"navigate(`/users/${user.id}`, { state: { user } });"},{type:"heading",text:"11. قراءة البيانات بـ useLocation"},{type:"code",code:`const passedUser = location.state?.user;
 const { data: fetchedUser } = useFetch(passedUser ? null : URLS.user(id));
-const user = passedUser || fetchedUser;`},{type:"heading",text:"12. بديل معاملات المسار"},{type:"paragraph",text:"إذا فتح المستخدم /users/5 مباشرةً (رابط مُشارَك)، لا يوجد state. فنرجع لمعاملات المسار + الجلب. المعاملات هي المصدر الموثوق دائماً."},{type:"tip",text:"navigate state تسريع جميل، لكن معاملات المسار هي المصدر الموثوق — تعمل للروابط المشارَكة والمحفوظة."},{type:"heading",text:"13. هياكل التحميل (Skeletons)"},{type:"paragraph",text:"الهيكل صندوق رمادي بشكل المحتوى الحقيقي. يخبر المستخدم أن المحتوى قادم، ويبقي التخطيط ثابتاً (بلا قفزات)."},{type:"heading",text:"14. خدمة API قابلة لإعادة الاستخدام"},{type:"code",code:'const api = axios.create({ baseURL: "https://..." });\nexport const URLS = { users: "/users", user: (id) => `/users/${id}` };'},{type:"heading",text:"15. إعادة الهيكلة النهائية"},{type:"list",items:["كل منطق الجلب في services/api.js","خطّاف useFetch (Axios) قابل لإعادة الاستخدام","مكوّنات صغيرة ذات مهمّة واحدة","حالة مشتقّة للبحث، و navigate state مع معاملات كبديل موثوق"]},{type:"heading",text:"🎉 ما بنيته"},{type:"paragraph",text:"لوحة بيانات حقيقية بتوجيه وبحث وصفحات تفاصيل وهياكل تحميل ومعالجة أخطاء — جوهر عدد لا يُحصى من تطبيقات الإنتاج."},{type:"heading",text:"ملفات المشروع الكاملة"},{type:"paragraph",text:"فيما يلي الكود الكامل لكل ملف في المشروع. كل مقطع مُعنوَن باسم الملف الذي ينتمي إليه."},{type:"heading",text:"services/api.js"},{type:"code",code:`// services/api.js
+const user = passedUser || fetchedUser;`},{type:"heading",text:"12. بديل معاملات المسار"},{type:"paragraph",text:"إذا فتح المستخدم /users/5 مباشرةً (رابط مُشارَك)، لا يوجد state. فنرجع لمعاملات المسار + الجلب. المعاملات هي المصدر الموثوق دائماً."},{type:"tip",text:"navigate state تسريع جميل، لكن معاملات المسار هي المصدر الموثوق — تعمل للروابط المشارَكة والمحفوظة."},{type:"heading",text:"13. هياكل التحميل (Skeletons)"},{type:"paragraph",text:"الهيكل صندوق رمادي بشكل المحتوى الحقيقي. يخبر المستخدم أن المحتوى قادم، ويبقي التخطيط ثابتاً (بلا قفزات)."},{type:"heading",text:"14. خدمة API قابلة لإعادة الاستخدام"},{type:"code",code:'const api = axios.create({ baseURL: "https://..." });\nexport const URLS = { users: "/users", user: (id) => `/users/${id}` };'},{type:"heading",text:"15. إعادة الهيكلة النهائية"},{type:"list",items:["كل منطق الجلب في services/api.js","خطّاف useFetch (Axios) قابل لإعادة الاستخدام","مكوّنات صغيرة ذات مهمّة واحدة","حالة مشتقّة للبحث، و navigate state مع معاملات كبديل موثوق"]},{type:"heading",text:"🎉 ما بنيته"},{type:"paragraph",text:"لوحة بيانات حقيقية بتوجيه وبحث وصفحات تفاصيل وهياكل تحميل ومعالجة أخطاء — جوهر عدد لا يُحصى من تطبيقات الإنتاج. كل نمط هنا (الخطّافات المخصّصة، طبقة الخدمات، حالة التنقّل + المعاملات كبديل) يُستخدم في أكواد رياكت الاحترافية يومياً."},{type:"qa",question:"1. لماذا يعيش useFetch في مجلد hooks/ بدلاً من داخل المكوّن؟",answer:"لأن منطق التحميل/الخطأ/البيانات واحد لكل جلب — استخراجه في خطّاف يعني أن تكتبه مرة وتستخدمه في كل مكان. ويبقى المكوّن مركّزاً على الرسم."},{type:"qa",question:"2. لماذا نحتاج معاملات المسار كبديل إن كنا نمرّر البيانات عبر حالة التنقّل أصلاً؟",answer:"حالة التنقّل توجد فقط عند الوصول عبر تنقّل داخلي في نفس الجلسة. الرابط المُشارَك أو المحفوظ أو إعادة تحميل الصفحة لا يحمل state — معاملات المسار + جلب جديد هي الطريق الوحيد لتحميل البيانات الصحيحة."},{type:"heading",text:"ملفات المشروع الكاملة"},{type:"paragraph",text:"فيما يلي الكود الكامل لكل ملف في المشروع. كل مقطع مُعنوَن باسم الملف الذي ينتمي إليه."},{type:"heading",text:"services/api.js"},{type:"code",code:`// services/api.js
 import axios from "axios";
 
 const BASE = "https://jsonplaceholder.typicode.com";
@@ -286,11 +286,11 @@ function UserCard({ user }) {
   );
 }`},{type:"tip",text:"Passing state={{ user }} with Link avoids a second network request when the user navigates to the detail page — the data is already in memory."},{type:"heading",text:"4. Fetching API Data with Axios"},{type:"paragraph",text:"A custom useFetch hook encapsulates loading/error/data logic so every component that needs data can use it in one line."},{type:"code",code:`// hooks/useFetch.jsx
 import { useState, useEffect, useCallback } from "react";
-import api from "../services/api";
+import axios from "axios";
 
 export function useFetch(url) {
   const [data,    setData]    = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(Boolean(url));
   const [error,   setError]   = useState(null);
 
   const load = useCallback(async () => {
@@ -298,8 +298,8 @@ export function useFetch(url) {
     setLoading(true);
     setError(null);
     try {
-      const { data: result } = await api.get(url);
-      setData(result);
+      const res = await axios.get(url);
+      setData(res.data);
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
