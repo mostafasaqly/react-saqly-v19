@@ -5,7 +5,7 @@ export default {
   level: "مبتدئ إلى متوسط",
   lessons: [
     "فهم الحالة (State)",
-    "خطّاف useState",
+    "Hook : useState",
     "تحديث الحالة البسيطة",
     "تحديث الكائنات في الحالة",
     "تحديث المصفوفات في الحالة",
@@ -28,7 +28,7 @@ export default {
       text: "النموذج الذهني: الحالة = بيانات + وعد بأن الشاشة تبقى متزامنة معها.",
     },
 
-    { type: "heading", text: "2. خطّاف useState" },
+    { type: "heading", text: "2. Hook : useState" },
     {
       type: "paragraph",
       text: "useState يعطيك قيمة حالية ودالة لتغييرها. لا تغيّر الحالة مباشرةً أبداً — استخدم الدالة دائماً.",
