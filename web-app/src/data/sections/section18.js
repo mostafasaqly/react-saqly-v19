@@ -174,4 +174,391 @@ export const URLS = { users: "/users", user: (id) => \`/users/\${id}\` };`,
     },
   ],
   titleEn: "Project 2: API Data Dashboard",
+  levelEn: "Project",
+  lessonsEn: [
+    "Project Overview",
+    "Building the Dashboard Layout",
+    "Creating Dashboard Cards",
+    "Fetching API Data with Axios",
+    "Loading State",
+    "Error State",
+    "Search and Filter",
+    "Creating the Detail Page",
+    "Dynamic Route for Details",
+    "Passing Data with navigate",
+    "Reading Data with useLocation",
+    "Route Params as Fallback",
+    "Loading Skeletons",
+    "Reusable API Service",
+    "Final Refactor",
+  ],
+  introEn:
+    "Our second project fetches real data with Axios and displays it in a polished dashboard: cards, search, a detail page, loading skeletons, and proper error handling. This is the kind of app you'll build in a real job.",
+  contentEn: [
+    { type: "heading", text: "1. Project Overview" },
+    {
+      type: "paragraph",
+      text: "Plan the features and file structure before touching code. Knowing what each file is responsible for before you create it prevents spaghetti architecture.",
+    },
+    {
+      type: "list",
+      items: [
+        "Display users as cards fetched from a public API",
+        "Search and filter by name in real time",
+        "Click a card to navigate to a dedicated detail page",
+        "Loading skeletons and a friendly error UI with a retry button",
+      ],
+    },
+    {
+      type: "code",
+      code: `src/
+├── App.jsx
+├── services/api.js     ← axios instance + URL constants
+├── hooks/useFetch.jsx  ← loading/error/data (Axios-based)
+├── pages/
+│   ├── Dashboard.jsx
+│   └── UserDetail.jsx
+└── components/
+    ├── UserCard.jsx
+    ├── SearchBar.jsx
+    ├── Skeleton.jsx
+    └── ErrorMessage.jsx`,
+    },
+    {
+      type: "tip",
+      text: "Separate concerns from day one: services/ for network calls, hooks/ for reusable logic, pages/ for route-level components, components/ for UI building blocks.",
+    },
+
+    { type: "heading", text: "2. Building the Dashboard Layout" },
+    {
+      type: "paragraph",
+      text: "Set up React Router so the app has two routes: the main dashboard and an individual user detail page.",
+    },
+    {
+      type: "code",
+      code: `// App.jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard  from "./pages/Dashboard";
+import UserDetail from "./pages/UserDetail";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/"          element={<Dashboard />} />
+        <Route path="/users/:id" element={<UserDetail />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}`,
+    },
+
+    { type: "heading", text: "3. Creating Dashboard Cards" },
+    {
+      type: "paragraph",
+      text: "Each card displays one user and links to their detail page. Cards make a list easy to scan and click — use the Link component so the URL updates and the browser back button works.",
+    },
+    {
+      type: "code",
+      code: `// components/UserCard.jsx
+import { Link } from "react-router-dom";
+
+function UserCard({ user }) {
+  return (
+    <Link to={\`/users/\${user.id}\`} state={{ user }} className="card">
+      <strong>{user.name}</strong>
+      <div>{user.email}</div>
+      <div>{user.company.name}</div>
+    </Link>
+  );
+}`,
+    },
+    {
+      type: "tip",
+      text: "Passing state={{ user }} with Link avoids a second network request when the user navigates to the detail page — the data is already in memory.",
+    },
+
+    { type: "heading", text: "4. Fetching API Data with Axios" },
+    {
+      type: "paragraph",
+      text: "A custom useFetch hook encapsulates loading/error/data logic so every component that needs data can use it in one line.",
+    },
+    {
+      type: "code",
+      code: `// hooks/useFetch.jsx
+import { useState, useEffect, useCallback } from "react";
+import api from "../services/api";
+
+export function useFetch(url) {
+  const [data,    setData]    = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error,   setError]   = useState(null);
+
+  const load = useCallback(async () => {
+    if (!url) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const { data: result } = await api.get(url);
+      setData(result);
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }, [url]);
+
+  useEffect(() => { load(); }, [load]);
+
+  return { data, loading, error, reload: load };
+}`,
+    },
+    {
+      type: "code",
+      code: `// Usage in Dashboard.jsx
+const { data: users, loading, error, reload } = useFetch(URLS.users);`,
+    },
+
+    { type: "heading", text: "5. Loading State" },
+    {
+      type: "paragraph",
+      text: "While the request is in-flight, show skeleton placeholders instead of a blank screen. Skeletons preserve the layout and signal to the user that content is coming.",
+    },
+    {
+      type: "code",
+      code: `{loading && (
+  <div className="grid">
+    <Skeleton /><Skeleton /><Skeleton />
+    <Skeleton /><Skeleton /><Skeleton />
+  </div>
+)}`,
+    },
+
+    { type: "heading", text: "6. Error State" },
+    {
+      type: "paragraph",
+      text: "Network requests fail. Show a human-readable message and a retry button — never leave the user staring at a blank screen with no way forward.",
+    },
+    {
+      type: "code",
+      code: `{error && (
+  <ErrorMessage
+    message={error}
+    onRetry={reload}
+  />
+)}
+
+// components/ErrorMessage.jsx
+function ErrorMessage({ message, onRetry }) {
+  return (
+    <div className="error-box">
+      <p>Error: {message}</p>
+      <button onClick={onRetry}>Try again</button>
+    </div>
+  );
+}`,
+    },
+
+    { type: "heading", text: "7. Search and Filter" },
+    {
+      type: "paragraph",
+      text: "Search is derived state — filter the fetched list during render. Do NOT make a new network request on every keystroke.",
+    },
+    {
+      type: "code",
+      code: `const [search, setSearch] = useState("");
+
+const visibleUsers = (users || []).filter((user) =>
+  user.name.toLowerCase().includes(search.toLowerCase())
+);
+
+// In JSX:
+<SearchBar value={search} onChange={setSearch} />
+<div className="grid">
+  {visibleUsers.map((user) => <UserCard key={user.id} user={user} />)}
+</div>`,
+    },
+    {
+      type: "tip",
+      text: "users || [] guards against the null initial state before the first fetch completes.",
+    },
+
+    { type: "heading", text: "8. Creating the Detail Page" },
+    {
+      type: "paragraph",
+      text: "UserDetail shows all fields for one user. It has two data sources: navigation state (fast, no request) and a fresh fetch (for direct URLs or page refreshes).",
+    },
+    {
+      type: "code",
+      code: `// pages/UserDetail.jsx
+import { useParams, useLocation } from "react-router-dom";
+import { useFetch } from "../hooks/useFetch";
+import { URLS } from "../services/api";
+
+function UserDetail() {
+  const { id } = useParams();
+  const { state } = useLocation();
+
+  const passedUser = state?.user;
+  const { data: fetchedUser, loading, error } = useFetch(
+    passedUser ? null : URLS.user(id)  // skip fetch if data is already here
+  );
+  const user = passedUser || fetchedUser;
+
+  if (loading) return <Skeleton />;
+  if (error)   return <ErrorMessage message={error} />;
+  if (!user)   return null;
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+      <p>{user.phone}</p>
+      <p>{user.website}</p>
+    </div>
+  );
+}`,
+    },
+
+    { type: "heading", text: "9. Dynamic Route for Details" },
+    {
+      type: "paragraph",
+      text: ":id in the route path is a URL parameter. React Router captures whatever is in that segment and makes it available via useParams().",
+    },
+    {
+      type: "code",
+      code: `// Route definition
+<Route path="/users/:id" element={<UserDetail />} />
+
+// In UserDetail.jsx
+const { id } = useParams();   // "5" when URL is /users/5`,
+    },
+
+    { type: "heading", text: "10. Passing Data with navigate" },
+    {
+      type: "paragraph",
+      text: "If you navigate programmatically (not via Link), you can still pass state the same way. This is useful when the navigation is triggered by a button click with extra logic.",
+    },
+    {
+      type: "code",
+      code: `import { useNavigate } from "react-router-dom";
+const navigate = useNavigate();
+
+function handleCardClick(user) {
+  navigate(\`/users/\${user.id}\`, { state: { user } });
+}`,
+    },
+
+    { type: "heading", text: "11. Reading Data with useLocation" },
+    {
+      type: "paragraph",
+      text: "useLocation gives you the current location object, including the state passed via Link or navigate. Use optional chaining because state is null when the page is opened directly.",
+    },
+    {
+      type: "code",
+      code: `const { state } = useLocation();
+const passedUser = state?.user;              // may be undefined
+
+const { data: fetchedUser } = useFetch(
+  passedUser ? null : URLS.user(id)          // skip fetch if we have data
+);
+const user = passedUser || fetchedUser;      // prefer passed, fallback to fetched`,
+    },
+
+    { type: "heading", text: "12. Route Params as Fallback" },
+    {
+      type: "paragraph",
+      text: "Navigation state only exists if the user came from the dashboard in the same session. If they open /users/5 directly (shared link, bookmark, refresh), state is null. Route params + a fresh fetch are the reliable fallback.",
+    },
+    {
+      type: "tip",
+      text: "Rule: route params are the source of truth — they work for shared URLs and bookmarks. Navigation state is a performance shortcut, not a replacement.",
+    },
+
+    { type: "heading", text: "13. Loading Skeletons" },
+    {
+      type: "paragraph",
+      text: "A skeleton is a grey box that mimics the shape of the real content. It communicates 'content is loading' without the jarring layout shift of a spinner that takes up no space.",
+    },
+    {
+      type: "code",
+      code: `// components/Skeleton.jsx
+function Skeleton() {
+  return (
+    <div className="skeleton-card">
+      <div className="skeleton-line title" />
+      <div className="skeleton-line" />
+      <div className="skeleton-line short" />
+    </div>
+  );
+}
+
+/* CSS */
+.skeleton-line {
+  background: #e0e0e0;
+  border-radius: 4px;
+  height: 14px;
+  margin-bottom: 8px;
+  animation: pulse 1.4s ease-in-out infinite;
+}`,
+    },
+
+    { type: "heading", text: "14. Reusable API Service" },
+    {
+      type: "paragraph",
+      text: "Centralise all network configuration in one file. This means one place to add auth headers, base URLs, or interceptors — not scattered across every component.",
+    },
+    {
+      type: "code",
+      code: `// services/api.js
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com",
+  timeout: 8000,
+});
+
+export const URLS = {
+  users:      "/users",
+  user: (id) => \`/users/\${id}\`,
+  posts:      "/posts",
+};
+
+export default api;`,
+    },
+
+    { type: "heading", text: "15. Final Refactor" },
+    {
+      type: "paragraph",
+      text: "Walk through the codebase and verify that every file has a clear, single responsibility.",
+    },
+    {
+      type: "list",
+      items: [
+        "services/api.js owns all network configuration — components never import axios directly",
+        "useFetch is a generic, reusable hook — works for any URL, any data shape",
+        "Small components: UserCard, Skeleton, ErrorMessage each do one thing",
+        "Derived state for search — no extra network calls",
+        "navigation state + route params fallback — works for both in-app navigation and direct URLs",
+      ],
+    },
+
+    { type: "heading", text: "What You Built" },
+    {
+      type: "paragraph",
+      text: "A real data dashboard with routing, search, detail pages, loading skeletons, and error handling — the core of countless production apps. Every pattern here (custom hooks, services layer, navigation state + params fallback) is used in professional React codebases daily.",
+    },
+    {
+      type: "qa",
+      question: "1. Why does useFetch live in a hooks/ folder instead of inside the component?",
+      answer:
+        "Because loading/error/data logic is the same for every fetch — extracting it into a hook means you write it once and use it everywhere. The component stays focused on rendering.",
+    },
+    {
+      type: "qa",
+      question: "2. Why do we need route params as a fallback if we already pass data via navigation state?",
+      answer:
+        "Navigation state only exists when the user arrived via in-app navigation in the same session. A shared link, bookmark, or page refresh has no state — route params + a fresh fetch are the only way to load the right data.",
+    },
+  ],
 };
