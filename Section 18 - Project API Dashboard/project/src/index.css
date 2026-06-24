@@ -1,0 +1,263 @@
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+/* ── Layout ── */
+.page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+/* ── Page Header ── */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: #4361ee;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ── Back Link ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4361ee;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: opacity 0.15s;
+}
+
+.back-link:hover {
+  opacity: 0.75;
+}
+
+/* ── Search Bar ── */
+.search-bar {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1a1a2e;
+  outline: none;
+  background: #fff;
+  transition: border-color 0.15s;
+  margin-bottom: 20px;
+}
+
+.search-bar:focus {
+  border-color: #4361ee;
+}
+
+.search-bar::placeholder {
+  color: #9ca3af;
+}
+
+/* ── User Card ── */
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.user-card:hover {
+  border-color: #4361ee;
+  box-shadow: 0 4px 14px rgba(67, 97, 238, 0.12);
+  transform: translateY(-1px);
+}
+
+.user-card__avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #4361ee;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.user-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-card__name {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-card__email {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-card__arrow {
+  color: #9ca3af;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* ── User Detail ── */
+.user-detail {
+  background: #fff;
+  border-radius: 16px;
+  border: 2px solid #e5e7eb;
+  padding: 28px 24px;
+}
+
+.user-detail__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #4361ee;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+}
+
+.user-detail__name {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 20px;
+}
+
+.user-detail__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-detail__field {
+  display: flex;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.user-detail__label {
+  font-weight: 600;
+  color: #6b7280;
+  min-width: 90px;
+}
+
+.user-detail__value {
+  color: #1a1a2e;
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  height: 70px;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  animation: shimmer 1.3s ease-in-out infinite;
+}
+
+.skeleton--short {
+  height: 40px;
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Error Message ── */
+.error-box {
+  padding: 18px 20px;
+  background: #fef2f2;
+  border: 2px solid #fca5a5;
+  border-radius: 12px;
+  color: #b91c1c;
+  margin-bottom: 16px;
+}
+
+.error-box p {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* ── Empty State ── */
+.empty-state {
+  text-align: center;
+  padding: 40px 0;
+  color: #9ca3af;
+  font-size: 15px;
+}
+
+/* ── Buttons ── */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.btn-primary {
+  background: #4361ee;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #3a56d4;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn-danger:hover {
+  background: #fca5a5;
+}
