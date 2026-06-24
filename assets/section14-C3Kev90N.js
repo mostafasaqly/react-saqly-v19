@@ -1,0 +1,73 @@
+const e={id:14,title:"إدارة الحالة بـ Redux Toolkit",level:"متوسط إلى متقدّم",lessons:["لماذا Redux؟","السياق مقابل Redux","تثبيت Redux Toolkit و React Redux","إنشاء المتجر (Store)","توفير المتجر لرياكت","إنشاء شريحة بـ createSlice","الحالة الابتدائية","المخفّضات والإجراءات (Reducers & Actions)","قراءة الحالة بـ useSelector","تحديث الحالة بـ useDispatch","شرائح متعدّدة","دمج المخفّضات","Redux DevTools","مثال السلّة","مثال المفضّلات"],intro:"السياق ممتاز للبيانات البسيطة المشتركة. لكن للتطبيقات الكبيرة بحالة كثيرة تتغيّر في أماكن متعدّدة — سلّة تسوّق، مفضّلات — نريد أداة مخصّصة. Redux Toolkit هو الطريقة الحديثة الرسمية، وأبسط بكثير من Redux القديم.",content:[{type:"heading",text:"1. لماذا Redux؟"},{type:"paragraph",text:"مع نمو التطبيق، نفس الحالة تُحتاج وتتغيّر في أماكن متباعدة. تمرير الـ props أو حتى السياق يصبح مُعقّداً. Redux يحفظ كل الحالة العامة في مكان واحد (المتجر)، وأي مكوّن يقرأ منه أو يرسل تحديثاً بقواعد واضحة."},{type:"code",code:"المكوّن → dispatch(action) → المخفّض يحدّث المتجر → المكوّنات تعيد القراءة"},{type:"tip",text:"Redux Toolkit (RTK) هو Redux الرسمي الحديث. استخدمه دائماً — لا تستخدم Redux «العادي»."},{type:"heading",text:"2. السياق مقابل Redux"},{type:"list",items:["السياق: للثيم والمستخدم واللغة (يُضبط مرة، يُقرأ كثيراً)","Redux: لحالة كثيرة تتغيّر كثيراً (سلّة، مفضّلات، بيانات كبيرة)","Redux فيه DevTools قويّة وأداء دقيق مع المحدّدات (selectors)"]},{type:"heading",text:"3. تثبيت Redux Toolkit و React Redux"},{type:"code",code:"npm install @reduxjs/toolkit react-redux"},{type:"heading",text:"4. إنشاء المتجر (Store)"},{type:"code",code:`import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./counterSlice";
+
+export const store = configureStore({
+  reducer: { counter: counterReducer },
+});`},{type:"heading",text:"5. توفير المتجر لرياكت"},{type:"code",code:`import { Provider } from "react-redux";
+import { store } from "./store";
+
+<Provider store={store}><App /></Provider>`},{type:"heading",text:"6. إنشاء شريحة بـ createSlice"},{type:"paragraph",text:"الشريحة (slice) قطعة حالة واحدة مع الدوال التي تغيّرها. createSlice يولّد المخفّض والإجراءات نيابةً عنك."},{type:"code",code:`const counterSlice = createSlice({
+  name: "counter",
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) => { state.value += 1; },
+    addBy: (state, action) => { state.value += action.payload; },
+  },
+});
+export const { increment, addBy } = counterSlice.actions;
+export default counterSlice.reducer;`},{type:"tip",text:"«تعدّل الحالة؟» RTK يستخدم Immer داخلياً، فيمكنك كتابة state.value += 1 بأمان داخل الشرائح فقط."},{type:"heading",text:"7. الحالة الابتدائية"},{type:"code",code:`initialState: { value: 0 }            // عدّاد
+initialState: { items: [], total: 0 } // سلّة
+initialState: []                      // مفضّلات`},{type:"heading",text:"8. المخفّضات والإجراءات"},{type:"paragraph",text:"الإجراء (action) رسالة تصف ما حدث. المخفّض (reducer) دالة تحدّث الحالة استجابةً للإجراء. createSlice يولّد الاثنين."},{type:"code",code:`dispatch(increment());  // إجراء بدون بيانات
+dispatch(addBy(5));     // إجراء مع payload = 5`},{type:"heading",text:"9. قراءة الحالة بـ useSelector"},{type:"code",code:"const value = useSelector((state) => state.counter.value);"},{type:"paragraph",text:"المكوّن يعيد الرسم فقط عند تغيّر القيمة التي اخترتها — فعّال افتراضياً."},{type:"heading",text:"10. تحديث الحالة بـ useDispatch"},{type:"code",code:`const dispatch = useDispatch();
+<button onClick={() => dispatch(increment())}>+1</button>`},{type:"heading",text:"11. شرائح متعدّدة"},{type:"paragraph",text:"التطبيقات الحقيقية فيها عدّة شرائح — واحدة لكل ميزة. كل شريحة تدير جزءها (state.cart، state.favorites). احفظها في ملفات منفصلة."},{type:"heading",text:"12. دمج المخفّضات"},{type:"code",code:`configureStore({
+  reducer: {
+    counter: counterReducer,
+    cart: cartReducer,
+    favorites: favoritesReducer,
+  },
+});`},{type:"heading",text:"13. Redux DevTools"},{type:"paragraph",text:"RTK يفعّل إضافة Redux DevTools تلقائياً. ترى كل إجراء، وتفحص الحالة كاملة، وتتنقّل في الزمن (time-travel) عبر التغييرات."},{type:"heading",text:"14. مثال السلّة"},{type:"code",code:`addToCart: (state, action) => {
+  const item = state.items.find((i) => i.id === action.payload.id);
+  if (item) item.qty += 1;
+  else state.items.push({ ...action.payload, qty: 1 });
+}`},{type:"heading",text:"15. مثال المفضّلات"},{type:"code",code:`toggleFavorite: (state, action) => {
+  const id = action.payload;
+  return state.includes(id)
+    ? state.filter((x) => x !== id)
+    : [...state, id];
+}`},{type:"heading",text:"✅ ملخص القسم"},{type:"list",items:["Redux يحفظ كل الحالة العامة في متجر واحد بتحديثات متوقّعة","configureStore للمتجر، <Provider> لربطه برياكت","createSlice يولّد المخفّض والإجراءات (يمكن «التعديل» بفضل Immer)","useSelector للقراءة، useDispatch للإرسال"]},{type:"qa",question:"1. متى تختار Redux بدل السياق؟",answer:"عند حالة عامة معقّدة وكثيرة التغيّر تُستخدم عبر مكوّنات كثيرة (سلّة، مفضّلات، بيانات كبيرة)."},{type:"qa",question:"2. ماذا يفعل useSelector و useDispatch؟",answer:"useSelector يقرأ جزءاً من الحالة؛ useDispatch يُرجع دالة dispatch لإرسال إجراءات تحدّث الحالة."}],titleEn:"State Management with Redux Toolkit",levelEn:"Intermediate to Advanced",lessonsEn:["Why Redux?","Context vs Redux","Installing Redux Toolkit and React Redux","Creating the Store","Providing the Store to React","Creating a Slice with createSlice","Initial State","Reducers and Actions","Reading State with useSelector","Updating State with useDispatch","Multiple Slices","Combining Reducers","Redux DevTools","Cart Example","Favorites Example"],introEn:"Context is great for simple shared data. But for large apps with lots of state that changes in many places — a cart, favorites — we want a dedicated tool. Redux Toolkit is the modern official way, and far simpler than old Redux.",contentEn:[{type:"heading",text:"1. Why Redux?"},{type:"paragraph",text:"As an app grows, the same state is needed and changed in many separate places. Passing props or even context becomes complex. Redux stores all global state in one place (the store), and any component reads from it or sends an update following clear rules."},{type:"code",code:"Component → dispatch(action) → Reducer updates store → Components re-read"},{type:"tip",text:"Redux Toolkit (RTK) is the modern official Redux. Always use it — don't use 'plain' Redux."},{type:"heading",text:"2. Context vs Redux"},{type:"list",items:["Context: for theme, user, language (set once, read often)","Redux: for state that changes a lot (cart, favorites, large data sets)","Redux has powerful DevTools and fine-grained performance with selectors"]},{type:"heading",text:"3. Installing Redux Toolkit and React Redux"},{type:"code",code:"npm install @reduxjs/toolkit react-redux"},{type:"heading",text:"4. Creating the Store"},{type:"code",code:`import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./counterSlice";
+
+export const store = configureStore({
+  reducer: { counter: counterReducer },
+});`},{type:"heading",text:"5. Providing the Store to React"},{type:"code",code:`import { Provider } from "react-redux";
+import { store } from "./store";
+
+<Provider store={store}><App /></Provider>`},{type:"heading",text:"6. Creating a Slice with createSlice"},{type:"paragraph",text:"A slice is one piece of state with the functions that change it. createSlice generates the reducer and actions for you."},{type:"code",code:`const counterSlice = createSlice({
+  name: "counter",
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) => { state.value += 1; },
+    addBy: (state, action) => { state.value += action.payload; },
+  },
+});
+export const { increment, addBy } = counterSlice.actions;
+export default counterSlice.reducer;`},{type:"tip",text:"'Mutating state?' RTK uses Immer internally, so you can write state.value += 1 safely inside slices."},{type:"heading",text:"7. Initial State"},{type:"code",code:`initialState: { value: 0 }            // counter
+initialState: { items: [], total: 0 } // cart
+initialState: []                      // favorites`},{type:"heading",text:"8. Reducers and Actions"},{type:"paragraph",text:"An action is a message describing what happened. A reducer is a function that updates state in response to an action. createSlice generates both."},{type:"code",code:`dispatch(increment());  // action with no data
+dispatch(addBy(5));     // action with payload = 5`},{type:"heading",text:"9. Reading State with useSelector"},{type:"code",code:"const value = useSelector((state) => state.counter.value);"},{type:"paragraph",text:"The component only re-renders when the selected value changes — efficient by default."},{type:"heading",text:"10. Updating State with useDispatch"},{type:"code",code:`const dispatch = useDispatch();
+<button onClick={() => dispatch(increment())}>+1</button>`},{type:"heading",text:"11. Multiple Slices"},{type:"paragraph",text:"Real apps have several slices — one per feature. Each slice manages its own part (state.cart, state.favorites). Keep them in separate files."},{type:"heading",text:"12. Combining Reducers"},{type:"code",code:`configureStore({
+  reducer: {
+    counter: counterReducer,
+    cart: cartReducer,
+    favorites: favoritesReducer,
+  },
+});`},{type:"heading",text:"13. Redux DevTools"},{type:"paragraph",text:"RTK enables the Redux DevTools extension automatically. You can see every action, inspect the full state, and time-travel through changes."},{type:"heading",text:"14. Cart Example"},{type:"code",code:`addToCart: (state, action) => {
+  const item = state.items.find((i) => i.id === action.payload.id);
+  if (item) item.qty += 1;
+  else state.items.push({ ...action.payload, qty: 1 });
+}`},{type:"heading",text:"15. Favorites Example"},{type:"code",code:`toggleFavorite: (state, action) => {
+  const id = action.payload;
+  return state.includes(id)
+    ? state.filter((x) => x !== id)
+    : [...state, id];
+}`},{type:"heading",text:"✅ Section Summary"},{type:"list",items:["Redux stores all global state in one store with predictable updates","configureStore for the store; <Provider> to connect it to React","createSlice generates the reducer and actions (mutation-safe via Immer)","useSelector to read, useDispatch to send"]},{type:"qa",question:"1. When do you choose Redux over Context?",answer:"When you have complex, frequently-changing global state used across many components (cart, favorites, large data sets)."},{type:"qa",question:"2. What do useSelector and useDispatch do?",answer:"useSelector reads a piece of state; useDispatch returns a dispatch function to send actions that update the state."}]};export{e as default};
