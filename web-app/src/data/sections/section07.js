@@ -215,7 +215,7 @@ function SubmitButton() {
       code: `function validate() {\n  const next = {};\n  if (!email.includes("@")) next.email = "Invalid email";\n  if (password.length < 6) next.password = "At least 6 characters";\n  setErrors(next);\n  return Object.keys(next).length === 0;\n}`,
     },
 
-    { type: "heading", text: "4. React 19 Actions", term: "React 19 Actions" },
+    { type: "heading", text: "4. React 19 Actions" },
     {
       type: "paragraph",
       text: 'Pass an async function to the form\'s action prop. React calls it with the form data and manages the pending state. No preventDefault, no manual state. Read inputs with formData.get("name").',
@@ -225,7 +225,7 @@ function SubmitButton() {
       code: `function CommentForm() {\n  async function submitComment(formData) {\n    const text = formData.get("text");\n    await saveToServer(text);\n  }\n  return (\n    <form action={submitComment}>\n      <input name="text" />\n      <button type="submit">Post</button>\n    </form>\n  );\n}`,
     },
 
-    { type: "heading", text: "5. useActionState", term: "useActionState" },
+    { type: "heading", text: "5. useActionState" },
     {
       type: "paragraph",
       text: "This hook wraps your action and returns: the state (result), the wrapped action, and a pending boolean.",
@@ -235,7 +235,7 @@ function SubmitButton() {
       code: `const [state, formAction, isPending] = useActionState(\n  async (prevState, formData) => {\n    const text = formData.get("text");\n    if (!text) return { error: "Text is required" };\n    await saveToServer(text);\n    return { success: "Posted!" };\n  },\n  null\n);`,
     },
 
-    { type: "heading", text: "6. useFormStatus", term: "useFormStatus" },
+    { type: "heading", text: "6. useFormStatus" },
     {
       type: "paragraph",
       text: "Lets a child component read the state of the form above it without props. Note: imported from react-dom, and the component must be inside the form.",
