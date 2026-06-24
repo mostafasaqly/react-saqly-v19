@@ -1,52 +1,31 @@
-// sections.js
-// كل محتوى كورس React 19 الكامل (19 قسم)
-// مستوردة من ملفات منفصلة لتنظيم أفضل
-
-import section01 from "./sections/section01.js";
-import section02 from "./sections/section02.js";
-import section03 from "./sections/section03.js";
-import section04 from "./sections/section04.js";
-import section05 from "./sections/section05.js";
-import section06 from "./sections/section06.js";
-import section07 from "./sections/section07.js";
-import section08 from "./sections/section08.js";
-import section09 from "./sections/section09.js";
-import section10 from "./sections/section10.js";
-import section11 from "./sections/section11.js";
-import section12 from "./sections/section12.js";
-import section13 from "./sections/section13.js";
-import section14 from "./sections/section14.js";
-import section15 from "./sections/section15.js";
-import section16 from "./sections/section16.js";
-import section17 from "./sections/section17.js";
-import section18 from "./sections/section18.js";
-import section19 from "./sections/section19.js";
+// sections.js — metadata فقط للـ sidebar (بدون content)
+// الـ content بيتحمّل lazily في useSectionContent
 
 export const sections = [
-  section01,
-  section02,
-  section03,
-  section04,
-  section05,
-  section06,
-  section07,
-  section08,
-  section09,
-  section10,
-  section11,
-  section12,
-  section13,
-  section14,
-  section15,
-  section16,
-  section17,
-  section18,
-  section19,
+  { id: 1,  title: "مقدمة الكورس",                    titleEn: "Course Introduction" },
+  { id: 2,  title: "إعداد بيئة التطوير",               titleEn: "Setting Up the Dev Environment" },
+  { id: 3,  title: "أساسيات رياكت",                   titleEn: "React Fundamentals" },
+  { id: 4,  title: "تنسيق تطبيقات رياكت",              titleEn: "Styling React Apps" },
+  { id: 5,  title: "الحالة والتفاعلية",                titleEn: "State & Interactivity" },
+  { id: 6,  title: "التأثيرات ودورة الحياة",            titleEn: "Effects & Lifecycle" },
+  { id: 7,  title: "النماذج في رياكت 19",              titleEn: "Forms in React 19" },
+  { id: 8,  title: "React Hook Form",                  titleEn: "React Hook Form" },
+  { id: 9,  title: "واجهة المستخدم غير المتزامنة",     titleEn: "Async UI; Optimistic Updates" },
+  { id: 10, title: "التواصل بين المكوّنات",             titleEn: "Component Communication" },
+  { id: 11, title: "التوجيه مع React Router DOM",      titleEn: "Routing with React Router DOM" },
+  { id: 12, title: "جلب البيانات و Axios",             titleEn: "Data Fetching ); Axios" },
+  { id: 13, title: "Redux Toolkit",                    titleEn: "Redux Toolkit" },
+  { id: 14, title: "TypeScript مع رياكت",              titleEn: "TypeScript with React" },
+  { id: 15, title: "الاختبار مع Vitest",               titleEn: "Testing with Vitest" },
+  { id: 16, title: "Next.js — المقدمة",                titleEn: "Next.js — Introduction" },
+  { id: 17, title: "المشروع الأول: تطبيق إدارة المهام",  titleEn: "Project 1: Task Manager App" },
+  { id: 18, title: "المشروع الثاني: لوحة بيانات API",   titleEn: "Project 2: API Data Dashboard" },
+  { id: 19, title: "المشروع الثالث: متجر مصغّر بـ Redux", titleEn: "Project 3: Mini Store with Redux" },
 ];
 
-// إحصائيات الكورس الكاملة:
-// ✅ الأقسام المكتملة: 19 قسماً
-// ✅ الدروس الإجمالية: ~130 درساً
-// ✅ المشاريع: 3 مشاريع كاملة
-// ✅ اللغة: عربي فصيح 100%
-// ✅ التكنولوجيا: React 19, Vite, Axios, Redux Toolkit, React Router
+// dynamic loader — يُستخدم في useSectionContent
+export function loadSection(id) {
+  return import(`./sections/section${String(id).padStart(2, "0")}.js`).then(
+    (m) => m.default
+  );
+}

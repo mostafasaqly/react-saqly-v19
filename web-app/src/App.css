@@ -422,6 +422,34 @@
   color: var(--text-muted);
 }
 
+/* ===================== تحميل القسم (skeleton) ===================== */
+.section-loading {
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.section-loading__bar {
+  height: 20px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+.section-loading__bar--short  { width: 40%; height: 14px; }
+.section-loading__bar--medium { width: 70%; }
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ===================== زر النسخ — حالة الخطأ ===================== */
+.code-copy--error {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
 /* قسم قريباً */
 .coming-soon {
   text-align: center;

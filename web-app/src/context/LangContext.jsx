@@ -3,11 +3,12 @@ import { createContext, useContext, useState, useEffect } from "react";
 const LangContext = createContext();
 
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState("ar");
+  const [lang, setLang] = useState(() => localStorage.getItem("lang") || "ar");
 
   useEffect(() => {
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
     document.documentElement.lang = lang;
+    localStorage.setItem("lang", lang);
   }, [lang]);
 
   function toggle() {

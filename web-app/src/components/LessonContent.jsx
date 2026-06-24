@@ -6,6 +6,8 @@ function LessonContent({ section }) {
   const { lang } = useLang();
   const isAr = lang === "ar";
 
+  if (!section) return null;
+
   const title   = isAr ? section.title   : (section.titleEn   || section.title);
   const intro   = isAr ? section.intro   : (section.introEn   || section.intro);
   const level   = isAr ? section.level   : (section.levelEn   || section.level);
@@ -63,7 +65,9 @@ function Block({ block }) {
       return (
         <h2 className="block-heading">
           {block.text}
-          {block.term && <span className="block-heading__term">{block.term}</span>}
+          {block.term && !block.text.includes(block.term) && (
+            <span className="block-heading__term">{block.term}</span>
+          )}
         </h2>
       );
     case "subheading":
