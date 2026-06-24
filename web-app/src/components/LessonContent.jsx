@@ -1,17 +1,26 @@
-// LessonContent.jsx — يعرض محتوى القسم حسب نوع كل "block".
-
 import QABlock from "./QABlock";
 import CodeBlock from "./CodeBlock";
+import { useLang } from "../context/LangContext";
 
 function LessonContent({ section }) {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+
+  const title   = isAr ? section.title   : (section.titleEn   || section.title);
+  const intro   = isAr ? section.intro   : (section.introEn   || section.intro);
+  const level   = isAr ? section.level   : (section.levelEn   || section.level);
+  const lessons = isAr ? section.lessons : (section.lessonsEn || section.lessons);
+  const content = isAr ? section.content : (section.contentEn || section.content);
+
   if (section.comingSoon) {
     return (
       <div className="coming-soon">
         <span className="coming-soon__emoji">🚧</span>
-        <h2>هذا القسم قريباً</h2>
+        <h2>{isAr ? "هذا القسم قريباً" : "Coming Soon"}</h2>
         <p>
-          القسم «{section.title}» قيد الإعداد. ابدأ بالقسم الأول، وسنضيف باقي
-          الأقسام بنفس الطريقة.
+          {isAr
+            ? `القسم «${title}» قيد الإعداد. ابدأ بالقسم الأول.`
+            : `Section «${title}» is being prepared. Start with section one.`}
         </p>
       </div>
     );
@@ -19,21 +28,19 @@ function LessonContent({ section }) {
 
   return (
     <article className="lesson">
-      {/* رأس القسم */}
       <header className="lesson__header">
         <div className="lesson__meta">
-          <span className="badge">القسم {section.id}</span>
-          {section.level && <span className="badge badge--soft">{section.level}</span>}
+          <span className="badge">{isAr ? `القسم ${section.id}` : `Section ${section.id}`}</span>
+          {level && <span className="badge badge--soft">{level}</span>}
         </div>
-        <h1 className="lesson__title">{section.title}</h1>
-        {section.intro && <p className="lesson__intro">{section.intro}</p>}
+        <h1 className="lesson__title">{title}</h1>
+        {intro && <p className="lesson__intro">{intro}</p>}
 
-        {/* قائمة الدروس */}
-        {section.lessons?.length > 0 && (
+        {lessons?.length > 0 && (
           <div className="lesson__toc">
-            <h3>دروس هذا القسم</h3>
+            <h3>{isAr ? "دروس هذا القسم" : "Lessons in this section"}</h3>
             <ol>
-              {section.lessons.map((lesson, i) => (
+              {lessons.map((lesson, i) => (
                 <li key={i}>{lesson}</li>
               ))}
             </ol>
@@ -41,9 +48,8 @@ function LessonContent({ section }) {
         )}
       </header>
 
-      {/* المحتوى */}
       <div className="lesson__body">
-        {section.content.map((block, i) => (
+        {content.map((block, i) => (
           <Block key={i} block={block} />
         ))}
       </div>
@@ -51,11 +57,15 @@ function LessonContent({ section }) {
   );
 }
 
-// يرسم كل عنصر حسب نوعه.
 function Block({ block }) {
   switch (block.type) {
     case "heading":
-      return <h2 className="block-heading">{block.text}</h2>;
+      return (
+        <h2 className="block-heading">
+          {block.text}
+          {block.term && <span className="block-heading__term">{block.term}</span>}
+        </h2>
+      );
     case "subheading":
       return <h3 className="block-subheading">{block.text}</h3>;
     case "paragraph":

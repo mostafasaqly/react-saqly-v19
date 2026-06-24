@@ -186,4 +186,5 @@ if (isError) return <p>خطأ: {message}</p>;`,
       text: "جوهر متجر إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة.",
     },
   ],
+  titleEn: "Project 3: Mini Store with Redux",
 };

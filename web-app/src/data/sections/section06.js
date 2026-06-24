@@ -148,4 +148,127 @@ useEffect(() => {
       answer: "حساب قيمة من حالة موجودة (اشتقّها)، أو الردّ على حدث مستخدم (في المعالج).",
     },
   ],
+
+  titleEn: "Effects & Lifecycle",
+  levelEn: "Intermediate",
+  lessonsEn: [
+    "What is a Side Effect?",
+    "The useEffect Hook",
+    "Effect Dependencies",
+    "Cleanup Functions",
+    "Fetching Data with useEffect",
+    "Common useEffect Mistakes",
+    "When You Don't Need useEffect",
+  ],
+  introEn:
+    "So far our components just render UI from props and state. But real apps talk to the outside world: timers, browser APIs, servers. That's what Effects do.",
+  contentEn: [
+    { type: "heading", text: "1. What is a Side Effect?", term: "Side Effect" },
+    {
+      type: "paragraph",
+      text: "A side effect is anything a component does outside React: setting a timer, fetching data, reading/writing localStorage, changing the page title. These can't happen during rendering — they need a special place that runs after the screen updates, which is useEffect.",
+    },
+
+    { type: "heading", text: "2. The useEffect Hook", term: "useEffect" },
+    {
+      type: "paragraph",
+      text: "useEffect runs code after a component renders. The second argument (the array) controls when it runs.",
+    },
+    {
+      type: "code",
+      code: `useEffect(() => {\n  document.title = "Welcome!";\n}, [/* dependencies */]);`,
+    },
+
+    { type: "heading", text: "3. Effect Dependencies", term: "Dependencies" },
+    {
+      type: "list",
+      items: [
+        "No array → after every render",
+        "[] empty → once after the first render",
+        "[count] → after first render and whenever count changes",
+      ],
+    },
+    {
+      type: "code",
+      code: `useEffect(() => {\n  console.log("mounted");\n}, []); // once\n\nuseEffect(() => {\n  document.title = \`Count: \${count}\`;\n}, [count]); // when count changes`,
+    },
+
+    { type: "heading", text: "4. Cleanup Functions", term: "Cleanup Functions" },
+    {
+      type: "paragraph",
+      text: "Some effects start something ongoing (a timer or subscription). Return a cleanup function to stop it before the next run and when the component unmounts.",
+    },
+    {
+      type: "code",
+      code: `useEffect(() => {\n  const id = setInterval(() => console.log("tick"), 1000);\n  return () => clearInterval(id); // cleanup\n}, []);`,
+    },
+    {
+      type: "tip",
+      text: "Always clean up timers, listeners, and subscriptions to prevent memory leaks.",
+    },
+
+    { type: "heading", text: "5. Fetching Data with useEffect" },
+    {
+      type: "paragraph",
+      text: "The classic use case: loading data from a server when the component appears. Always handle the three states: loading, error, data.",
+    },
+    {
+      type: "code",
+      code: `useEffect(() => {\n  async function load() {\n    try {\n      setLoading(true);\n      const res = await fetch(url);\n      if (!res.ok) throw new Error("Failed");\n      setData(await res.json());\n    } catch (err) {\n      setError(err.message);\n    } finally {\n      setLoading(false);\n    }\n  }\n  load();\n}, []);`,
+    },
+
+    { type: "heading", text: "6. Common useEffect Mistakes" },
+    {
+      type: "list",
+      items: [
+        "Forgetting a dependency you use inside the effect",
+        "Updating state without a condition → infinite loop",
+        "Forgetting cleanup for timers and listeners",
+      ],
+    },
+    {
+      type: "warning",
+      text: "In dev mode, StrictMode runs effects twice on purpose to help you catch missing cleanups. This is normal.",
+    },
+
+    { type: "heading", text: "7. When You Don't Need useEffect" },
+    {
+      type: "paragraph",
+      text: "useEffect is widely misused. A lot of what people put in it doesn't belong there.",
+    },
+    {
+      type: "list",
+      items: [
+        "Don't use it to compute a value from existing state — derive it during rendering",
+        "Don't use it to respond to a user event — do that in the event handler",
+        "Do use it for: fetching data, subscribing to something external, syncing with a non-React system",
+      ],
+    },
+    {
+      type: "tip",
+      text: "Ask yourself: does this talk to the outside world? Yes → effect. Just a calculation or event response → no effect.",
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "Side effects reach outside React (timers, fetch, localStorage)",
+        "useEffect runs after render; the array controls when",
+        "Return a cleanup function for timers and listeners",
+        "Fetch pattern: loading / error / data",
+        "Don't use an effect for what can be derived or for event responses",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. When does an effect with an empty array [] run?",
+      answer: "Once, immediately after the first render.",
+    },
+    {
+      type: "qa",
+      question: "2. Name something people put in useEffect that doesn't belong there.",
+      answer: "Computing a value from existing state (derive it), or responding to a user event (use the handler).",
+    },
+  ],
 };

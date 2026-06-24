@@ -127,4 +127,116 @@ npm run preview  # يختبر نسخة الإنتاج محلياً`,
       answer: "npm run dev",
     },
   ],
+
+  titleEn: "Setting Up the Dev Environment",
+  levelEn: "Beginner",
+  lessonsEn: [
+    "Installing Node.js & npm",
+    "Creating a React 19 Project with Vite",
+    "Project Folder Structure",
+    "Running the Dev Server",
+    "Building for Production",
+    "Recommended VS Code Extensions",
+    "Installing React Developer Tools",
+  ],
+  introEn:
+    "Before we write React, we need to set up the machine. In this section we install the tools, create a new project, run it, and build it.",
+  contentEn: [
+    { type: "heading", text: "1. Installing Node.js & npm" },
+    {
+      type: "paragraph",
+      text: "Node.js lets you run JavaScript on your machine, and npm comes with it to download and manage packages. Download the LTS (stable) version from nodejs.org and install it.",
+    },
+    {
+      type: "code",
+      code: `node -v\nnpm -v\n# You should see version numbers, e.g.:\n# v22.11.0\n# 10.9.0`,
+    },
+
+    { type: "heading", text: "2. Creating a React 19 Project with Vite" },
+    {
+      type: "paragraph",
+      text: 'Vite (pronounced "veet") is a fast tool that creates and runs React projects. Run the command below, then choose React and JavaScript:',
+    },
+    {
+      type: "code",
+      code: `npm create vite@latest my-react-app\ncd my-react-app\nnpm install`,
+    },
+    {
+      type: "warning",
+      text: "Make sure the react and react-dom version in package.json starts with 19.",
+    },
+
+    { type: "heading", text: "3. Project Folder Structure" },
+    {
+      type: "code",
+      code: `my-react-app/\n├── node_modules/   ← packages (don't touch)\n├── public/         ← static files\n├── src/            ← your code lives here\n│   ├── App.jsx     ← root component\n│   ├── main.jsx    ← entry point\n│   └── index.css   ← global styles\n├── index.html      ← single HTML page\n└── package.json`,
+    },
+    {
+      type: "paragraph",
+      text: 'index.html has an empty <div id="root"></div> and React puts your entire app inside it via main.jsx.',
+    },
+
+    { type: "heading", text: "4. Running the Dev Server" },
+    {
+      type: "paragraph",
+      text: "While working, run the dev server. When you save any file the page updates instantly (hot reload).",
+    },
+    { type: "code", code: `npm run dev` },
+    {
+      type: "tip",
+      text: "Keep this command running while you work. Press Ctrl + C to stop.",
+    },
+
+    { type: "heading", text: "5. Building for Production" },
+    {
+      type: "paragraph",
+      text: "When done, create a minified production build in the dist folder, then test it locally before deploying.",
+    },
+    {
+      type: "code",
+      code: `npm run build    # creates dist folder\nnpm run preview  # tests the production build locally`,
+    },
+
+    { type: "heading", text: "6. Recommended VS Code Extensions" },
+    {
+      type: "list",
+      items: [
+        "ES7+ React snippets — type rafce to scaffold a component fast",
+        "Prettier — formats code on save",
+        "ESLint — warns you about errors while typing",
+        "Auto Rename Tag — renames the matching closing tag automatically",
+      ],
+    },
+
+    { type: "heading", text: "7. Installing React Developer Tools" },
+    {
+      type: "paragraph",
+      text: 'A free browser extension that adds two tabs: "Components" to inspect props, state, and hooks on any component directly, and "Profiler" to find slow renders.',
+    },
+    {
+      type: "tip",
+      text: "When a value isn't what you expect, open the Components tab and click the component — seeing its real values reveals the bug immediately.",
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "Installed Node.js & npm",
+        "Created a React project with Vite — your code lives in src/",
+        "Commands: dev (development), build (deploy), preview (test build)",
+        "Installed VS Code extensions & React DevTools",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. What does npm install do?",
+      answer: "Downloads all packages the project needs into the node_modules folder.",
+    },
+    {
+      type: "qa",
+      question: "2. Which command starts the dev server?",
+      answer: "npm run dev",
+    },
+  ],
 };

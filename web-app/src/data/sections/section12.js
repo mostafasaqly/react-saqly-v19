@@ -186,4 +186,5 @@ axios.create({ baseURL: import.meta.env.VITE_API_URL });`,
       answer: "في response.data (غالباً نفكّكها: const { data } = await axios.get(url)).",
     },
   ],
+  titleEn: "Data Fetching }; Axios",
 };

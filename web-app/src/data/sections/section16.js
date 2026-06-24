@@ -173,4 +173,5 @@ export default {
       answer: "useMemo يخزّن قيمة محسوبة؛ useCallback يخزّن دالة.",
     },
   ],
+  titleEn: "Performance }; Best Practices",
 };

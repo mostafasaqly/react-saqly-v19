@@ -4,13 +4,14 @@ import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import LessonContent from "./components/LessonContent";
 import { sections } from "./data/sections";
+import { useLang } from "./context/LangContext";
 import "./App.css";
 
 function App() {
-  const [activeId, setActiveId] = useState(1); // نبدأ بالقسم الأول
+  const [activeId, setActiveId] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { lang } = useLang();
 
-  // القسم المختار حالياً.
   const activeSection = sections.find((s) => s.id === activeId);
 
   return (
@@ -23,12 +24,11 @@ function App() {
       />
 
       <main className="content">
-        {/* شريط علوي للموبايل لفتح القائمة */}
         <div className="topbar">
           <button className="topbar__menu" onClick={() => setMenuOpen(true)}>
-            ☰ الأقسام
+            ☰ {lang === "ar" ? "الأقسام" : "Sections"}
           </button>
-          <span className="topbar__title">كورس رياكت 19</span>
+          <span className="topbar__title">{lang === "ar" ? "كورس رياكت 19" : "React 19 Course"}</span>
         </div>
 
         <div className="content__inner">

@@ -164,4 +164,5 @@ export const deleteUser = createAsyncThunk("users/delete", async (id) => {
       answer: "pending (بدأ)، fulfilled (نجح)، rejected (فشل).",
     },
   ],
+  titleEn: "Async Redux with createAsyncThunk",
 };

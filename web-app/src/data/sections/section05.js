@@ -173,4 +173,155 @@ return <p>{doneCount} من {tasks.length} مكتملة</p>;`,
       answer: "اصنع كائناً جديداً: setUser({ ...user, age: 26 }).",
     },
   ],
+
+  titleEn: "State & Interactivity",
+  levelEn: "Beginner to Intermediate",
+  lessonsEn: [
+    "Understanding State",
+    "Hook: useState",
+    "Updating Simple State",
+    "Updating Objects in State",
+    "Updating Arrays in State",
+    "Derived State",
+    "Controlled Inputs",
+    "Lifting State Up",
+    "Sharing State Between Components",
+    "Common State Mistakes",
+  ],
+  introEn:
+    "This is where applications come alive. State is how a component remembers things and updates the screen when they change. Master this section and you can build almost anything.",
+  contentEn: [
+    { type: "heading", text: "1. Understanding State", term: "State" },
+    {
+      type: "paragraph",
+      text: "A regular variable doesn't update the screen. React only re-renders when state changes. State is a special memory React watches — when you change it, React re-renders the component and updates the screen.",
+    },
+    {
+      type: "tip",
+      text: "Mental model: state = data + a promise that the screen stays in sync with it.",
+    },
+
+    { type: "heading", text: "2. Hook: useState", term: "useState" },
+    {
+      type: "paragraph",
+      text: "useState gives you the current value and a function to change it. Never mutate state directly — always use the setter function.",
+    },
+    {
+      type: "code",
+      code: `import { useState } from "react";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return <button onClick={() => setCount(count + 1)}>Count: {count}</button>;\n}`,
+    },
+
+    { type: "heading", text: "3. Updating Simple State" },
+    {
+      type: "paragraph",
+      text: "Simple values (number, string, boolean) are easiest to update — just pass the new value. Toggling a boolean is a very common pattern.",
+    },
+    {
+      type: "code",
+      code: `setCount((prev) => prev + 1);   // safer\nsetIsOpen((prev) => !prev);     // toggle true/false`,
+    },
+
+    { type: "heading", text: "4. Updating Objects in State" },
+    {
+      type: "paragraph",
+      text: "Never mutate a field directly. Create a new object with the spread operator, then change the field you want.",
+    },
+    {
+      type: "code",
+      code: `setUser({ ...user, age: 26 });\n// { ...user } copies old fields, then age: 26 replaces age`,
+    },
+
+    { type: "heading", text: "5. Updating Arrays in State" },
+    {
+      type: "paragraph",
+      text: "Same rule: always create a new array. Use [...], filter, and map — never use push or splice on state.",
+    },
+    {
+      type: "code",
+      code: `setItems([...items, "Cherry"]);                         // add\nsetItems(items.filter((i) => i !== "Banana"));          // remove\nsetItems(items.map((i) => i === "Apple" ? "Avocado" : i)); // update`,
+    },
+
+    { type: "heading", text: "6. Derived State", term: "Derived State" },
+    {
+      type: "paragraph",
+      text: "If you can calculate a value from existing state, don't store it — compute it during rendering. This avoids sync bugs.",
+    },
+    {
+      type: "code",
+      code: `const doneCount = tasks.filter((t) => t.done).length;\nreturn <p>{doneCount} of {tasks.length} completed</p>;`,
+    },
+
+    { type: "heading", text: "7. Controlled Inputs", term: "Controlled Inputs" },
+    {
+      type: "paragraph",
+      text: "A controlled input takes its value from state and updates it on every keystroke. React is the single source of truth.",
+    },
+    {
+      type: "code",
+      code: `<input\n  value={name}\n  onChange={(e) => setName(e.target.value)}\n/>`,
+    },
+
+    { type: "heading", text: "8. Lifting State Up", term: "Lifting State Up" },
+    {
+      type: "paragraph",
+      text: "When two sibling components need the same data, move state up to their closest common parent, then pass it down as props. Data flows down via props, events flow up via callbacks.",
+    },
+    {
+      type: "code",
+      code: `function Parent() {\n  const [count, setCount] = useState(0);\n  return (\n    <>\n      <Display count={count} />\n      <Controls onAdd={() => setCount(count + 1)} />\n    </>\n  );\n}`,
+    },
+
+    { type: "heading", text: "9. Sharing State Between Components", term: "Sharing State" },
+    {
+      type: "paragraph",
+      text: "Share it by passing two kinds of props: the value (to read) and the setter (to update). Keep state in the lowest component that sits above everyone who needs it.",
+    },
+    {
+      type: "code",
+      code: `<SearchBar value={search} onChange={setSearch} />\n<Results query={search} />`,
+    },
+    {
+      type: "tip",
+      text: "Rule: keep state as low as possible, but high enough for everyone who needs it to reach it.",
+    },
+
+    { type: "heading", text: "10. Common State Mistakes" },
+    {
+      type: "list",
+      items: [
+        "Mutating state directly (count = count + 1) — React won't notice",
+        "Using push/splice on a state array — same reference, no re-render",
+        "Storing what can be computed — use derived state instead",
+        "Expecting state to change immediately — setState schedules the update",
+        "For rapid updates use the function form (prev) => ...",
+      ],
+    },
+    {
+      type: "warning",
+      text: "Golden rule of state: never mutate. Always create a new value ({ ... } or [ ... ]) and pass it to the setter.",
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "State is memory React watches; changing it triggers a re-render",
+        "useState gives [value, setValue]; never mutate directly",
+        "Objects: { ...obj, field }; Arrays: [...arr], filter, map",
+        "Derived state: compute instead of store",
+        "Lifting/sharing state: data down, events up",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. Why doesn't a regular variable update the screen?",
+      answer:
+        "React only re-renders when state changes. A regular variable changes in memory but React doesn't notice.",
+    },
+    {
+      type: "qa",
+      question: "2. How do you update a single field in an object stored in state?",
+      answer: "Create a new object: setUser({ ...user, age: 26 }).",
+    },
+  ],
 };

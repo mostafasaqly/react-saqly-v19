@@ -166,4 +166,5 @@ function onSubmit(data) {
       answer: "للنماذج الكبيرة بحقول كثيرة وتحقّق معقّد.",
     },
   ],
+  titleEn: "React Hook Form",
 };

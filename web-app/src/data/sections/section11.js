@@ -193,4 +193,5 @@ navigate(from, { replace: true });`,
         "المعامل جزء من المسار وغالباً مطلوب (/product/42)؛ معامل الاستعلام اختياري بعد ?، ممتاز للبحث والفلترة.",
     },
   ],
+  titleEn: "Routing with React Router DOM",
 };

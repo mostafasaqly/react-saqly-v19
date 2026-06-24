@@ -197,4 +197,5 @@ dispatch(addBy(5));     // إجراء مع payload = 5`,
         "useSelector يقرأ جزءاً من الحالة؛ useDispatch يُرجع دالة dispatch لإرسال إجراءات تحدّث الحالة.",
     },
   ],
+  titleEn: "State Management with Redux Toolkit",
 };

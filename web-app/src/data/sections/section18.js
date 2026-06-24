@@ -173,4 +173,5 @@ export const URLS = { users: "/users", user: (id) => \`/users/\${id}\` };`,
       text: "لوحة بيانات حقيقية بتوجيه وبحث وصفحات تفاصيل وهياكل تحميل ومعالجة أخطاء — جوهر عدد لا يُحصى من تطبيقات الإنتاج.",
     },
   ],
+  titleEn: "Project 2: API Data Dashboard",
 };

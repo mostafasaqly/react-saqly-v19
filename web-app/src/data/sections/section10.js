@@ -162,4 +162,5 @@ const { theme, toggle } = useContext(ThemeContext);`,
       answer: "عند تغيّر البيانات كثيراً، أو عند الحاجة لحالة عامة معقّدة — استخدم رفع الحالة أو Redux.",
     },
   ],
+  titleEn: "Component Communication",
 };

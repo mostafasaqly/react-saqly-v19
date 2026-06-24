@@ -142,7 +142,7 @@ export default {
     },
     {
       type: "tip",
-      text: "القاعدة الذهبية: أفضل طريقة لإتقان رياكت هي البناء برياكت <= تحس ان حماده هلال هو اللى كاتب الجمله دى",
+      text: "القاعدة الذهبية: أفضل طريقة لإتقان رياكت هي البناء برياكت.",
     },
 
     { type: "heading", text: "✅ ملخص القسم" },
@@ -170,6 +170,172 @@ export default {
       type: "qa",
       question: "3. ما أفضل طريقة لإتقان رياكت؟",
       answer: "البناء برياكت — الممارسة تتفوّق على القراءة.",
+    },
+  ],
+
+  titleEn: "Course Introduction",
+  levelEn: "Beginner",
+  lessonsEn: [
+    "Hello, I'm Mostafa Saqly",
+    "Course Goals",
+    "Welcome to React 19 Course",
+    "What You'll Build",
+    "Prerequisites & Roadmap",
+    "React 19 Overview",
+    "What's New in React 19",
+    "How to Get the Most Out of This Course",
+  ],
+  introEn:
+    "Welcome to the course! This first section gets you ready to start. No code yet — instead we'll cover: what React is, what you'll build, what you need to know before starting, what's actually new in React 19, and how to study in a way that makes knowledge stick.",
+  contentEn: [
+    { type: "heading", text: "👋 Hello, I'm Mostafa Saqly" },
+    {
+      type: "paragraph",
+      text: "Through this course I tried to help anyone who wants to learn React from scratch — in an easy, structured way. I've gathered the best practices and modern techniques all in one place.",
+    },
+    {
+      type: "paragraph",
+      text: "The idea is simple: save you a huge amount of time searching, watching videos, and browsing forums. Everything you need is here — organized and easy to understand.",
+    },
+    {
+      type: "cta",
+      text: "Need one-on-one training on complete learning paths?",
+      linkLabel: "Enter here →",
+      link: "https://saqly.com/individual-training",
+    },
+    {
+      type: "tip",
+      text: "Just read and apply. Every lesson has practical examples you can run immediately on your machine.",
+    },
+    { type: "heading", text: "🎯 Course Goals" },
+    {
+      type: "paragraph",
+      text: "You won't spend hours searching for scattered, sometimes contradictory information. Everything here is tested, concise, and written in clear language. From zero to real production projects — that's the path.",
+    },
+
+    { type: "heading", text: "1. Welcome to React 19 Course" },
+    { type: "subheading", text: "What is this course?" },
+    {
+      type: "paragraph",
+      text: "This is a project-based practical course for learning React 19 — the latest version of the world's most popular UI library. We won't just read theory; we'll write real components, handle state, fetch real data, and build three complete projects.",
+    },
+
+    { type: "heading", text: "2. What You'll Build" },
+    {
+      type: "paragraph",
+      text: "By the end of the course you'll have built three complete applications ready for your portfolio: a task manager, a data dashboard, and a mini store — plus dozens of smaller examples.",
+    },
+    {
+      type: "list",
+      items: [
+        "🗂️ Project 1: Task Manager — add/edit/delete/search/save + Actions & optimistic updates",
+        "📊 Project 2: Data Dashboard — fetch data with Axios + search + details + loading skeletons",
+        "🛒 Project 3: Mini Store — products, cart, and favorites using Redux Toolkit",
+      ],
+    },
+
+    { type: "heading", text: "3. Prerequisites & Roadmap" },
+    {
+      type: "paragraph",
+      text: "No prior React experience needed. But you need a comfortable understanding of HTML, CSS, and most importantly modern JavaScript (ES6+).",
+    },
+    {
+      type: "list",
+      items: [
+        "let / const and arrow functions",
+        "Template literals",
+        "Array methods: .map(), .filter(), .find()",
+        "Destructuring and spread operator",
+        "async / await, Promises, and ES modules",
+      ],
+    },
+    {
+      type: "warning",
+      text: "Honest note: if .map() and arrow functions feel unfamiliar, spend an hour on modern JavaScript first. React is JavaScript.",
+    },
+
+    { type: "heading", text: "4. React 19 Overview" },
+    {
+      type: "list",
+      items: [
+        "Components — reusable UI pieces written as functions",
+        "Declarative UI — describe the shape, React updates the DOM",
+        "One-way data flow — data flows down via props, events flow up via callbacks",
+        "Hooks — special functions like useState and useEffect",
+      ],
+    },
+
+    { type: "heading", text: "5. What's New in React 19" },
+    { type: "subheading", text: "🎬 Actions" },
+    {
+      type: "paragraph",
+      text: "Pass an async function directly to a form, and React manages pending, error, and success states on your behalf.",
+    },
+    {
+      type: "code",
+      code: `<form action={async (formData) => {
+  await save(formData.get("name"));
+}}>
+  <input name="name" />
+  <button type="submit">Save</button>
+</form>`,
+    },
+    {
+      type: "list",
+      items: [
+        "useActionState — manage action state and pending",
+        "useFormStatus — read the parent form's pending state",
+        "useOptimistic — show an optimistic update before server response",
+        "use API — read promises and context with Suspense",
+        "React Compiler — auto-optimizes components",
+      ],
+    },
+    {
+      type: "tip",
+      text: "React 19 motto: less code, more description.",
+    },
+
+    { type: "heading", text: "6. How to Get the Most Out of This Course" },
+    {
+      type: "list",
+      items: [
+        "Write the code yourself — don't just read",
+        "Break things on purpose and watch the errors",
+        "Read examples and solve the review questions",
+        "Complete all three projects including deployment",
+        "Take breaks — rest helps memory consolidation",
+      ],
+    },
+    {
+      type: "tip",
+      text: "Golden rule: the best way to master React is to build with React.",
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "React is a library for building UIs from reusable components",
+        "You'll build three complete projects",
+        "You need HTML, CSS, and JavaScript basics",
+        "New: Actions, new hooks, the use API, and the Compiler",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. In one sentence, what problem does React solve?",
+      answer:
+        "React lets you describe the UI as a function of state and efficiently updates the DOM on your behalf.",
+    },
+    {
+      type: "qa",
+      question: "2. Name two new hooks in React 19.",
+      answer: "Any two of: useActionState, useFormStatus, useOptimistic.",
+    },
+    {
+      type: "qa",
+      question: "3. What is the best way to master React?",
+      answer: "Building with React — practice beats reading.",
     },
   ],
 };

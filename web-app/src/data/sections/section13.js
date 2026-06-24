@@ -134,4 +134,5 @@ export default {
       answer: "حدّ الخطأ (Error Boundary) — اقرنه بـ Suspense لتغطية الكلّ.",
     },
   ],
+  titleEn: "Suspense }; the use API in React 19",
 };

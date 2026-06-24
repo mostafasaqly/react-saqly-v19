@@ -206,4 +206,163 @@ export default {
       answer: "ليتتبّع رياكت كل عنصر بكفاءة ويحدّث ما تغيّر فقط.",
     },
   ],
+
+  titleEn: "React Fundamentals",
+  levelEn: "Beginner",
+  lessonsEn: [
+    "What is React?",
+    "How React Works",
+    "Components & JSX",
+    "Rendering Elements",
+    "Props",
+    "The children Prop",
+    "Conditional Rendering",
+    "Rendering Lists",
+    "Event Handling",
+    "Reusing Components",
+  ],
+  introEn:
+    "This is the heart of React. Once you understand components, JSX, props, and events, everything else is just layers on top. Take your time here.",
+  contentEn: [
+    { type: "heading", text: "1. What is React?" },
+    {
+      type: "paragraph",
+      text: "Instead of manually finding every element and updating it (as in vanilla JavaScript), React lets you describe what the screen should look like for given data, and it handles updates efficiently. The basic unit is a component: a JavaScript function that returns UI.",
+    },
+
+    { type: "heading", text: "2. How React Works" },
+    { type: "subheading", text: "The Virtual DOM" },
+    {
+      type: "paragraph",
+      text: "React keeps a lightweight copy of the page in memory called the Virtual DOM. When state changes: it renders a new copy, diffs it against the old one, then updates only the changed elements in the real DOM.",
+    },
+    {
+      type: "code",
+      code: `State changes → New Virtual DOM → Diff → Update only what changed`,
+    },
+    {
+      type: "tip",
+      text: "Mental model: you change the data, React updates the screen. Never touch the DOM directly.",
+    },
+
+    { type: "heading", text: "3. Components & JSX", term: "Components & JSX" },
+    {
+      type: "paragraph",
+      text: "A component is a function that returns UI, and its name must start with a capital letter. What's inside is called JSX — it looks like HTML but is actually JavaScript.",
+    },
+    {
+      type: "code",
+      code: `function Welcome() {\n  return <h1>Hello, React!</h1>;\n}`,
+    },
+    {
+      type: "list",
+      items: [
+        "Return a single parent element (or use <> </>)",
+        "Use className instead of class",
+        "Put JavaScript inside { }",
+        "Close every tag, even <img />",
+      ],
+    },
+
+    { type: "heading", text: "4. Rendering Elements" },
+    {
+      type: "paragraph",
+      text: '"Rendering" means showing the component on screen by writing it as a tag. The power of components: write once, reuse anywhere.',
+    },
+    {
+      type: "code",
+      code: `function App() {\n  return (\n    <div>\n      <Welcome />\n      <Welcome />\n    </div>\n  );\n}`,
+    },
+
+    { type: "heading", text: "5. Props", term: "Props" },
+    {
+      type: "paragraph",
+      text: "Props are values you pass to a component like function arguments. Strings use quotes, other values go inside { }. Props are read-only — the component must not change them.",
+    },
+    {
+      type: "code",
+      code: `function Greeting({ name, age }) {\n  return <p>{name} is {age} years old.</p>;\n}\n\n<Greeting name="Sara" age={25} />`,
+    },
+
+    { type: "heading", text: "6. The children Prop", term: "children prop" },
+    {
+      type: "paragraph",
+      text: "Whatever you place between a component's opening and closing tags arrives as a special prop called children. Useful for building reusable wrappers and layouts.",
+    },
+    {
+      type: "code",
+      code: `function Card({ children }) {\n  return <div className="card">{children}</div>;\n}\n\n<Card>\n  <h2>Title</h2>\n  <p>Some text.</p>\n</Card>`,
+    },
+
+    { type: "heading", text: "7. Conditional Rendering", term: "Conditional Rendering" },
+    {
+      type: "paragraph",
+      text: "Since JSX is JavaScript, use regular JavaScript logic:",
+    },
+    {
+      type: "code",
+      code: `{/* && : show something or nothing */}\n{isLoggedIn && <p>Welcome back!</p>}\n\n{/* ? : : show one of two things */}\n{isLoggedIn ? <p>Hello</p> : <p>Please log in</p>}`,
+    },
+
+    { type: "heading", text: "8. Rendering Lists", term: "Rendering Lists" },
+    {
+      type: "paragraph",
+      text: "Use .map() to transform every item in an array into JSX. Each item needs a unique key so React can track it.",
+    },
+    {
+      type: "code",
+      code: `const fruits = ["Apple", "Banana", "Cherry"];\n\n<ul>\n  {fruits.map((fruit) => (\n    <li key={fruit}>{fruit}</li>\n  ))}\n</ul>`,
+    },
+    {
+      type: "warning",
+      text: "Forgetting the key gives a warning and can cause strange bugs. Always add it.",
+    },
+
+    { type: "heading", text: "9. Event Handling", term: "Event Handling" },
+    {
+      type: "paragraph",
+      text: "Pass a function to events like onClick. Event names are camelCase, and you pass the function itself without calling it.",
+    },
+    {
+      type: "code",
+      code: `function Button() {\n  function handleClick() {\n    alert("You clicked me!");\n  }\n  return <button onClick={handleClick}>Click</button>;\n}\n\n// To pass an argument: wrap in an arrow function\n<button onClick={() => greet("Sara")}>Greet</button>`,
+    },
+
+    { type: "heading", text: "10. Reusing Components" },
+    {
+      type: "paragraph",
+      text: "The goal of components is reuse. Write the piece once and vary its appearance or content via props. The same button becomes 'Save', 'Delete', or 'Cancel'.",
+    },
+    {
+      type: "code",
+      code: `function Button({ label, color, onClick }) {\n  return (\n    <button onClick={onClick} style={{ background: color }}>\n      {label}\n    </button>\n  );\n}\n\n<Button label="Save" color="green" onClick={save} />\n<Button label="Delete" color="red" onClick={remove} />`,
+    },
+    {
+      type: "tip",
+      text: "Rule: if you wrote the same JSX twice, make it a reusable component with props.",
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "Components are functions that return JSX, names start with a capital letter",
+        "React builds a Virtual DOM, diffs it, and updates only what changed",
+        "props to pass data (read-only), children for wrapping",
+        "Conditional rendering with && and ? :, lists with .map() and key",
+        "Events like onClick receive a function without parentheses",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. Why must a component name start with a capital letter?",
+      answer:
+        "So React can distinguish it from regular HTML tags. Lowercase names are treated as HTML elements.",
+    },
+    {
+      type: "qa",
+      question: "2. Why does each list item need a key?",
+      answer: "So React can efficiently track each item and update only what changed.",
+    },
+  ],
 };

@@ -148,4 +148,124 @@ function Button() {
       answer: "في CSS العام كمتغيّرات (CSS variables) تحت :root.",
     },
   ],
+
+  titleEn: "Styling React Apps",
+  levelEn: "Beginner",
+  lessonsEn: [
+    "Global CSS",
+    "CSS Modules",
+    "Dynamic Classes",
+    "Inline Styles",
+    "Conditional Styling",
+    "Responsive Layout Basics",
+    "Organizing Styles in Projects",
+  ],
+  introEn:
+    "An app that works is good, but a beautiful app is better. In this section we learn the ways to add CSS to React, when to use each, and how to organize styles as the project grows.",
+  contentEn: [
+    { type: "heading", text: "1. Global CSS", term: "Global CSS" },
+    {
+      type: "paragraph",
+      text: "Some styles apply to the whole app — like the page background and default font. Create one file (Vite gives you index.css) and import it once in main.jsx.",
+    },
+    {
+      type: "code",
+      code: `* { margin: 0; padding: 0; box-sizing: border-box; }\nbody {\n  font-family: system-ui, sans-serif;\n  background: #f5f5f5;\n}`,
+    },
+
+    { type: "heading", text: "2. CSS Modules", term: "CSS Modules" },
+    {
+      type: "paragraph",
+      text: "In large projects two classes with the same name can clash. A CSS Module makes styles local to one component. Name the file Something.module.css and React makes class names unique.",
+    },
+    {
+      type: "code",
+      code: `import styles from "./Button.module.css";\n\nfunction Button() {\n  return <button className={styles.button}>Save</button>;\n}`,
+    },
+    {
+      type: "tip",
+      text: "Use CSS Modules when styles belong to a specific component. It's the safe default.",
+    },
+
+    { type: "heading", text: "3. Dynamic Classes", term: "Dynamic Classes" },
+    {
+      type: "paragraph",
+      text: "Since className is just a string, you can build it with JavaScript based on data.",
+    },
+    {
+      type: "code",
+      code: `function Alert({ type }) {\n  const className = \`alert alert-\${type}\`;\n  return <div className={className}>Saved!</div>;\n}\n// Result: class="alert alert-success"`,
+    },
+
+    { type: "heading", text: "4. Inline Styles", term: "Inline Styles" },
+    {
+      type: "paragraph",
+      text: "In React, the style prop takes a JavaScript object (not a string), and properties are camelCase. Useful for dynamic values like a progress bar width from state.",
+    },
+    {
+      type: "code",
+      code: `<div style={{ width: \`\${percent}%\`, background: "green", height: 10 }} />`,
+    },
+    {
+      type: "warning",
+      text: "Don't overuse inline styles — good for dynamic values but hard to reuse.",
+    },
+
+    { type: "heading", text: "5. Conditional Styling", term: "Conditional Styling" },
+    {
+      type: "paragraph",
+      text: "Change appearance based on state — a button looks 'active' when selected, or a row is struck through when a task is done.",
+    },
+    {
+      type: "code",
+      code: `<button className={isActive ? "btn active" : "btn"}>Menu</button>\n\n<li style={{ textDecoration: task.done ? "line-through" : "none" }}>\n  {task.text}\n</li>`,
+    },
+
+    { type: "heading", text: "6. Responsive Layout Basics" },
+    {
+      type: "paragraph",
+      text: "Your app should look good on phones, tablets, and large screens. These are regular CSS tools: Flexbox, Grid, and media queries.",
+    },
+    {
+      type: "code",
+      code: `.cards {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n  gap: 16px;\n}\n\n@media (max-width: 600px) {\n  .sidebar { width: 100%; }\n}`,
+    },
+    { type: "tip", text: "Design for mobile first, then add media queries for larger screens." },
+
+    { type: "heading", text: "7. Organizing Styles in Projects" },
+    {
+      type: "list",
+      items: [
+        "Global CSS: for reset, fonts, and color variables (CSS variables)",
+        "Component styles: in a CSS Module next to the component",
+        "Single source for theme values — change one color in :root and it updates everywhere",
+        "Inline styles for dynamic values only",
+      ],
+    },
+    {
+      type: "code",
+      code: `:root {\n  --primary: royalblue;\n  --radius: 8px;\n}\n/* Usage: color: var(--primary); */`,
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "Global CSS for app-wide styles, CSS Modules for component styles",
+        "Dynamic classes are built with JavaScript",
+        "style takes an object (camelCase) for dynamic values",
+        "Responsive: Flexbox, Grid, and media queries",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. What file naming makes it a CSS Module?",
+      answer: "A file ending in .module.css, e.g. Card.module.css.",
+    },
+    {
+      type: "qa",
+      question: "2. Where should theme colors used everywhere be placed?",
+      answer: "In global CSS as variables (CSS variables) under :root.",
+    },
+  ],
 };
