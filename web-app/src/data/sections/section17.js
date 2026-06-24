@@ -19,6 +19,7 @@ export default {
     "إضافة واجهة الانتظار",
     "إضافة التحديثات التفاؤلية",
     "إعادة الهيكلة النهائية",
+    "ملفات المشروع الكاملة",
   ],
   intro:
     "مشروعنا الأول! تطبيق إدارة مهام تضيف وتعدّل وتكمل وتحذف وتفلتر وتبحث في المهام، وتحفظها بعد إعادة التحميل، وتستخدم إجراءات رياكت 19 وواجهة الانتظار والتحديثات التفاؤلية. أول قطعة في معرض أعمالك.",
@@ -185,6 +186,284 @@ function SubmitButton() {
       type: "paragraph",
       text: "تطبيق إدارة مهام كامل ودائم يستخدم رياكت الأساسي مع إجراءات رياكت 19 وواجهة الانتظار والتحديثات التفاؤلية. يستحق معرض الأعمال!",
     },
+
+    { type: "heading", text: "ملفات المشروع الكاملة" },
+    {
+      type: "paragraph",
+      text: "فيما يلي الكود الكامل لكل ملف في المشروع. كل مقطع مُعنوَن باسم الملف الذي ينتمي إليه.",
+    },
+
+    { type: "heading", text: "utils/task.js" },
+    {
+      type: "code",
+      code: `// utils/task.js
+export function createTask(text) {
+  return {
+    id: crypto.randomUUID(),
+    text: text.trim(),
+    done: false,
+    createdAt: Date.now(),
+  };
+}`,
+    },
+
+    { type: "heading", text: "hooks/useLocalStorage.jsx" },
+    {
+      type: "code",
+      code: `// hooks/useLocalStorage.jsx
+import { useState, useEffect } from "react";
+
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const saved = localStorage.getItem(key);
+    return saved !== null ? JSON.parse(saved) : initialValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+export default useLocalStorage;`,
+    },
+
+    { type: "heading", text: "components/TaskForm.jsx" },
+    {
+      type: "code",
+      code: `// components/TaskForm.jsx
+import SubmitButton from "./SubmitButton.jsx";
+
+function TaskForm({ onAdd }) {
+  async function handleAdd(formData) {
+    const text = formData.get("text");
+    if (!text || !text.trim()) return;
+    onAdd(text.trim());
+  }
+
+  return (
+    <form action={handleAdd} style={{ display: "flex", gap: 8 }}>
+      <input name="text" placeholder="What needs doing?" autoComplete="off" />
+      <SubmitButton />
+    </form>
+  );
+}
+
+export default TaskForm;`,
+    },
+
+    { type: "heading", text: "components/SubmitButton.jsx" },
+    {
+      type: "code",
+      code: `// components/SubmitButton.jsx
+import { useFormStatus } from "react-dom";
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? "Adding..." : "Add"}
+    </button>
+  );
+}
+
+export default SubmitButton;`,
+    },
+
+    { type: "heading", text: "components/SearchBar.jsx" },
+    {
+      type: "code",
+      code: `// components/SearchBar.jsx
+function SearchBar({ value, onChange }) {
+  return (
+    <input
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Search tasks..."
+      style={{ width: "100%", padding: 8, margin: "8px 0", boxSizing: "border-box" }}
+    />
+  );
+}
+
+export default SearchBar;`,
+    },
+
+    { type: "heading", text: "components/FilterBar.jsx" },
+    {
+      type: "code",
+      code: `// components/FilterBar.jsx
+const FILTERS = ["all", "active", "completed"];
+
+function FilterBar({ filter, onChange }) {
+  return (
+    <div style={{ display: "flex", gap: 8, margin: "12px 0" }}>
+      {FILTERS.map((name) => (
+        <button
+          key={name}
+          onClick={() => onChange(name)}
+          style={{
+            fontWeight: filter === name ? "bold" : "normal",
+            textTransform: "capitalize",
+          }}
+        >
+          {name}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export default FilterBar;`,
+    },
+
+    { type: "heading", text: "components/TaskItem.jsx" },
+    {
+      type: "code",
+      code: `// components/TaskItem.jsx
+function TaskItem({ task, onToggle, onDelete }) {
+  return (
+    <li
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "6px 0",
+        opacity: task.sending ? 0.5 : 1,
+      }}
+    >
+      <input
+        type="checkbox"
+        checked={task.done}
+        onChange={() => onToggle(task.id)}
+        disabled={task.sending}
+      />
+      <span
+        style={{
+          flex: 1,
+          textDecoration: task.done ? "line-through" : "none",
+          color: task.done ? "#888" : "#222",
+        }}
+      >
+        {task.text}
+      </span>
+      {task.sending ? (
+        <small>saving…</small>
+      ) : (
+        <button onClick={() => onDelete(task.id)}>✕</button>
+      )}
+    </li>
+  );
+}
+
+export default TaskItem;`,
+    },
+
+    { type: "heading", text: "components/TaskList.jsx" },
+    {
+      type: "code",
+      code: `// components/TaskList.jsx
+import TaskItem from "./TaskItem.jsx";
+
+function TaskList({ tasks, onToggle, onDelete }) {
+  if (tasks.length === 0) {
+    return <p style={{ color: "#888" }}>No tasks here.</p>;
+  }
+
+  return (
+    <ul style={{ listStyle: "none", padding: 0 }}>
+      {tasks.map((task) => (
+        <TaskItem
+          key={task.id}
+          task={task}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
+      ))}
+    </ul>
+  );
+}
+
+export default TaskList;`,
+    },
+
+    { type: "heading", text: "App.jsx" },
+    {
+      type: "code",
+      code: `// App.jsx
+import { useState, useOptimistic } from "react";
+import useLocalStorage from "./hooks/useLocalStorage.jsx";
+import { createTask } from "./utils/task.js";
+import TaskForm from "./components/TaskForm.jsx";
+import SearchBar from "./components/SearchBar.jsx";
+import FilterBar from "./components/FilterBar.jsx";
+import TaskList from "./components/TaskList.jsx";
+
+function App() {
+  const [tasks, setTasks] = useLocalStorage("tasks", []);
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+
+  const [optimisticTasks, addOptimisticTask] = useOptimistic(
+    tasks,
+    (current, newTask) => [...current, { ...newTask, sending: true }]
+  );
+
+  async function addTask(text) {
+    const newTask = createTask(text);
+    addOptimisticTask(newTask);
+    await fakeSave();
+    setTasks((prev) => [...prev, newTask]);
+  }
+
+  function toggleTask(id) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, done: !task.done } : task
+      )
+    );
+  }
+
+  function deleteTask(id) {
+    setTasks(tasks.filter((task) => task.id !== id));
+  }
+
+  const byFilter = optimisticTasks.filter((task) => {
+    if (filter === "active") return !task.done;
+    if (filter === "completed") return task.done;
+    return true;
+  });
+
+  const visibleTasks = byFilter.filter((task) =>
+    task.text.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const doneCount = tasks.filter((t) => t.done).length;
+
+  return (
+    <div className="app" style={{ maxWidth: 480, margin: "0 auto" }}>
+      <h1>Task Manager</h1>
+      <p>
+        {doneCount} of {tasks.length} done
+      </p>
+      <TaskForm onAdd={addTask} />
+      <SearchBar value={search} onChange={setSearch} />
+      <FilterBar filter={filter} onChange={setFilter} />
+      <TaskList
+        tasks={visibleTasks}
+        onToggle={toggleTask}
+        onDelete={deleteTask}
+      />
+    </div>
+  );
+}
+
+function fakeSave() {
+  return new Promise((resolve) => setTimeout(resolve, 600));
+}
+
+export default App;`,
+    },
   ],
   titleEn: "Project 1: Task Manager App",
   levelEn: "Project",
@@ -204,6 +483,7 @@ function SubmitButton() {
     "Adding Pending UI",
     "Adding Optimistic Updates",
     "Final Refactor",
+    "Complete Project Files",
   ],
   introEn:
     "Our first project! A task manager app where you can add, edit, complete, delete, filter, and search tasks — with data that persists after reload. It uses React 19 form actions, pending UI, and optimistic updates. Your first portfolio piece.",
@@ -556,6 +836,284 @@ async function handleAdd(formData) {
       question: "2. What is the difference between optimistic updates and pending UI?",
       answer:
         "Pending UI disables the button while waiting (honest but slow-feeling). Optimistic updates show the result immediately and roll back if something fails (fast-feeling but needs a real async action).",
+    },
+
+    { type: "heading", text: "Complete Project Files" },
+    {
+      type: "paragraph",
+      text: "Below is the full code for every file in the project. Each snippet is labeled with the file name it belongs to.",
+    },
+
+    { type: "heading", text: "utils/task.js" },
+    {
+      type: "code",
+      code: `// utils/task.js
+export function createTask(text) {
+  return {
+    id: crypto.randomUUID(),
+    text: text.trim(),
+    done: false,
+    createdAt: Date.now(),
+  };
+}`,
+    },
+
+    { type: "heading", text: "hooks/useLocalStorage.jsx" },
+    {
+      type: "code",
+      code: `// hooks/useLocalStorage.jsx
+import { useState, useEffect } from "react";
+
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const saved = localStorage.getItem(key);
+    return saved !== null ? JSON.parse(saved) : initialValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+export default useLocalStorage;`,
+    },
+
+    { type: "heading", text: "components/TaskForm.jsx" },
+    {
+      type: "code",
+      code: `// components/TaskForm.jsx
+import SubmitButton from "./SubmitButton.jsx";
+
+function TaskForm({ onAdd }) {
+  async function handleAdd(formData) {
+    const text = formData.get("text");
+    if (!text || !text.trim()) return;
+    onAdd(text.trim());
+  }
+
+  return (
+    <form action={handleAdd} style={{ display: "flex", gap: 8 }}>
+      <input name="text" placeholder="What needs doing?" autoComplete="off" />
+      <SubmitButton />
+    </form>
+  );
+}
+
+export default TaskForm;`,
+    },
+
+    { type: "heading", text: "components/SubmitButton.jsx" },
+    {
+      type: "code",
+      code: `// components/SubmitButton.jsx
+import { useFormStatus } from "react-dom";
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? "Adding..." : "Add"}
+    </button>
+  );
+}
+
+export default SubmitButton;`,
+    },
+
+    { type: "heading", text: "components/SearchBar.jsx" },
+    {
+      type: "code",
+      code: `// components/SearchBar.jsx
+function SearchBar({ value, onChange }) {
+  return (
+    <input
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Search tasks..."
+      style={{ width: "100%", padding: 8, margin: "8px 0", boxSizing: "border-box" }}
+    />
+  );
+}
+
+export default SearchBar;`,
+    },
+
+    { type: "heading", text: "components/FilterBar.jsx" },
+    {
+      type: "code",
+      code: `// components/FilterBar.jsx
+const FILTERS = ["all", "active", "completed"];
+
+function FilterBar({ filter, onChange }) {
+  return (
+    <div style={{ display: "flex", gap: 8, margin: "12px 0" }}>
+      {FILTERS.map((name) => (
+        <button
+          key={name}
+          onClick={() => onChange(name)}
+          style={{
+            fontWeight: filter === name ? "bold" : "normal",
+            textTransform: "capitalize",
+          }}
+        >
+          {name}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export default FilterBar;`,
+    },
+
+    { type: "heading", text: "components/TaskItem.jsx" },
+    {
+      type: "code",
+      code: `// components/TaskItem.jsx
+function TaskItem({ task, onToggle, onDelete }) {
+  return (
+    <li
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "6px 0",
+        opacity: task.sending ? 0.5 : 1,
+      }}
+    >
+      <input
+        type="checkbox"
+        checked={task.done}
+        onChange={() => onToggle(task.id)}
+        disabled={task.sending}
+      />
+      <span
+        style={{
+          flex: 1,
+          textDecoration: task.done ? "line-through" : "none",
+          color: task.done ? "#888" : "#222",
+        }}
+      >
+        {task.text}
+      </span>
+      {task.sending ? (
+        <small>saving…</small>
+      ) : (
+        <button onClick={() => onDelete(task.id)}>✕</button>
+      )}
+    </li>
+  );
+}
+
+export default TaskItem;`,
+    },
+
+    { type: "heading", text: "components/TaskList.jsx" },
+    {
+      type: "code",
+      code: `// components/TaskList.jsx
+import TaskItem from "./TaskItem.jsx";
+
+function TaskList({ tasks, onToggle, onDelete }) {
+  if (tasks.length === 0) {
+    return <p style={{ color: "#888" }}>No tasks here.</p>;
+  }
+
+  return (
+    <ul style={{ listStyle: "none", padding: 0 }}>
+      {tasks.map((task) => (
+        <TaskItem
+          key={task.id}
+          task={task}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
+      ))}
+    </ul>
+  );
+}
+
+export default TaskList;`,
+    },
+
+    { type: "heading", text: "App.jsx" },
+    {
+      type: "code",
+      code: `// App.jsx
+import { useState, useOptimistic } from "react";
+import useLocalStorage from "./hooks/useLocalStorage.jsx";
+import { createTask } from "./utils/task.js";
+import TaskForm from "./components/TaskForm.jsx";
+import SearchBar from "./components/SearchBar.jsx";
+import FilterBar from "./components/FilterBar.jsx";
+import TaskList from "./components/TaskList.jsx";
+
+function App() {
+  const [tasks, setTasks] = useLocalStorage("tasks", []);
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+
+  const [optimisticTasks, addOptimisticTask] = useOptimistic(
+    tasks,
+    (current, newTask) => [...current, { ...newTask, sending: true }]
+  );
+
+  async function addTask(text) {
+    const newTask = createTask(text);
+    addOptimisticTask(newTask);
+    await fakeSave();
+    setTasks((prev) => [...prev, newTask]);
+  }
+
+  function toggleTask(id) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, done: !task.done } : task
+      )
+    );
+  }
+
+  function deleteTask(id) {
+    setTasks(tasks.filter((task) => task.id !== id));
+  }
+
+  const byFilter = optimisticTasks.filter((task) => {
+    if (filter === "active") return !task.done;
+    if (filter === "completed") return task.done;
+    return true;
+  });
+
+  const visibleTasks = byFilter.filter((task) =>
+    task.text.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const doneCount = tasks.filter((t) => t.done).length;
+
+  return (
+    <div className="app" style={{ maxWidth: 480, margin: "0 auto" }}>
+      <h1>Task Manager</h1>
+      <p>
+        {doneCount} of {tasks.length} done
+      </p>
+      <TaskForm onAdd={addTask} />
+      <SearchBar value={search} onChange={setSearch} />
+      <FilterBar filter={filter} onChange={setFilter} />
+      <TaskList
+        tasks={visibleTasks}
+        onToggle={toggleTask}
+        onDelete={deleteTask}
+      />
+    </div>
+  );
+}
+
+function fakeSave() {
+  return new Promise((resolve) => setTimeout(resolve, 600));
+}
+
+export default App;`,
     },
   ],
 };

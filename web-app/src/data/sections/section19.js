@@ -19,6 +19,7 @@ export default {
     "واجهة التحميل والخطأ",
     "إجمالي السلّة بـ useMemo",
     "إعادة الهيكلة النهائية",
+    "ملفات المشروع الكاملة",
   ],
   intro:
     "مشروعنا الثالث والأكبر: متجر صغير. يجلب المنتجات من API بـ Redux غير المتزامن، ويتيح إضافة عناصر للسلّة وقائمة مفضّلات، ويعرض إجمالي سلّة حيّ. يجمع Redux Toolkit والـ thunks وكل ما سبق.",
@@ -185,6 +186,242 @@ if (isError) return <p>خطأ: {message}</p>;`,
       type: "paragraph",
       text: "جوهر متجر إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة.",
     },
+
+    { type: "heading", text: "ملفات المشروع الكاملة" },
+    {
+      type: "paragraph",
+      text: "فيما يلي الكود الكامل لكل ملف في المشروع. كل مقطع مُعنوَن باسم الملف الذي ينتمي إليه.",
+    },
+
+    { type: "heading", text: "store/productsSlice.js" },
+    {
+      type: "code",
+      code: `// store/productsSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fetchProducts = createAsyncThunk("products/fetch", async () => {
+  const { data } = await axios.get("https://fakestoreapi.com/products");
+  return data;
+});
+
+const productsSlice = createSlice({
+  name: "products",
+  initialState: { items: [], isLoading: false, isError: false, message: "" },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.error.message;
+      });
+  },
+});
+
+export default productsSlice.reducer;`,
+    },
+
+    { type: "heading", text: "store/cartSlice.js" },
+    {
+      type: "code",
+      code: `// store/cartSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState: { items: [] },
+  reducers: {
+    addToCart: (state, action) => {
+      const found = state.items.find((i) => i.id === action.payload.id);
+      if (found) {
+        found.qty += 1;
+      } else {
+        state.items.push({ ...action.payload, qty: 1 });
+      }
+    },
+    removeFromCart: (state, action) => {
+      state.items = state.items.filter((i) => i.id !== action.payload);
+    },
+    clearCart: (state) => {
+      state.items = [];
+    },
+  },
+});
+
+export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export default cartSlice.reducer;`,
+    },
+
+    { type: "heading", text: "store/favoritesSlice.js" },
+    {
+      type: "code",
+      code: `// store/favoritesSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const favoritesSlice = createSlice({
+  name: "favorites",
+  initialState: [],
+  reducers: {
+    toggleFavorite: (state, action) => {
+      const id = action.payload;
+      return state.includes(id)
+        ? state.filter((x) => x !== id)
+        : [...state, id];
+    },
+  },
+});
+
+export const { toggleFavorite } = favoritesSlice.actions;
+export default favoritesSlice.reducer;`,
+    },
+
+    { type: "heading", text: "store/store.js" },
+    {
+      type: "code",
+      code: `// store/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import productsReducer from "./productsSlice";
+import cartReducer from "./cartSlice";
+import favoritesReducer from "./favoritesSlice";
+
+export const store = configureStore({
+  reducer: {
+    products: productsReducer,
+    cart: cartReducer,
+    favorites: favoritesReducer,
+  },
+});`,
+    },
+
+    { type: "heading", text: "components/Cart.jsx" },
+    {
+      type: "code",
+      code: `// components/Cart.jsx
+import { useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart, clearCart } from "../store/cartSlice";
+
+function Cart() {
+  const items = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+
+  const total = useMemo(
+    () => items.reduce((sum, item) => sum + item.price * item.qty, 0),
+    [items]
+  );
+
+  if (items.length === 0) return <p>Your cart is empty.</p>;
+
+  return (
+    <div style={{ border: "1px solid #ccc", padding: 12, marginBottom: 16 }}>
+      <h2>Cart ({items.length})</h2>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            {item.title} × {item.qty} — \${(item.price * item.qty).toFixed(2)}{" "}
+            <button onClick={() => dispatch(removeFromCart(item.id))}>
+              remove
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p>
+        <strong>Total: \${total.toFixed(2)}</strong>
+      </p>
+      <button onClick={() => dispatch(clearCart())}>Clear cart</button>
+    </div>
+  );
+}
+
+export default Cart;`,
+    },
+
+    { type: "heading", text: "components/ProductCard.jsx" },
+    {
+      type: "code",
+      code: `// components/ProductCard.jsx
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/cartSlice";
+import { toggleFavorite } from "../store/favoritesSlice";
+
+function ProductCard({ product }) {
+  const dispatch = useDispatch();
+  const isFavorite = useSelector((state) =>
+    state.favorites.includes(product.id)
+  );
+
+  return (
+    <div style={{ border: "1px solid #ddd", borderRadius: 8, padding: 12 }}>
+      <img
+        src={product.image}
+        alt={product.title}
+        style={{ height: 120, objectFit: "contain", width: "100%" }}
+      />
+      <h3 style={{ fontSize: 14 }}>{product.title}</h3>
+      <p>\${product.price}</p>
+      <button onClick={() => dispatch(addToCart(product))}>Add to cart</button>
+      <button onClick={() => dispatch(toggleFavorite(product.id))}>
+        {isFavorite ? "❤️" : "🤍"}
+      </button>
+    </div>
+  );
+}
+
+export default ProductCard;`,
+    },
+
+    { type: "heading", text: "pages/Products.jsx" },
+    {
+      type: "code",
+      code: `// pages/Products.jsx
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../store/productsSlice";
+import ProductCard from "../components/ProductCard.jsx";
+import Cart from "../components/Cart.jsx";
+
+function Products() {
+  const dispatch = useDispatch();
+  const { items, isLoading, isError, message } = useSelector(
+    (state) => state.products
+  );
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  if (isLoading) return <p>Loading products...</p>;
+  if (isError) return <p style={{ color: "red" }}>Error: {message}</p>;
+
+  return (
+    <div>
+      <Cart />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+          gap: 16,
+        }}
+      >
+        {items.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Products;`,
+    },
   ],
   titleEn: "Project 3: Mini Store with Redux",
   levelEn: "Project",
@@ -204,6 +441,7 @@ if (isError) return <p>خطأ: {message}</p>;`,
     "Loading and Error UI",
     "Cart Total with useMemo",
     "Final Refactor",
+    "Complete Project Files",
   ],
   introEn:
     "Our third and biggest project: a mini store. It fetches products from an API using async Redux, lets users add items to a cart and a favorites list, and displays a live cart total. It brings together Redux Toolkit, thunks, and everything learned so far.",
@@ -604,6 +842,242 @@ function Cart() {
       question: "2. Why is the cart total computed with useMemo instead of stored in a cartTotal slice?",
       answer:
         "Because total is always derivable from items. Storing it separately creates a risk of it going out of sync with the real data. Derived state (computed from source of truth) is always preferable to duplicated state.",
+    },
+
+    { type: "heading", text: "Complete Project Files" },
+    {
+      type: "paragraph",
+      text: "Below is the full code for every file in the project. Each snippet is labeled with the file name it belongs to.",
+    },
+
+    { type: "heading", text: "store/productsSlice.js" },
+    {
+      type: "code",
+      code: `// store/productsSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fetchProducts = createAsyncThunk("products/fetch", async () => {
+  const { data } = await axios.get("https://fakestoreapi.com/products");
+  return data;
+});
+
+const productsSlice = createSlice({
+  name: "products",
+  initialState: { items: [], isLoading: false, isError: false, message: "" },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.error.message;
+      });
+  },
+});
+
+export default productsSlice.reducer;`,
+    },
+
+    { type: "heading", text: "store/cartSlice.js" },
+    {
+      type: "code",
+      code: `// store/cartSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState: { items: [] },
+  reducers: {
+    addToCart: (state, action) => {
+      const found = state.items.find((i) => i.id === action.payload.id);
+      if (found) {
+        found.qty += 1;
+      } else {
+        state.items.push({ ...action.payload, qty: 1 });
+      }
+    },
+    removeFromCart: (state, action) => {
+      state.items = state.items.filter((i) => i.id !== action.payload);
+    },
+    clearCart: (state) => {
+      state.items = [];
+    },
+  },
+});
+
+export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export default cartSlice.reducer;`,
+    },
+
+    { type: "heading", text: "store/favoritesSlice.js" },
+    {
+      type: "code",
+      code: `// store/favoritesSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const favoritesSlice = createSlice({
+  name: "favorites",
+  initialState: [],
+  reducers: {
+    toggleFavorite: (state, action) => {
+      const id = action.payload;
+      return state.includes(id)
+        ? state.filter((x) => x !== id)
+        : [...state, id];
+    },
+  },
+});
+
+export const { toggleFavorite } = favoritesSlice.actions;
+export default favoritesSlice.reducer;`,
+    },
+
+    { type: "heading", text: "store/store.js" },
+    {
+      type: "code",
+      code: `// store/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import productsReducer from "./productsSlice";
+import cartReducer from "./cartSlice";
+import favoritesReducer from "./favoritesSlice";
+
+export const store = configureStore({
+  reducer: {
+    products: productsReducer,
+    cart: cartReducer,
+    favorites: favoritesReducer,
+  },
+});`,
+    },
+
+    { type: "heading", text: "components/Cart.jsx" },
+    {
+      type: "code",
+      code: `// components/Cart.jsx
+import { useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart, clearCart } from "../store/cartSlice";
+
+function Cart() {
+  const items = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+
+  const total = useMemo(
+    () => items.reduce((sum, item) => sum + item.price * item.qty, 0),
+    [items]
+  );
+
+  if (items.length === 0) return <p>Your cart is empty.</p>;
+
+  return (
+    <div style={{ border: "1px solid #ccc", padding: 12, marginBottom: 16 }}>
+      <h2>Cart ({items.length})</h2>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            {item.title} × {item.qty} — \${(item.price * item.qty).toFixed(2)}{" "}
+            <button onClick={() => dispatch(removeFromCart(item.id))}>
+              remove
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p>
+        <strong>Total: \${total.toFixed(2)}</strong>
+      </p>
+      <button onClick={() => dispatch(clearCart())}>Clear cart</button>
+    </div>
+  );
+}
+
+export default Cart;`,
+    },
+
+    { type: "heading", text: "components/ProductCard.jsx" },
+    {
+      type: "code",
+      code: `// components/ProductCard.jsx
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/cartSlice";
+import { toggleFavorite } from "../store/favoritesSlice";
+
+function ProductCard({ product }) {
+  const dispatch = useDispatch();
+  const isFavorite = useSelector((state) =>
+    state.favorites.includes(product.id)
+  );
+
+  return (
+    <div style={{ border: "1px solid #ddd", borderRadius: 8, padding: 12 }}>
+      <img
+        src={product.image}
+        alt={product.title}
+        style={{ height: 120, objectFit: "contain", width: "100%" }}
+      />
+      <h3 style={{ fontSize: 14 }}>{product.title}</h3>
+      <p>\${product.price}</p>
+      <button onClick={() => dispatch(addToCart(product))}>Add to cart</button>
+      <button onClick={() => dispatch(toggleFavorite(product.id))}>
+        {isFavorite ? "❤️" : "🤍"}
+      </button>
+    </div>
+  );
+}
+
+export default ProductCard;`,
+    },
+
+    { type: "heading", text: "pages/Products.jsx" },
+    {
+      type: "code",
+      code: `// pages/Products.jsx
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../store/productsSlice";
+import ProductCard from "../components/ProductCard.jsx";
+import Cart from "../components/Cart.jsx";
+
+function Products() {
+  const dispatch = useDispatch();
+  const { items, isLoading, isError, message } = useSelector(
+    (state) => state.products
+  );
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  if (isLoading) return <p>Loading products...</p>;
+  if (isError) return <p style={{ color: "red" }}>Error: {message}</p>;
+
+  return (
+    <div>
+      <Cart />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+          gap: 16,
+        }}
+      >
+        {items.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Products;`,
     },
   ],
 };

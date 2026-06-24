@@ -19,6 +19,7 @@ export default {
     "هياكل التحميل (Skeletons)",
     "خدمة API قابلة لإعادة الاستخدام",
     "إعادة الهيكلة النهائية",
+    "ملفات المشروع الكاملة",
   ],
   intro:
     "مشروعنا الثاني يجلب بيانات حقيقية بـ Axios ويعرضها في لوحة أنيقة: بطاقات، وبحث، وصفحة تفاصيل، وهياكل تحميل، ومعالجة أخطاء سليمة. هذا نوع التطبيقات التي ستبنيها في عمل حقيقي.",
@@ -172,6 +173,289 @@ export const URLS = { users: "/users", user: (id) => \`/users/\${id}\` };`,
       type: "paragraph",
       text: "لوحة بيانات حقيقية بتوجيه وبحث وصفحات تفاصيل وهياكل تحميل ومعالجة أخطاء — جوهر عدد لا يُحصى من تطبيقات الإنتاج.",
     },
+
+    { type: "heading", text: "ملفات المشروع الكاملة" },
+    {
+      type: "paragraph",
+      text: "فيما يلي الكود الكامل لكل ملف في المشروع. كل مقطع مُعنوَن باسم الملف الذي ينتمي إليه.",
+    },
+
+    { type: "heading", text: "services/api.js" },
+    {
+      type: "code",
+      code: `// services/api.js
+import axios from "axios";
+
+const BASE = "https://jsonplaceholder.typicode.com";
+
+const api = axios.create({ baseURL: BASE });
+
+export async function getUsers() {
+  const { data } = await api.get("/users");
+  return data;
+}
+
+export async function getUser(id) {
+  const { data } = await api.get(\`/users/\${id}\`);
+  return data;
+}
+
+export const URLS = {
+  users: \`\${BASE}/users\`,
+  user: (id) => \`\${BASE}/users/\${id}\`,
+};
+
+export default api;`,
+    },
+
+    { type: "heading", text: "hooks/useFetch.jsx" },
+    {
+      type: "code",
+      code: `// hooks/useFetch.jsx
+import { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(Boolean(url));
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    if (!url) return;
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await axios.get(url);
+      setData(res.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [url]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  return { data, loading, error, reload: load };
+}
+
+export default useFetch;`,
+    },
+
+    { type: "heading", text: "components/ErrorMessage.jsx" },
+    {
+      type: "code",
+      code: `// components/ErrorMessage.jsx
+function ErrorMessage({ message, onRetry }) {
+  return (
+    <div
+      style={{
+        padding: 16,
+        margin: "12px 0",
+        background: "#fcdcdc",
+        color: "#b00020",
+        borderRadius: 8,
+      }}
+    >
+      <p>⚠️ {message}</p>
+      {onRetry && <button onClick={onRetry}>Try again</button>}
+    </div>
+  );
+}
+
+export default ErrorMessage;`,
+    },
+
+    { type: "heading", text: "components/Skeleton.jsx" },
+    {
+      type: "code",
+      code: `// components/Skeleton.jsx
+function Skeleton() {
+  return (
+    <div
+      style={{
+        height: 60,
+        margin: "8px 0",
+        borderRadius: 8,
+        background: "linear-gradient(90deg, #eee, #f5f5f5, #eee)",
+        backgroundSize: "200% 100%",
+        animation: "pulse 1.2s ease-in-out infinite",
+      }}
+    />
+  );
+}
+
+export default Skeleton;`,
+    },
+
+    { type: "heading", text: "components/SearchBar.jsx" },
+    {
+      type: "code",
+      code: `// components/SearchBar.jsx
+function SearchBar({ value, onChange }) {
+  return (
+    <input
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Search by name..."
+      style={{
+        width: "100%",
+        padding: 10,
+        margin: "12px 0",
+        boxSizing: "border-box",
+      }}
+    />
+  );
+}
+
+export default SearchBar;`,
+    },
+
+    { type: "heading", text: "components/UserCard.jsx" },
+    {
+      type: "code",
+      code: `// components/UserCard.jsx
+import { Link } from "react-router-dom";
+
+function UserCard({ user }) {
+  return (
+    <Link
+      to={\`/users/\${user.id}\`}
+      state={{ user }}
+      style={{
+        display: "block",
+        padding: 12,
+        margin: "8px 0",
+        border: "1px solid #ddd",
+        borderRadius: 8,
+        textDecoration: "none",
+        color: "inherit",
+      }}
+    >
+      <strong>{user.name}</strong>
+      <div style={{ color: "#666", fontSize: 14 }}>{user.email}</div>
+    </Link>
+  );
+}
+
+export default UserCard;`,
+    },
+
+    { type: "heading", text: "pages/Dashboard.jsx" },
+    {
+      type: "code",
+      code: `// pages/Dashboard.jsx
+import { useState } from "react";
+import useFetch from "../hooks/useFetch.jsx";
+import { URLS } from "../services/api.js";
+import SearchBar from "../components/SearchBar.jsx";
+import UserCard from "../components/UserCard.jsx";
+import Skeleton from "../components/Skeleton.jsx";
+import ErrorMessage from "../components/ErrorMessage.jsx";
+
+function Dashboard() {
+  const { data: users, loading, error, reload } = useFetch(URLS.users);
+  const [search, setSearch] = useState("");
+
+  const visibleUsers = (users || []).filter((user) =>
+    user.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <h1>Users Dashboard</h1>
+      <SearchBar value={search} onChange={setSearch} />
+
+      {loading && (
+        <div>
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+        </div>
+      )}
+
+      {error && <ErrorMessage message={error} onRetry={reload} />}
+
+      {!loading &&
+        !error &&
+        visibleUsers.map((user) => <UserCard key={user.id} user={user} />)}
+
+      {!loading && !error && visibleUsers.length === 0 && (
+        <p>No users match your search.</p>
+      )}
+    </div>
+  );
+}
+
+export default Dashboard;`,
+    },
+
+    { type: "heading", text: "pages/UserDetail.jsx" },
+    {
+      type: "code",
+      code: `// pages/UserDetail.jsx
+import { useParams, useLocation, Link } from "react-router-dom";
+import useFetch from "../hooks/useFetch.jsx";
+import { URLS } from "../services/api.js";
+import Skeleton from "../components/Skeleton.jsx";
+import ErrorMessage from "../components/ErrorMessage.jsx";
+
+function UserDetail() {
+  const { id } = useParams();
+  const location = useLocation();
+  const passedUser = location.state?.user;
+
+  const { data: fetchedUser, loading, error, reload } = useFetch(
+    passedUser ? null : URLS.user(id)
+  );
+
+  const user = passedUser || fetchedUser;
+
+  return (
+    <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <Link to="/">← Back to list</Link>
+
+      {loading && <Skeleton />}
+      {error && <ErrorMessage message={error} onRetry={reload} />}
+
+      {user && (
+        <div>
+          <h1>{user.name}</h1>
+          <p>Email: {user.email}</p>
+          <p>Phone: {user.phone}</p>
+          <p>Website: {user.website}</p>
+          <p>Company: {user.company?.name}</p>
+          <p>City: {user.address?.city}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default UserDetail;`,
+    },
+
+    { type: "heading", text: "App.jsx" },
+    {
+      type: "code",
+      code: `// App.jsx
+import { Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard.jsx";
+import UserDetail from "./pages/UserDetail.jsx";
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/users/:id" element={<UserDetail />} />
+    </Routes>
+  );
+}
+
+export default App;`,
+    },
   ],
   titleEn: "Project 2: API Data Dashboard",
   levelEn: "Project",
@@ -191,6 +475,7 @@ export const URLS = { users: "/users", user: (id) => \`/users/\${id}\` };`,
     "Loading Skeletons",
     "Reusable API Service",
     "Final Refactor",
+    "Complete Project Files",
   ],
   introEn:
     "Our second project fetches real data with Axios and displays it in a polished dashboard: cards, search, a detail page, loading skeletons, and proper error handling. This is the kind of app you'll build in a real job.",
@@ -559,6 +844,289 @@ export default api;`,
       question: "2. Why do we need route params as a fallback if we already pass data via navigation state?",
       answer:
         "Navigation state only exists when the user arrived via in-app navigation in the same session. A shared link, bookmark, or page refresh has no state — route params + a fresh fetch are the only way to load the right data.",
+    },
+
+    { type: "heading", text: "Complete Project Files" },
+    {
+      type: "paragraph",
+      text: "Below is the full code for every file in the project. Each snippet is labeled with the file name it belongs to.",
+    },
+
+    { type: "heading", text: "services/api.js" },
+    {
+      type: "code",
+      code: `// services/api.js
+import axios from "axios";
+
+const BASE = "https://jsonplaceholder.typicode.com";
+
+const api = axios.create({ baseURL: BASE });
+
+export async function getUsers() {
+  const { data } = await api.get("/users");
+  return data;
+}
+
+export async function getUser(id) {
+  const { data } = await api.get(\`/users/\${id}\`);
+  return data;
+}
+
+export const URLS = {
+  users: \`\${BASE}/users\`,
+  user: (id) => \`\${BASE}/users/\${id}\`,
+};
+
+export default api;`,
+    },
+
+    { type: "heading", text: "hooks/useFetch.jsx" },
+    {
+      type: "code",
+      code: `// hooks/useFetch.jsx
+import { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(Boolean(url));
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    if (!url) return;
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await axios.get(url);
+      setData(res.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [url]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  return { data, loading, error, reload: load };
+}
+
+export default useFetch;`,
+    },
+
+    { type: "heading", text: "components/ErrorMessage.jsx" },
+    {
+      type: "code",
+      code: `// components/ErrorMessage.jsx
+function ErrorMessage({ message, onRetry }) {
+  return (
+    <div
+      style={{
+        padding: 16,
+        margin: "12px 0",
+        background: "#fcdcdc",
+        color: "#b00020",
+        borderRadius: 8,
+      }}
+    >
+      <p>⚠️ {message}</p>
+      {onRetry && <button onClick={onRetry}>Try again</button>}
+    </div>
+  );
+}
+
+export default ErrorMessage;`,
+    },
+
+    { type: "heading", text: "components/Skeleton.jsx" },
+    {
+      type: "code",
+      code: `// components/Skeleton.jsx
+function Skeleton() {
+  return (
+    <div
+      style={{
+        height: 60,
+        margin: "8px 0",
+        borderRadius: 8,
+        background: "linear-gradient(90deg, #eee, #f5f5f5, #eee)",
+        backgroundSize: "200% 100%",
+        animation: "pulse 1.2s ease-in-out infinite",
+      }}
+    />
+  );
+}
+
+export default Skeleton;`,
+    },
+
+    { type: "heading", text: "components/SearchBar.jsx" },
+    {
+      type: "code",
+      code: `// components/SearchBar.jsx
+function SearchBar({ value, onChange }) {
+  return (
+    <input
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Search by name..."
+      style={{
+        width: "100%",
+        padding: 10,
+        margin: "12px 0",
+        boxSizing: "border-box",
+      }}
+    />
+  );
+}
+
+export default SearchBar;`,
+    },
+
+    { type: "heading", text: "components/UserCard.jsx" },
+    {
+      type: "code",
+      code: `// components/UserCard.jsx
+import { Link } from "react-router-dom";
+
+function UserCard({ user }) {
+  return (
+    <Link
+      to={\`/users/\${user.id}\`}
+      state={{ user }}
+      style={{
+        display: "block",
+        padding: 12,
+        margin: "8px 0",
+        border: "1px solid #ddd",
+        borderRadius: 8,
+        textDecoration: "none",
+        color: "inherit",
+      }}
+    >
+      <strong>{user.name}</strong>
+      <div style={{ color: "#666", fontSize: 14 }}>{user.email}</div>
+    </Link>
+  );
+}
+
+export default UserCard;`,
+    },
+
+    { type: "heading", text: "pages/Dashboard.jsx" },
+    {
+      type: "code",
+      code: `// pages/Dashboard.jsx
+import { useState } from "react";
+import useFetch from "../hooks/useFetch.jsx";
+import { URLS } from "../services/api.js";
+import SearchBar from "../components/SearchBar.jsx";
+import UserCard from "../components/UserCard.jsx";
+import Skeleton from "../components/Skeleton.jsx";
+import ErrorMessage from "../components/ErrorMessage.jsx";
+
+function Dashboard() {
+  const { data: users, loading, error, reload } = useFetch(URLS.users);
+  const [search, setSearch] = useState("");
+
+  const visibleUsers = (users || []).filter((user) =>
+    user.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <h1>Users Dashboard</h1>
+      <SearchBar value={search} onChange={setSearch} />
+
+      {loading && (
+        <div>
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+        </div>
+      )}
+
+      {error && <ErrorMessage message={error} onRetry={reload} />}
+
+      {!loading &&
+        !error &&
+        visibleUsers.map((user) => <UserCard key={user.id} user={user} />)}
+
+      {!loading && !error && visibleUsers.length === 0 && (
+        <p>No users match your search.</p>
+      )}
+    </div>
+  );
+}
+
+export default Dashboard;`,
+    },
+
+    { type: "heading", text: "pages/UserDetail.jsx" },
+    {
+      type: "code",
+      code: `// pages/UserDetail.jsx
+import { useParams, useLocation, Link } from "react-router-dom";
+import useFetch from "../hooks/useFetch.jsx";
+import { URLS } from "../services/api.js";
+import Skeleton from "../components/Skeleton.jsx";
+import ErrorMessage from "../components/ErrorMessage.jsx";
+
+function UserDetail() {
+  const { id } = useParams();
+  const location = useLocation();
+  const passedUser = location.state?.user;
+
+  const { data: fetchedUser, loading, error, reload } = useFetch(
+    passedUser ? null : URLS.user(id)
+  );
+
+  const user = passedUser || fetchedUser;
+
+  return (
+    <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      <Link to="/">← Back to list</Link>
+
+      {loading && <Skeleton />}
+      {error && <ErrorMessage message={error} onRetry={reload} />}
+
+      {user && (
+        <div>
+          <h1>{user.name}</h1>
+          <p>Email: {user.email}</p>
+          <p>Phone: {user.phone}</p>
+          <p>Website: {user.website}</p>
+          <p>Company: {user.company?.name}</p>
+          <p>City: {user.address?.city}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default UserDetail;`,
+    },
+
+    { type: "heading", text: "App.jsx" },
+    {
+      type: "code",
+      code: `// App.jsx
+import { Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard.jsx";
+import UserDetail from "./pages/UserDetail.jsx";
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/users/:id" element={<UserDetail />} />
+    </Routes>
+  );
+}
+
+export default App;`,
     },
   ],
 };
