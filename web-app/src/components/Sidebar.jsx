@@ -1,8 +1,10 @@
 import { sections } from "../data/sections";
 import { useLang } from "../context/LangContext";
+import { useTheme } from "../context/ThemeContext";
 
 function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
   const { lang, toggle } = useLang();
+  const { theme, toggle: toggleTheme } = useTheme();
   const isAr = lang === "ar";
 
   return (
@@ -34,13 +36,22 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
           </div>
         </div>
 
-        <button
-          className="lang-toggle"
-          onClick={toggle}
-          aria-label={isAr ? "Switch to English" : "التبديل للعربية"}
-        >
-          {isAr ? "EN" : "AR"}
-        </button>
+        <div className="sidebar__controls">
+          <button
+            className="lang-toggle"
+            onClick={toggle}
+            aria-label={isAr ? "Switch to English" : "التبديل للعربية"}
+          >
+            {isAr ? "EN" : "AR"}
+          </button>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? (isAr ? "تفعيل الوضع الفاتح" : "Switch to light mode") : (isAr ? "تفعيل الوضع الداكن" : "Switch to dark mode")}
+          >
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
+        </div>
 
         <nav className="sidebar__nav" aria-label={isAr ? "الأقسام" : "Sections"}>
           {sections.map((section) => {
