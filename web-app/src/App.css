@@ -4,12 +4,13 @@
   min-height: 100vh;
 }
 
-/* ===================== القائمة الجانبية (يمين) ===================== */
+/* ===================== القائمة الجانبية ===================== */
 .sidebar {
   width: 300px;
   flex-shrink: 0;
   background: var(--surface);
-  border-left: 1px solid var(--border); /* الحد على اليسار في RTL */
+  /* logical: حد على الجانب الداخلي (يسار في RTL، يمين في LTR) */
+  border-inline-start: 1px solid var(--border);
   padding: 20px 16px;
   height: 100vh;
   position: sticky;
@@ -68,32 +69,6 @@
   gap: 4px;
 }
 
-/* LTR overrides when English is active */
-:root[lang="en"] body {
-  direction: ltr;
-  text-align: left;
-}
-:root[lang="en"] .sidebar {
-  border-left: none;
-  border-right: 1px solid var(--border);
-}
-:root[lang="en"] .lesson__toc ol {
-  padding-left: 22px;
-  padding-right: 0;
-}
-:root[lang="en"] .block-list {
-  padding-left: 8px;
-  padding-right: 0;
-}
-:root[lang="en"] .block-list li {
-  padding: 6px 0 6px 26px;
-}
-:root[lang="en"] .block-list li::before {
-  content: "▶";
-  right: auto;
-  left: 0;
-}
-
 .nav-item {
   display: flex;
   align-items: center;
@@ -106,13 +81,10 @@
   color: var(--text-muted);
   font-family: inherit;
   font-size: 15px;
-  text-align: right;
+  /* logical: النص يبدأ من حافة البداية (يمين RTL، يسار LTR) */
+  text-align: start;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
-}
-
-:root[lang="en"] .nav-item {
-  text-align: left;
 }
 .nav-item:hover {
   background: var(--surface-2);
@@ -246,7 +218,8 @@
   color: var(--primary);
 }
 .lesson__toc ol {
-  padding-right: 22px;
+  /* logical: padding على جانب البداية للقائمة المرقّمة */
+  padding-inline-start: 22px;
 }
 .lesson__toc li {
   margin: 4px 0;
@@ -283,21 +256,27 @@
 
 .block-list {
   margin: 12px 0;
-  padding-right: 8px;
+  /* logical: padding من جانب البداية */
+  padding-inline-start: 8px;
   list-style: none;
 }
 .block-list li {
   position: relative;
-  padding: 6px 26px 6px 0;
+  /* logical: padding من جانب البداية لإفساح مكان للـ bullet */
+  padding-block: 6px;
+  padding-inline-start: 26px;
   font-size: 17px;
 }
 .block-list li::before {
-  content: "◀";
+  content: "›";
   position: absolute;
-  right: 0;
+  /* logical: bullet على حافة البداية */
+  inset-inline-start: 0;
   top: 9px;
   color: var(--primary);
-  font-size: 11px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 /* كتل الكود — تبقى من اليسار لليمين */
@@ -311,7 +290,8 @@
 .code-copy {
   position: absolute;
   top: 10px;
-  right: 12px;
+  /* logical: زر النسخ على الحافة الخارجية */
+  inset-inline-end: 12px;
   z-index: 1;
   background: var(--surface-2);
   color: var(--text-muted);
@@ -322,7 +302,8 @@
   font-size: 12px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
-  direction: rtl;
+  /* الكود دايماً LTR حتى داخل صفحة RTL */
+  direction: ltr;
 }
 .code-copy:hover {
   background: var(--primary);
@@ -339,7 +320,9 @@
   background: #0d1117;
   border: 1px solid #30363d;
   border-radius: var(--radius);
-  padding: 20px 80px 20px 24px;
+  /* logical: padding يمين أكبر لإفساح مكان لزر النسخ */
+  padding: 20px;
+  padding-inline-end: 80px;
   margin: 16px 0;
   overflow-x: auto;
   font-size: 14.5px;
@@ -412,7 +395,8 @@
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  text-align: right;
+  /* logical: النص من جانب البداية */
+  text-align: start;
   cursor: pointer;
 }
 .qa__question:hover {
@@ -489,22 +473,97 @@
   margin-bottom: 10px;
 }
 
+/* قسم خطأ التحميل */
+.section-error {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+}
+.section-error__emoji {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 16px;
+}
+.section-error h2 {
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.section-error__retry {
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: var(--primary);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.section-error__retry:hover {
+  background: var(--primary-dark);
+}
+
+/* خطأ عام على مستوى التطبيق (Error Boundary) */
+.app-error {
+  max-width: 480px;
+  margin: 80px auto;
+  text-align: center;
+  padding: 0 20px;
+  color: var(--text-muted);
+}
+.app-error__emoji {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 16px;
+}
+.app-error h2 {
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.app-error__retry {
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: var(--primary);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.app-error__retry:hover {
+  background: var(--primary-dark);
+}
+
 /* ===================== الموبايل ===================== */
 @media (max-width: 860px) {
   .topbar {
     display: flex;
   }
+
   .sidebar {
     position: fixed;
-    right: 0;
+    /* logical: الـ sidebar يخرج من الحافة الداخلية (يمين RTL، يسار LTR) */
+    inset-inline-end: 0;
     top: 0;
     z-index: 30;
-    transform: translateX(100%); /* مخفية على اليمين */
+    /* --sidebar-slide: 100% في RTL (يتحرك لليمين)، -100% في LTR (لليسار) */
+    --sidebar-slide: 100%;
+    transform: translateX(var(--sidebar-slide));
     transition: transform 0.25s ease;
+  }
+  /* في وضع LTR الـ sidebar على اليسار فيتحرك للشمال */
+  [dir="ltr"] .sidebar {
+    --sidebar-slide: -100%;
   }
   .sidebar--open {
     transform: translateX(0);
   }
+
   .overlay {
     display: block;
     position: fixed;

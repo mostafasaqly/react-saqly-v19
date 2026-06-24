@@ -2,16 +2,21 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
+    <!-- Apply saved language before React mounts to avoid an RTL→LTR flash (FOUC) -->
+    <script>
+      (function () {
+        try {
+          var lang = localStorage.getItem("lang") || "ar";
+          var el = document.documentElement;
+          el.lang = lang;
+          el.dir = lang === "ar" ? "rtl" : "ltr";
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/react.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>كورس رياكت 19</title>
-    <!-- Arabic-friendly font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Cairo font is self-hosted in /public/fonts/ — no external request -->
   </head>
   <body>
     <div id="root"></div>

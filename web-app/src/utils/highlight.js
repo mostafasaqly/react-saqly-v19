@@ -68,7 +68,7 @@ const TOKENS = [
   { type: "tag",     re: /(<\/?[A-Za-z][A-Za-z0-9.]*|\/?>)/g },
   { type: "number",  re: /\b(\d+\.?\d*)\b/g },
   { type: "keyword", re: /\b(import|export|default|from|const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|class|extends|super|this|typeof|instanceof|in|of|async|await|try|catch|finally|throw|null|undefined|true|false|void|delete|yield|static|get|set)\b/g },
-  { type: "builtin", re: /\b(useState|useEffect|useRef|useContext|useMemo|useCallback|useReducer|useId|useOptimistic|useActionState|useFormStatus|useLocation|useParams|useNavigate|useDispatch|useSelector|createSlice|createAsyncThunk|configureStore|createContext)\b/g },
+  { type: "builtin", re: /\b(useState|useEffect|useRef|useContext|useMemo|useCallback|useReducer|useId|useOptimistic|useActionState|useFormStatus|useTransition|useDeferredValue|useLayoutEffect|useSyncExternalStore|use|useLocation|useParams|useNavigate|useSearchParams|useDispatch|useSelector|createSlice|createAsyncThunk|configureStore|createContext|createRoot)\b/g },
   { type: "attr",    re: /\b([a-zA-Z][a-zA-Z0-9]*)(?=\s*=\s*[{"'])/g },
   { type: "fn",      re: /\b([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()/g },
   { type: "punct",   re: /(=>|[{}()[\];,.:?])/g },

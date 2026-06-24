@@ -20,7 +20,7 @@ function App() {
   const activeNavRef = useRef(null);
   const isAr = lang === "ar";
 
-  const { section: activeSection, loading } = useSectionContent(activeId);
+  const { section: activeSection, loading, error, retry } = useSectionContent(activeId);
   const activeMeta = sections.find((s) => s.id === activeId) ?? sections[0];
 
   // sync URL hash → state (back/forward buttons)
@@ -31,6 +31,14 @@ function App() {
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
+
+  // normalize an invalid/stale hash so the URL matches what's shown
+  useEffect(() => {
+    const expected = `#section-${activeId}`;
+    if (window.location.hash !== expected) {
+      window.history.replaceState(null, "", expected);
+    }
+  }, [activeId]);
 
   // update document title when section or language changes
   useEffect(() => {
@@ -55,11 +63,15 @@ function App() {
   function selectSection(id) {
     window.location.hash = `#section-${id}`;
     setActiveId(id);
-    window.scrollTo({ top: 0, behavior: "instant" });
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   return (
     <div className="layout">
+      <a href="#main-content" className="skip-link">
+        {isAr ? "تخطَّ إلى المحتوى" : "Skip to content"}
+      </a>
+
       <Sidebar
         activeId={activeId}
         onSelect={selectSection}
@@ -68,7 +80,7 @@ function App() {
         activeNavRef={activeNavRef}
       />
 
-      <main className="content" id="main-content">
+      <main className="content" id="main-content" tabIndex={-1}>
         <div className="topbar">
           <button
             className="topbar__menu"
@@ -88,6 +100,19 @@ function App() {
               <div className="section-loading__bar" />
               <div className="section-loading__bar section-loading__bar--short" />
               <div className="section-loading__bar section-loading__bar--medium" />
+            </div>
+          ) : error ? (
+            <div className="section-error" role="alert">
+              <span className="section-error__emoji" aria-hidden="true">⚠️</span>
+              <h2>{isAr ? "تعذّر تحميل القسم" : "Couldn't load this section"}</h2>
+              <p>
+                {isAr
+                  ? "حدث خطأ أثناء تحميل المحتوى. تحقّق من اتصالك وحاول مجدّداً."
+                  : "Something went wrong loading the content. Check your connection and try again."}
+              </p>
+              <button className="section-error__retry" onClick={retry}>
+                {isAr ? "إعادة المحاولة" : "Try again"}
+              </button>
             </div>
           ) : (
             <LessonContent section={activeSection} />
