@@ -173,5 +173,176 @@ export default {
       answer: "useMemo يخزّن قيمة محسوبة؛ useCallback يخزّن دالة.",
     },
   ],
-  titleEn: "Performance }; Best Practices",
+  titleEn: "Performance & Best Practices",
+  levelEn: "Intermediate to Advanced",
+  lessonsEn: [
+    "React Rendering Basics",
+    "Why Components Re-render",
+    "Avoiding Unnecessary Re-renders",
+    "React.memo",
+    "useMemo",
+    "useCallback",
+    "memo vs useMemo vs useCallback",
+    "When NOT to Use Memoization",
+    "The React Compiler Overview",
+    "Code Splitting with Lazy Loading",
+    "lazy and Suspense",
+    "Folder Structure Best Practices",
+    "Clean Component Design",
+  ],
+  introEn:
+    "Your app works — now let's make it fast and clean. This section explains why React re-renders, how to avoid unnecessary work, how the React 19 compiler handles most of it automatically, and how to organize your project well.",
+  contentEn: [
+    { type: "heading", text: "1. React Rendering Basics" },
+    {
+      type: "paragraph",
+      text: "'Rendering' means React runs the component function to know what the UI looks like. Rendering is usually cheap. The cost comes when many components render too often without reason.",
+    },
+    {
+      type: "tip",
+      text: "Don't optimize early. Most apps are fast without tricks. Measure first (Profiler), then optimize the slow parts.",
+    },
+
+    { type: "heading", text: "2. Why Components Re-render" },
+    {
+      type: "list",
+      items: [
+        "Their state changed",
+        "Their props changed",
+        "The parent re-rendered — all children re-render even if props didn't change",
+      ],
+    },
+
+    { type: "heading", text: "3. Avoiding Unnecessary Re-renders" },
+    {
+      type: "list",
+      items: [
+        "React.memo — skips re-rendering a component if props didn't change",
+        "useMemo — caches an expensive computed value",
+        "useCallback — caches a function so it's not recreated every render",
+      ],
+    },
+
+    { type: "heading", text: "4. React.memo" },
+    {
+      type: "code",
+      code: `const ExpensiveList = memo(function ExpensiveList({ items }) {
+  return <ul>{items.map((i) => <li key={i.id}>{i.name}</li>)}</ul>;
+});`,
+    },
+
+    { type: "heading", text: "5. useMemo" },
+    {
+      type: "code",
+      code: `const filtered = useMemo(() => {
+  return products.filter((p) => p.name.includes(search));
+}, [products, search]);`,
+    },
+
+    { type: "heading", text: "6. useCallback" },
+    {
+      type: "code",
+      code: `const handleClick = useCallback(() => {
+  console.log("clicked");
+}, []); // no deps → never recreated`,
+    },
+
+    { type: "heading", text: "7. memo vs useMemo vs useCallback" },
+    {
+      type: "list",
+      items: [
+        "memo: wraps a component — when props are stable",
+        "useMemo: caches a value — when a calculation is expensive and repeated",
+        "useCallback: caches a function — when passing a function to a memo child",
+      ],
+    },
+    {
+      type: "tip",
+      text: "Shortcut: useCallback(fn, deps) equals useMemo(() => fn, deps).",
+    },
+
+    { type: "heading", text: "8. When NOT to Use Memoization" },
+    {
+      type: "list",
+      items: [
+        "If the component/calculation is already cheap (most are)",
+        "If props change on every render anyway",
+        "If you added it 'just in case' without measuring",
+      ],
+    },
+    {
+      type: "warning",
+      text: "Premature optimization makes code harder to read with no real benefit. Measure first.",
+    },
+
+    { type: "heading", text: "9. The React Compiler Overview" },
+    {
+      type: "paragraph",
+      text: "The React compiler is a build-time tool that automatically does all the memo/useMemo/useCallback work for you. It reads your components, understands the dependencies, and adds optimization itself. You write simpler code; the compiler makes it fast.",
+    },
+
+    { type: "heading", text: "10. Code Splitting with Lazy Loading" },
+    {
+      type: "code",
+      code: `const Dashboard = lazy(() => import("./Dashboard.jsx"));`,
+    },
+    {
+      type: "paragraph",
+      text: "Load the component only when needed. Very powerful with routing: lazy-load each route.",
+    },
+
+    { type: "heading", text: "11. lazy and Suspense" },
+    {
+      type: "code",
+      code: `<Suspense fallback={<p>Loading page...</p>}>
+  <Dashboard />
+</Suspense>`,
+    },
+
+    { type: "heading", text: "12. Folder Structure Best Practices" },
+    {
+      type: "code",
+      code: `src/
+├── components/   ← reusable UI pieces
+├── pages/        ← one component per route
+├── features/     ← feature folders (cart/, auth/)
+├── hooks/        ← custom hooks
+├── services/     ← API calls
+├── store/        ← Redux store and slices
+└── utils/        ← small helpers`,
+    },
+
+    { type: "heading", text: "13. Clean Component Design" },
+    {
+      type: "list",
+      items: [
+        "One job per component",
+        "Small and focused",
+        "Props in, events out",
+        "Separate logic from UI (custom hooks)",
+        "Derive don't duplicate, and name things clearly",
+      ],
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "Components re-render on state change, props change, or parent re-render",
+        "memo skips a component, useMemo caches a value, useCallback caches a function",
+        "Don't optimize the cheap — measure first",
+        "The React compiler automates memoization; lazy splits the code",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. Name three reasons a component re-renders.",
+      answer: "Its state changed, its props changed, or its parent re-rendered.",
+    },
+    {
+      type: "qa",
+      question: "2. What is the difference between useMemo and useCallback?",
+      answer: "useMemo caches a computed value; useCallback caches a function.",
+    },
+  ],
 };

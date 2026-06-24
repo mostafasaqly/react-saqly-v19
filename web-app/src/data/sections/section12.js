@@ -186,5 +186,188 @@ axios.create({ baseURL: import.meta.env.VITE_API_URL });`,
       answer: "في response.data (غالباً نفكّكها: const { data } = await axios.get(url)).",
     },
   ],
-  titleEn: "Data Fetching }; Axios",
+  titleEn: "Data Fetching & Axios",
+  levelEn: "Intermediate",
+  lessonsEn: [
+    "Fetch API Basics",
+    "Loading and Error States",
+    "Introduction to Axios",
+    "Installing Axios",
+    "GET Requests with Axios",
+    "POST Requests with Axios",
+    "PUT and PATCH Requests",
+    "DELETE Requests",
+    "Creating a Reusable API Service",
+    "Working with REST APIs",
+    "CRUD Operations",
+    "API Error Handling",
+    "Environment Variables for API URLs",
+    "Reusable Data Fetching Hook",
+  ],
+  introEn:
+    "Most apps display data from a server. We start with the built-in fetch, then learn Axios — a popular library that makes requests shorter and cleaner. We finish with reusable services and hooks.",
+  contentEn: [
+    { type: "heading", text: "1. Fetch API Basics" },
+    {
+      type: "paragraph",
+      text: "fetch is a built-in browser function for talking to servers. It returns a Promise so we use async/await. Two steps always: await fetch(url) then await res.json().",
+    },
+    {
+      type: "warning",
+      text: "fetch does NOT throw on 404 or 500. You must check res.ok yourself.",
+    },
+
+    { type: "heading", text: "2. Loading and Error States" },
+    {
+      type: "paragraph",
+      text: "Always handle the three states: loading, error, data.",
+    },
+    {
+      type: "code",
+      code: `if (loading) return <p>Loading...</p>;
+if (error) return <p>Error: {error}</p>;
+return <DataView data={data} />;`,
+    },
+
+    { type: "heading", text: "3. Introduction to Axios" },
+    {
+      type: "paragraph",
+      text: "Axios is a small library that simplifies requests: auto-parses JSON (data is in res.data), throws on errors automatically, shorter POST, and supports a base URL.",
+    },
+    {
+      type: "code",
+      code: `// fetch
+const res = await fetch(url);
+if (!res.ok) throw new Error("Failed");
+const data = await res.json();
+
+// axios — shorter, errors thrown automatically
+const { data } = await axios.get(url);`,
+    },
+
+    { type: "heading", text: "4. Installing Axios" },
+    { type: "code", code: `npm install axios` },
+
+    { type: "heading", text: "5. GET Requests with Axios" },
+    {
+      type: "code",
+      code: `const response = await axios.get(url);
+return response.data; // JSON already parsed`,
+    },
+
+    { type: "heading", text: "6. POST Requests with Axios" },
+    {
+      type: "paragraph",
+      text: "Pass the body as a second argument — Axios converts it and sets headers automatically.",
+    },
+    { type: "code", code: `const { data } = await axios.post(url, { title });` },
+
+    { type: "heading", text: "7. PUT and PATCH Requests" },
+    {
+      type: "code",
+      code: `await axios.put(\`\${API}/posts/1\`, { title, body }); // full replace
+await axios.patch(\`\${API}/posts/1\`, { title });       // partial update`,
+    },
+
+    { type: "heading", text: "8. DELETE Requests" },
+    { type: "code", code: `await axios.delete(\`\${API}/posts/\${id}\`);` },
+
+    { type: "heading", text: "9. Creating a Reusable API Service" },
+    {
+      type: "paragraph",
+      text: "Create one axios instance with a base URL, then build small functions on top of it. The base URL lives in one place.",
+    },
+    {
+      type: "code",
+      code: `const api = axios.create({ baseURL: "https://..." });
+export const getPosts = () => api.get("/posts").then((r) => r.data);`,
+    },
+
+    { type: "heading", text: "10. Working with REST APIs" },
+    {
+      type: "list",
+      items: [
+        "GET → read → axios.get(url)",
+        "POST → create → axios.post(url, data)",
+        "PUT/PATCH → update → axios.put(url, data)",
+        "DELETE → delete → axios.delete(url)",
+      ],
+    },
+
+    { type: "heading", text: "11. CRUD Operations" },
+    {
+      type: "paragraph",
+      text: "CRUD = Create, Read, Update, Delete — all four together with your service. We use them fully in the projects (Sections 17–19).",
+    },
+
+    { type: "heading", text: "12. API Error Handling" },
+    {
+      type: "code",
+      code: `try {
+  const { data } = await axios.get("/posts");
+} catch (err) {
+  if (err.response) setError(\`Server error: \${err.response.status}\`);
+  else if (err.request) setError("No response. Check your connection.");
+  else setError("Something went wrong.");
+}`,
+    },
+
+    { type: "heading", text: "13. Environment Variables for API URLs" },
+    {
+      type: "paragraph",
+      text: "The API URL differs between your machine and production. Don't hardcode it. In Vite the variable must start with VITE_.",
+    },
+    {
+      type: "code",
+      code: `// .env
+VITE_API_URL=https://...
+
+// Usage:
+axios.create({ baseURL: import.meta.env.VITE_API_URL });`,
+    },
+    {
+      type: "warning",
+      text: "Environment variables on the frontend are visible to users — public values only, no secrets.",
+    },
+
+    { type: "heading", text: "14. Reusable Data Fetching Hook" },
+    {
+      type: "code",
+      code: `function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    let active = true;
+    axios.get(url)
+      .then((res) => active && setData(res.data))
+      .catch((err) => active && setError(err.message))
+      .finally(() => active && setLoading(false));
+    return () => { active = false; };
+  }, [url]);
+  return { data, loading, error };
+}`,
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "fetch returns a Promise; check res.ok",
+        "Axios is shorter: data in res.data, parses JSON, throws on errors",
+        "GET/POST/PUT/DELETE cover CRUD",
+        "Put all calls in one service; API URL in .env",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. Name two things Axios does that fetch doesn't.",
+      answer: "Auto-parses JSON and auto-throws on HTTP errors (and you can pass the body directly).",
+    },
+    {
+      type: "qa",
+      question: "2. Where is the response data in an Axios call?",
+      answer: "In response.data (usually destructured: const { data } = await axios.get(url)).",
+    },
+  ],
 };

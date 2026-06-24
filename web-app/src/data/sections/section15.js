@@ -165,4 +165,165 @@ export const deleteUser = createAsyncThunk("users/delete", async (id) => {
     },
   ],
   titleEn: "Async Redux with createAsyncThunk",
+  levelEn: "Advanced",
+  lessonsEn: [
+    "Why Async Logic in Redux?",
+    "Understanding pending, fulfilled, and rejected",
+    "Creating Async Actions",
+    "Fetching Data from an API",
+    "The isLoading State",
+    "The isError State",
+    "The Error Message State",
+    "Handling API Success",
+    "Handling API Failure",
+    "CRUD Operations with createAsyncThunk",
+    "Using Axios with Redux Toolkit",
+    "Refactoring Async Redux Code",
+  ],
+  introEn:
+    "Redux slices update state instantly. But fetching data takes time and can fail. createAsyncThunk is the Redux Toolkit tool for handling async work — loading, success, and failure — cleanly inside the store.",
+  contentEn: [
+    { type: "heading", text: "1. Why Async Logic in Redux?" },
+    {
+      type: "paragraph",
+      text: "Regular reducers must be synchronous — they take state and return the next state immediately. But fetching is async. A thunk is a function that can do async work and then dispatch actions when finished. createAsyncThunk builds one for you.",
+    },
+
+    { type: "heading", text: "2. Understanding pending, fulfilled, and rejected" },
+    {
+      type: "list",
+      items: [
+        "pending: request started → show loading indicator",
+        "fulfilled: request succeeded → save the data",
+        "rejected: request failed → show error",
+      ],
+    },
+
+    { type: "heading", text: "3. Creating Async Actions" },
+    {
+      type: "code",
+      code: `export const fetchUsers = createAsyncThunk(
+  "users/fetchUsers",
+  async () => {
+    const { data } = await axios.get(API);
+    return data; // becomes payload on success
+  }
+);`,
+    },
+
+    { type: "heading", text: "4. Fetching Data from an API" },
+    {
+      type: "paragraph",
+      text: "In the slice, handle the three phases in extraReducers.",
+    },
+    {
+      type: "code",
+      code: `extraReducers: (builder) => {
+  builder
+    .addCase(fetchUsers.pending, (state) => { state.isLoading = true; })
+    .addCase(fetchUsers.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.list = action.payload;
+    })
+    .addCase(fetchUsers.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.error.message;
+    });
+}`,
+    },
+
+    { type: "heading", text: "5. The isLoading State" },
+    {
+      type: "code",
+      code: `.addCase(fetchUsers.pending, (state) => { state.isLoading = true; })
+// In the component:
+if (isLoading) return <p>Loading...</p>;`,
+    },
+
+    { type: "heading", text: "6. The isError State" },
+    {
+      type: "code",
+      code: `.addCase(fetchUsers.rejected, (state) => { state.isError = true; })`,
+    },
+
+    { type: "heading", text: "7. The Error Message State" },
+    {
+      type: "code",
+      code: `.addCase(fetchUsers.rejected, (state, action) => {
+  state.message = action.error.message;
+});`,
+    },
+    {
+      type: "tip",
+      text: "isLoading + isError + message + data = complete, professional async state.",
+    },
+
+    { type: "heading", text: "8. Handling API Success" },
+    {
+      type: "code",
+      code: `.addCase(fetchUsers.fulfilled, (state, action) => {
+  state.isLoading = false;
+  state.list = action.payload;
+});`,
+    },
+
+    { type: "heading", text: "9. Handling API Failure" },
+    {
+      type: "paragraph",
+      text: "On rejected: stop loading, set the error flag, and save the message. Axios throwing on bad status makes this automatic.",
+    },
+
+    { type: "heading", text: "10. CRUD Operations with createAsyncThunk" },
+    {
+      type: "code",
+      code: `export const addUser = createAsyncThunk("users/add", async (newUser) => {
+  const { data } = await axios.post(API, newUser);
+  return data;
+});
+
+export const deleteUser = createAsyncThunk("users/delete", async (id) => {
+  await axios.delete(\`\${API}/\${id}\`);
+  return id; // return id to remove it in the reducer
+});`,
+    },
+
+    { type: "heading", text: "11. Using Axios with Redux Toolkit" },
+    {
+      type: "paragraph",
+      text: "Axios fits thunks perfectly: it parses JSON (data is ready to return), and throws on errors so rejected fires automatically.",
+    },
+
+    { type: "heading", text: "12. Refactoring Async Redux Code" },
+    {
+      type: "list",
+      items: [
+        "Separate files: thunks, slice, Axios service",
+        "Reuse the API service instead of calling axios in every thunk",
+        "Unified state shape: { data, isLoading, isError, message }",
+        "Use rejectWithValue for custom error messages",
+      ],
+    },
+
+    { type: "heading", text: "✅ Section Summary" },
+    {
+      type: "list",
+      items: [
+        "Reducers are synchronous; thunks handle async work",
+        "createAsyncThunk auto-dispatches pending/fulfilled/rejected",
+        "Handle them in extraReducers",
+        "Track isLoading, isError, message, and data",
+      ],
+    },
+    {
+      type: "qa",
+      question: "1. Why can't you fetch directly inside a regular reducer?",
+      answer: "Reducers must be synchronous — they return the next state immediately. Fetching is async, so it goes in a thunk.",
+    },
+    {
+      type: "qa",
+      question: "2. What are the three phases dispatched by createAsyncThunk?",
+      answer: "pending (started), fulfilled (succeeded), rejected (failed).",
+    },
+  ],
 };
