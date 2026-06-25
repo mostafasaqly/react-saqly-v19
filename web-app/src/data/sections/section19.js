@@ -1,20 +1,20 @@
-// القسم 19 — المشروع الثالث: متجر مصغّر بـ Redux
+﻿// القسم 19 — المشروع الثالث: Store مصغّر بـ Redux
 export default {
   id: 19,
-  title: "المشروع الثالث: متجر مصغّر بـ Redux",
+  title: "المشروع الثالث: Store مصغّر بـ Redux",
   level: "مشروع",
   lessons: [
     "نظرة عامة على المشروع",
     "إنشاء صفحة المنتجات",
-    "مكوّن بطاقة المنتج",
+    "Component بطاقة المنتج",
     "جلب المنتجات من API",
-    "إنشاء شريحة السلّة",
+    "إنشاء Slice السلّة",
     "إضافة منتجات للسلّة",
     "قراءة السلّة بـ useSelector",
     "تحديث السلّة بـ useDispatch",
     "حذف عناصر من السلّة",
-    "إنشاء شريحة المفضّلات",
-    "المفضّلات بالسياق أو Redux",
+    "إنشاء Slice المفضّلات",
+    "المفضّلات بContext أو Redux",
     "منتجات غير متزامنة بـ createAsyncThunk",
     "واجهة التحميل والخطأ",
     "إجمالي السلّة بـ useMemo",
@@ -22,7 +22,7 @@ export default {
     "ملفات المشروع الكاملة",
   ],
   intro:
-    "مشروعنا الثالث والأكبر: متجر صغير. يجلب المنتجات من API بـ Redux غير المتزامن، ويتيح إضافة عناصر للسلّة وقائمة مفضّلات، ويعرض إجمالي سلّة حيّ. يجمع Redux Toolkit والـ thunks وكل ما سبق.",
+    "مشروعنا الثالث والأكبر: Store صغير. يجلب المنتجات من API بـ Redux غير المتزامن، ويتيح إضافة عناصر للسلّة وقائمة مفضّلات، ويعرض إجمالي سلّة حيّ. يجمع Redux Toolkit والـ thunks وكل ما سبق.",
   content: [
     { type: "heading", text: "1. نظرة عامة على المشروع" },
     {
@@ -53,13 +53,13 @@ export default {
     },
     {
       type: "tip",
-      text: "شريحة واحدة = اهتمام واحد. المنتجات والسلّة والمفضّلات شرائح منفصلة لتتطوّر كل منها باستقلال.",
+      text: "Slice واحدة = اهتمام واحد. المنتجات والسلّة والمفضّلات Slices منفصلة لتتطوّر كل منها باستقلال.",
     },
 
     { type: "heading", text: "2. إنشاء صفحة المنتجات" },
     {
       type: "paragraph",
-      text: "Products.jsx هي الصفحة الرئيسية. تُطلق الـ thunk غير المتزامن عند التركيب وتقرأ قائمة المنتجات من متجر Redux.",
+      text: "Products.jsx هي الصفحة الرئيسية. تُطلق الـ thunk غير المتزامن عند التركيب وتقرأ قائمة المنتجات من Store Redux.",
     },
     {
       type: "code",
@@ -71,10 +71,10 @@ export default {
 }`,
     },
 
-    { type: "heading", text: "3. مكوّن بطاقة المنتج" },
+    { type: "heading", text: "3. Component بطاقة المنتج" },
     {
       type: "paragraph",
-      text: "ProductCard يعرض منتجاً واحداً ويتيح إضافته للسلّة أو تبديله كمفضّل. يُطلق الإجراءات (dispatch) — ولا يملك أي حالة.",
+      text: "ProductCard يعرض منتجاً واحداً ويتيح إضافته للسلّة أو تبديله كمفضّل. يُطلق Actions (dispatch) — ولا يملك أي حالة.",
     },
     {
       type: "code",
@@ -95,7 +95,7 @@ export default {
     { type: "heading", text: "4. جلب المنتجات من API" },
     {
       type: "paragraph",
-      text: "createAsyncThunk يدير دورة الحياة غير المتزامنة تلقائياً: pending ← fulfilled ← rejected. تكتب المنطق غير المتزامن مرة واحدة، ويولّد Redux أنواع الإجراءات.",
+      text: "createAsyncThunk يدير Lifecycle غير المتزامنة تلقائياً: pending ← fulfilled ← rejected. تكتب المنطق غير المتزامن مرة واحدة، ويولّد Redux أنواع Actions.",
     },
     {
       type: "code",
@@ -106,13 +106,13 @@ export default {
     },
     {
       type: "tip",
-      text: "أول وسيط لـ createAsyncThunk (\"products/fetch\") هو بادئة نوع الإجراء. يولّد Redux Toolkit تلقائياً products/fetch/pending و /fulfilled و /rejected.",
+      text: "أول وسيط لـ createAsyncThunk (\"products/fetch\") هو بادئة نوع Action. يولّد Redux Toolkit تلقائياً products/fetch/pending و /fulfilled و /rejected.",
     },
 
-    { type: "heading", text: "5. إنشاء شريحة السلّة" },
+    { type: "heading", text: "5. إنشاء Slice السلّة" },
     {
       type: "paragraph",
-      text: "createSlice يولّد مُنشئات الإجراءات والمختزِل في مكان واحد. ويحدّد initialState شكل حالة السلّة بالضبط.",
+      text: "createSlice يولّد مُنشئات Actions وReducer في مكان واحد. ويحدّد initialState شكل حالة السلّة بالضبط.",
     },
     {
       type: "code",
@@ -124,7 +124,7 @@ export default {
     },
     {
       type: "tip",
-      text: "Redux Toolkit يستخدم Immer تحت الغطاء، فيمكنك تعديل الحالة مباشرةً داخل المختزِل — ويُترجَم إلى تحديثات غير قابلة للتغيير تلقائياً.",
+      text: "Redux Toolkit يستخدم Immer تحت الغطاء، فيمكنك تعديل الحالة مباشرةً داخل Reducer — ويُترجَم إلى تحديثات غير قابلة للتغيير تلقائياً.",
     },
 
     { type: "heading", text: "6. إضافة منتجات للسلّة" },
@@ -144,7 +144,7 @@ export default {
     { type: "heading", text: "7. قراءة السلّة بـ useSelector" },
     {
       type: "paragraph",
-      text: "useSelector يشترك في متجر Redux. كلما تغيّرت الشريحة المختارة من الحالة، يُعاد رسم المكوّن تلقائياً.",
+      text: "useSelector يشترك في Store Redux. كلما تغيّرت Slice المختارة من الحالة، يُعاد رسم Component تلقائياً.",
     },
     {
       type: "code",
@@ -154,7 +154,7 @@ export default {
     { type: "heading", text: "8. تحديث السلّة بـ useDispatch" },
     {
       type: "paragraph",
-      text: "useDispatch يعطيك دالة dispatch الخاصة بالمتجر. ناديها بمُنشئ إجراء لتحديث الحالة. مُنشئات الإجراءات مجرّد دوال تُرجع كائن إجراء.",
+      text: "useDispatch يعطيك دالة dispatch الخاصة بStore. ناديها بمُنشئ Action لتحديث الحالة. مُنشئات Actions مجرّد دوال تُرجع كائن Action.",
     },
     {
       type: "code",
@@ -174,7 +174,7 @@ dispatch(removeFromCart(product.id));`,
 }`,
     },
 
-    { type: "heading", text: "10. إنشاء شريحة المفضّلات" },
+    { type: "heading", text: "10. إنشاء Slice المفضّلات" },
     {
       type: "code",
       code: `toggleFavorite: (state, action) => {
@@ -183,10 +183,10 @@ dispatch(removeFromCart(product.id));`,
 }`,
     },
 
-    { type: "heading", text: "11. المفضّلات بالسياق أو Redux" },
+    { type: "heading", text: "11. المفضّلات بContext أو Redux" },
     {
       type: "paragraph",
-      text: "السياق يصلح لأن المفضّلات بيانات بسيطة. لكن Redux أنسب هنا لأن التطبيق يستخدمه أصلاً للسلّة والمنتجات. إبقاء كل الحالة العامة في مكان واحد أنظف.",
+      text: "Context يصلح لأن المفضّلات بيانات بسيطة. لكن Redux أنسب هنا لأن التطبيق يستخدمه أصلاً للسلّة والمنتجات. إبقاء كل الحالة العامة في مكان واحد أنظف.",
     },
     {
       type: "tip",
@@ -196,7 +196,7 @@ dispatch(removeFromCart(product.id));`,
     { type: "heading", text: "12. منتجات غير متزامنة بـ createAsyncThunk" },
     {
       type: "paragraph",
-      text: "اربط دورة حياة الـ thunk (pending / fulfilled / rejected) بالشريحة عبر extraReducers. هكذا يعرف Redux متى يحدّث isLoading و items عند انتهاء الجلب.",
+      text: "اربط دورة حياة الـ thunk (pending / fulfilled / rejected) بSlice عبر extraReducers. هكذا يعرف Redux متى يحدّث isLoading و items عند انتهاء الجلب.",
     },
     {
       type: "code",
@@ -209,7 +209,7 @@ dispatch(removeFromCart(product.id));`,
     { type: "heading", text: "13. واجهة التحميل والخطأ" },
     {
       type: "paragraph",
-      text: "اقرأ isLoading و isError من المتجر واعرض الواجهة المناسبة. ارجع مبكّراً لكي تُرسَم شبكة المنتجات فقط عند جاهزية البيانات.",
+      text: "اقرأ isLoading و isError من Store واعرض الواجهة المناسبة. ارجع مبكّراً لكي تُرسَم شبكة المنتجات فقط عند جاهزية البيانات.",
     },
     {
       type: "code",
@@ -238,8 +238,8 @@ if (isError) return <p>خطأ: {message}</p>;`,
     {
       type: "list",
       items: [
-        "كل شريحة في ملفها (products، cart، favorites)",
-        "التحميل/الخطأ غير المتزامن في المتجر عبر الـ thunks",
+        "كل Slice في ملفها (products، cart، favorites)",
+        "التحميل/الخطأ غير المتزامن في Store عبر الـ thunks",
         "إجمالي السلّة مشتقّ بـ useMemo",
         "كل الحالة العامة في نظام واحد (Redux) للاتّساق",
       ],
@@ -248,19 +248,19 @@ if (isError) return <p>خطأ: {message}</p>;`,
     { type: "heading", text: "🎉 ما بنيته" },
     {
       type: "paragraph",
-      text: "جوهر واجهة متجر إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي حيّ، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة. أضِف مصادقة وإتمام شراء وخادماً، فيصير تطبيق إنتاج.",
+      text: "جوهر واجهة Store إلكتروني حقيقي: منتجات من API، وسلّة عاملة بكمّيات وإجمالي حيّ، ومفضّلات — كلها مدعومة بـ Redux Toolkit والـ thunks غير المتزامنة. أضِف مصادقة وإتمام شراء وخادماً، فيصير تطبيق إنتاج.",
     },
     {
       type: "qa",
       question: "1. لماذا نستخدم createAsyncThunk بدلاً من الجلب داخل useEffect؟",
       answer:
-        "‏createAsyncThunk يتكامل مع Redux: حالة التحميل/الخطأ تعيش في المتجر ويمكن الوصول إليها من أي مكوّن. أما useEffect فيُبقي منطق الجلب محلياً في مكوّن واحد ويتطلّب إدارة حالة التحميل/الخطأ يدوياً.",
+        "‏createAsyncThunk يتكامل مع Redux: حالة التحميل/الخطأ تعيش في Store ويمكن الوصول إليها من أي Component. أما useEffect فيُبقي منطق الجلب محلياً في Component واحد ويتطلّب إدارة حالة التحميل/الخطأ يدوياً.",
     },
     {
       type: "qa",
-      question: "2. لماذا يُحسَب إجمالي السلّة بـ useMemo بدلاً من تخزينه في شريحة cartTotal؟",
+      question: "2. لماذا يُحسَب إجمالي السلّة بـ useMemo بدلاً من تخزينه في Slice cartTotal؟",
       answer:
-        "لأن الإجمالي قابل للاشتقاق دائماً من items. تخزينه منفصلاً يخلق خطر خروجه عن المزامنة مع البيانات الحقيقية. الحالة المشتقّة (المحسوبة من مصدر الحقيقة) أفضل دائماً من الحالة المكرّرة.",
+        "لأن الإجمالي قابل للاشتقاق دائماً من items. تخزينه منفصلاً يخلق خطر خروجه عن المزامنة مع البيانات الحقيقية. Derived State (المحسوبة من مصدر الحقيقة) أفضل دائماً من الحالة المكرّرة.",
     },
 
     { type: "heading", text: "ملفات المشروع الكاملة" },

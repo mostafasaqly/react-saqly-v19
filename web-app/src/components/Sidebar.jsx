@@ -30,7 +30,7 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
           <span className="sidebar__logo" aria-hidden="true">⚛️</span>
           <div>
             <h1 className="sidebar__title">
-              {isAr ? "كورس رياكت 19" : "React 19 Course"}
+              {isAr ? "كورس React 19" : "React 19 Course"}
             </h1>
             <p className="sidebar__subtitle">
               {isAr

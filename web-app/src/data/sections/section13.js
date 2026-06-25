@@ -1,25 +1,25 @@
-// القسم 13 — Suspense وواجهة use في رياكت 19
+﻿// القسم 13 — Suspense وواجهة use في React 19
 export default {
   id: 13,
-  title: "Suspense وواجهة use في رياكت 19",
+  title: "Suspense وواجهة use في React 19",
   level: "متوسط إلى متقدّم",
   lessons: [
     "ما هو Suspense؟",
     "Suspense لواجهة التحميل",
     "حدود Suspense (Boundaries)",
-    "نظرة عامة على خطّاف use",
+    "نظرة عامة على Hook use",
     "استخدام use مع الوعود",
-    "استخدام use مع السياق",
+    "استخدام use مع Context",
     "حدود التحميل والخطأ",
     "أفضل ممارسات Suspense",
   ],
   intro:
-    "في القسم 12 كتبنا علامات التحميل يدوياً. لرياكت طريقة أنظف: Suspense يتيح لمكوّن أن «يتوقّف» أثناء تحميل بياناته، ورياكت يعرض بديلاً نيابةً عنك. ومع واجهة use الجديدة يقلّ الكود كثيراً.",
+    "في القسم 12 كتبنا علامات التحميل يدوياً. لReact طريقة أنظف: Suspense يتيح لComponent أن «يتوقّف» أثناء تحميل بياناته، وReact يعرض بديلاً نيابةً عنك. ومع واجهة use الجديدة يقلّ الكود كثيراً.",
   content: [
     { type: "heading", text: "1. ما هو Suspense؟" },
     {
       type: "paragraph",
-      text: "<Suspense> غلاف. إن كان مكوّن بداخله ينتظر شيئاً (مثل بيانات)، يعرض Suspense تلقائياً بديلاً (fallback) حتى يجهز. المكوّن نفسه لا يحتاج علامة تحميل.",
+      text: "<Suspense> غلاف. إن كان Component بداخله ينتظر شيئاً (مثل بيانات)، يعرض Suspense تلقائياً بديلاً (fallback) حتى يجهز. Component نفسه لا يحتاج علامة تحميل.",
     },
     {
       type: "code",
@@ -53,10 +53,10 @@ export default {
       text: "غلّف كل جزء مستقلّ بحدّ خاصّ به حتى لا يحجب جزء بطيء البقية.",
     },
 
-    { type: "heading", text: "4. نظرة عامة على خطّاف use" },
+    { type: "heading", text: "4. نظرة عامة على Hook use" },
     {
       type: "paragraph",
-      text: "use دالة جديدة في رياكت 19 تقرأ مورداً — وعداً (Promise) أو سياقاً (Context). تعمل مع Suspense، ويمكن استدعاؤها بشكل شرطي عكس الخطّافات العادية.",
+      text: "use دالة جديدة في React 19 تقرأ مورداً — وعداً (Promise) أو سياقاً (Context). تعمل مع Suspense، ويمكن استدعاؤها بشكل شرطي عكس Hooks العادية.",
     },
 
     { type: "heading", text: "5. استخدام use مع الوعود" },
@@ -73,10 +73,10 @@ export default {
     },
     {
       type: "warning",
-      text: "لا تنشئ الوعد داخل المكوّن الذي يستدعي use، وإلا صنع وعداً جديداً كل رسم. أنشئه بالأعلى أو مرّره كـ prop أو من موجّه/إطار عمل.",
+      text: "لا تنشئ الوعد داخل Component الذي يستدعي use، وإلا صنع وعداً جديداً كل رسم. أنشئه بالأعلى أو مرّره كـ prop أو من موجّه/إطار عمل.",
     },
 
-    { type: "heading", text: "6. استخدام use مع السياق" },
+    { type: "heading", text: "6. استخدام use مع Context" },
     {
       type: "code",
       code: `function Button({ themed }) {
@@ -91,7 +91,7 @@ export default {
     { type: "heading", text: "7. حدود التحميل والخطأ" },
     {
       type: "paragraph",
-      text: "Suspense يتعامل مع التحميل. والأخطاء؟ مهمّة حدّ الخطأ (Error Boundary) — مكوّن يلتقط الأخطاء من أبنائه ويعرض بديلاً. تقرنهما معاً.",
+      text: "Suspense يتعامل مع التحميل. والأخطاء؟ مهمّة حدّ الخطأ (Error Boundary) — Component يلتقط الأخطاء من أبنائه ويعرض بديلاً. تقرنهما معاً.",
     },
     {
       type: "code",

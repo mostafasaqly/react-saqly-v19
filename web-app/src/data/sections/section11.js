@@ -1,10 +1,10 @@
-// القسم 11 — التوجيه بـ React Router DOM
+﻿// القسم 11 — Routing بـ React Router DOM
 export default {
   id: 11,
-  title: "التوجيه بـ React Router DOM",
+  title: "Routing بـ React Router DOM",
   level: "متوسط",
   lessons: [
-    "ما هو التوجيه من جهة العميل؟",
+    "ما هو Routing من جهة العميل؟",
     "تثبيت React Router DOM",
     "BrowserRouter و Routes و Route",
     "إنشاء الصفحات",
@@ -12,7 +12,7 @@ export default {
     "Link مقابل NavLink",
     "تنسيق الرابط النشط",
     "التنقّل البرمجي بـ useNavigate",
-    "إعادة التوجيه بعد الإجراءات",
+    "إعادة Routing بعد Actions",
     "إرسال بيانات مع navigate",
     "قراءة البيانات بـ useLocation",
     "المسارات الديناميكية",
@@ -20,15 +20,15 @@ export default {
     "معاملات الاستعلام (Query Params)",
     "صفحة غير موجود (404)",
     "المسارات المحميّة",
-    "إعادة التوجيه بعد تسجيل الدخول",
+    "إعادة Routing بعد تسجيل الدخول",
   ],
   intro:
-    "تطبيق رياكت صفحة واحدة، لكن المواقع الحقيقية فيها صفحات كثيرة. React Router DOM يتيح عرض مكوّنات مختلفة لعناوين URL مختلفة — دون إعادة تحميل الصفحة.",
+    "تطبيق React صفحة واحدة، لكن المواقع الحقيقية فيها صفحات كثيرة. React Router DOM يتيح عرض Components مختلفة لعناوين URL مختلفة — دون إعادة تحميل الصفحة.",
   content: [
-    { type: "heading", text: "1. ما هو التوجيه من جهة العميل؟" },
+    { type: "heading", text: "1. ما هو Routing من جهة العميل؟" },
     {
       type: "paragraph",
-      text: "في تطبيق رياكت، المتصفح يملك الكود كله. التوجيه من جهة العميل يبدّل المكوّن المعروض بناءً على الـ URL — دون طلب من الخادم ولا إعادة تحميل. يبدو فورياً، والحالة محفوظة.",
+      text: "في تطبيق React، المتصفح يملك الكود كله. Routing من جهة العميل يبدّل Component المعروض بناءً على الـ URL — دون طلب من الخادم ولا إعادة تحميل. يبدو فورياً، والحالة محفوظة.",
     },
 
     { type: "heading", text: "2. تثبيت React Router DOM" },
@@ -50,7 +50,7 @@ export default {
     { type: "heading", text: "4. إنشاء الصفحات" },
     {
       type: "paragraph",
-      text: "«الصفحة» مجرد مكوّن عادي توجّه إليه مساراً. احفظها في مجلد pages.",
+      text: "«الصفحة» مجرد Component عادي توجّه إليه مساراً. احفظها في مجلد pages.",
     },
 
     { type: "heading", text: "5. مسارات التخطيط (Layout)" },
@@ -93,7 +93,7 @@ navigate("/dashboard"); // انتقال من الكود
 navigate(-1);           // رجوع للخلف`,
     },
 
-    { type: "heading", text: "9. إعادة التوجيه بعد الإجراءات" },
+    { type: "heading", text: "9. إعادة Routing بعد Actions" },
     {
       type: "code",
       code: `async function handleSave(formData) {
@@ -160,7 +160,7 @@ setSearchParams({ q: text, page: "1" });`,
 }`,
     },
 
-    { type: "heading", text: "17. إعادة التوجيه بعد تسجيل الدخول" },
+    { type: "heading", text: "17. إعادة Routing بعد تسجيل الدخول" },
     {
       type: "paragraph",
       text: "عند إرسال المستخدم لتسجيل الدخول، تذكّر إلى أين كان ذاهباً (في state)، وبعد الدخول أرجِعه إليه بدل الصفحة الرئيسية.",
@@ -175,7 +175,7 @@ navigate(from, { replace: true });`,
     {
       type: "list",
       items: [
-        "التوجيه من جهة العميل يبدّل المكوّنات حسب الـ URL دون إعادة تحميل",
+        "Routing من جهة العميل يبدّل Components حسب الـ URL دون إعادة تحميل",
         "BrowserRouter و Routes و Route، ومسارات التخطيط بـ <Outlet />",
         "<Link>/<NavLink> للتنقّل، و useNavigate من الكود",
         "المسارات الديناميكية (:id) و useParams، ومعاملات الاستعلام للبحث",
@@ -184,7 +184,7 @@ navigate(from, { replace: true });`,
     {
       type: "qa",
       question: "1. لماذا تستخدم <Link> بدل <a>؟",
-      answer: "<Link> يغيّر الـ URL دون إعادة تحميل كاملة، فيبقى رياكت سريعاً والحالة محفوظة.",
+      answer: "<Link> يغيّر الـ URL دون إعادة تحميل كاملة، فيبقى React سريعاً والحالة محفوظة.",
     },
     {
       type: "qa",

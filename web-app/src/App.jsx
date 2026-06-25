@@ -43,7 +43,7 @@ function App() {
   // update document title when section or language changes
   useEffect(() => {
     const name = isAr ? activeMeta.title : (activeMeta.titleEn || activeMeta.title);
-    document.title = `${name} — ${isAr ? "كورس رياكت 19" : "React 19 Course"}`;
+    document.title = `${name} — ${isAr ? "كورس React 19" : "React 19 Course"}`;
   }, [activeMeta, isAr]);
 
   // scroll active nav item into view inside the sidebar
@@ -91,7 +91,7 @@ function App() {
           >
             ☰ {isAr ? "الأقسام" : "Sections"}
           </button>
-          <span className="topbar__title">{isAr ? "كورس رياكت 19" : "React 19 Course"}</span>
+          <span className="topbar__title">{isAr ? "كورس React 19" : "React 19 Course"}</span>
         </div>
 
         <div className="content__inner">

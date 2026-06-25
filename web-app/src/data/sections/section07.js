@@ -1,27 +1,27 @@
-// القسم 7 — النماذج في رياكت 19
+﻿// القسم 7 — النماذج في React 19
 export default {
   id: 7,
-  title: "النماذج في رياكت 19",
+  title: "النماذج في React 19",
   level: "متوسط",
   lessons: [
     "مراجعة النماذج المتحكَّم بها",
     "إرسال النموذج",
     "التحقّق اليدوي من النموذج",
-    "إجراءات رياكت 19 (Actions)",
+    "Actions React 19 (Actions)",
     "useActionState",
     "useFormStatus",
     "حالات الانتظار والخطأ",
     "إعادة تعيين النماذج",
     "معالجة أخطاء النموذج",
-    "أفضل ممارسات نماذج رياكت 19",
+    "أفضل ممارسات نماذج React 19",
   ],
   intro:
-    "النماذج في كل مكان: تسجيل دخول، بحث، تعليقات، دفع. رياكت 19 يجعل النماذج أسهل بكثير عبر ميزة الإجراءات (Actions) وثلاثة خطّافات مفيدة. هذا من أكبر أسباب تعلّم رياكت 19.",
+    "النماذج في كل مكان: تسجيل دخول، بحث، تعليقات، دفع. React 19 يجعل النماذج أسهل بكثير عبر ميزة Actions وثلاثة Hooks مفيدة. هذا من أكبر أسباب تعلّم React 19.",
   content: [
     { type: "heading", text: "1. مراجعة النماذج المتحكَّم بها" },
     {
       type: "paragraph",
-      text: "المدخل المتحكَّم به يحفظ قيمته في الحالة (value + onChange). مفيد للمعاينة الحيّة أو التحقّق الفوري. لكن للإرسال، رياكت 19 يعطي طريقة أبسط.",
+      text: "المدخل المتحكَّم به يحفظ قيمته في الحالة (value + onChange). مفيد للمعاينة الحيّة أو التحقّق الفوري. لكن للإرسال، React 19 يعطي طريقة أبسط.",
     },
 
     { type: "heading", text: "2. إرسال النموذج" },
@@ -53,10 +53,10 @@ export default {
 }`,
     },
 
-    { type: "heading", text: "4. إجراءات رياكت 19 (Actions)" },
+    { type: "heading", text: "4. Actions React 19 (Actions)" },
     {
       type: "paragraph",
-      text: "مرّر دالة async إلى خاصية action في النموذج. رياكت يستدعيها ببيانات النموذج ويدير حالة الانتظار. بدون preventDefault، بدون حالة يدوية. اقرأ المدخلات بـ formData.get(\"name\").",
+      text: "مرّر دالة async إلى خاصية action في النموذج. React يستدعيها ببيانات النموذج ويدير حالة الانتظار. بدون preventDefault، بدون حالة يدوية. اقرأ المدخلات بـ formData.get(\"name\").",
     },
     {
       type: "code",
@@ -77,7 +77,7 @@ export default {
     { type: "heading", text: "5. useActionState" },
     {
       type: "paragraph",
-      text: "هذا الخطّاف يغلّف إجراءك ويُرجع: الحالة (النتيجة)، والإجراء المغلَّف، ومنطقي للانتظار.",
+      text: "هذا Hook يغلّف Actionك ويُرجع: الحالة (النتيجة)، وAction المغلَّف، ومنطقي للانتظار.",
     },
     {
       type: "code",
@@ -95,7 +95,7 @@ export default {
     { type: "heading", text: "6. useFormStatus" },
     {
       type: "paragraph",
-      text: "يتيح لمكوّن ابن قراءة حالة النموذج فوقه دون props. ملاحظة: يُستورد من react-dom، ويجب أن يكون المكوّن داخل النموذج.",
+      text: "يتيح لComponent ابن قراءة حالة النموذج فوقه دون props. ملاحظة: يُستورد من react-dom، ويجب أن يكون Component داخل النموذج.",
     },
     {
       type: "code",
@@ -116,7 +116,7 @@ function SubmitButton() {
       type: "list",
       items: [
         "الانتظار: استخدم isPending أو pending لتعطيل الزر وإظهار «جارٍ...»",
-        "الخطأ: أرجِع { error } من الإجراء واعرضه",
+        "الخطأ: أرجِع { error } من Action واعرضه",
         "النجاح: أرجِع { success } واعرضه",
       ],
     },
@@ -124,25 +124,25 @@ function SubmitButton() {
     { type: "heading", text: "8. إعادة تعيين النماذج" },
     {
       type: "paragraph",
-      text: "عند استخدام خاصية action (لا الحالة المتحكَّم بها)، رياكت يعيد تعيين المدخلات تلقائياً بعد النجاح. تحصل على هذا مجاناً غالباً.",
+      text: "عند استخدام خاصية action (لا الحالة المتحكَّم بها)، React يعيد تعيين المدخلات تلقائياً بعد النجاح. تحصل على هذا مجاناً غالباً.",
     },
 
     { type: "heading", text: "9. معالجة أخطاء النموذج" },
     {
       type: "list",
       items: [
-        "أخطاء التحقّق (مدخل خاطئ): أرجِع رسالة من الإجراء",
+        "أخطاء التحقّق (مدخل خاطئ): أرجِع رسالة من Action",
         "أخطاء الخادم/الشبكة: غلّف الطلب بـ try/catch وأرجِع { error }",
         "أبقِ ما كتبه المستخدم لكي لا يبدأ من جديد",
       ],
     },
 
-    { type: "heading", text: "10. أفضل ممارسات نماذج رياكت 19" },
+    { type: "heading", text: "10. أفضل ممارسات نماذج React 19" },
     {
       type: "list",
       items: [
-        "فضّل الإجراءات على onSubmit اليدوي",
-        "تحقّق داخل الإجراء وأرجِع { error }",
+        "فضّل Actions على onSubmit اليدوي",
+        "تحقّق داخل Action وأرجِع { error }",
         "غلّف نداءات الخادم بـ try/catch",
         "أظهر حالة الانتظار وعطّل الزر",
         "اصنع SubmitButton قابلاً لإعادة الاستخدام",
@@ -154,7 +154,7 @@ function SubmitButton() {
     {
       type: "list",
       items: [
-        "الإجراءات: دالة async على <form action={...}>",
+        "Actions: دالة async على <form action={...}>",
         "useActionState يُرجع [state, formAction, isPending]",
         "useFormStatus يقرأ انتظار النموذج (من react-dom)",
         "تعامل مع التحقّق وأخطاء الخادم، وأبقِ مدخلات المستخدم",
@@ -162,13 +162,13 @@ function SubmitButton() {
     },
     {
       type: "qa",
-      question: "1. كيف تقرأ قيمة مدخل داخل إجراء؟",
+      question: "1. كيف تقرأ قيمة مدخل داخل Action؟",
       answer: "بـ formData.get(\"name\")، حيث name هو خاصية name للمدخل.",
     },
     {
       type: "qa",
       question: "2. ماذا يُرجع useActionState؟",
-      answer: "[state, formAction, isPending] — النتيجة، والإجراء المغلَّف، ومنطقي الانتظار.",
+      answer: "[state, formAction, isPending] — النتيجة، وAction المغلَّف، ومنطقي الانتظار.",
     },
   ],
 

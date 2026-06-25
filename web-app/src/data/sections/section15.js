@@ -1,4 +1,4 @@
-// القسم 15 — Redux غير المتزامن بـ createAsyncThunk
+﻿// القسم 15 — Redux غير المتزامن بـ createAsyncThunk
 export default {
   id: 15,
   title: "Redux غير المتزامن بـ createAsyncThunk",
@@ -6,7 +6,7 @@ export default {
   lessons: [
     "لماذا المنطق غير المتزامن في Redux؟",
     "فهم pending و fulfilled و rejected",
-    "إنشاء إجراءات غير متزامنة",
+    "إنشاء Actions غير متزامنة",
     "جلب البيانات من API",
     "حالة isLoading",
     "حالة isError",
@@ -18,12 +18,12 @@ export default {
     "إعادة هيكلة كود Redux غير المتزامن",
   ],
   intro:
-    "شرائح Redux تحدّث الحالة فوراً. لكن جلب البيانات يأخذ وقتاً وقد يفشل. createAsyncThunk هو أداة Redux Toolkit للتعامل مع العمل غير المتزامن — التحميل والنجاح والفشل — بشكل نظيف داخل المتجر.",
+    "Slices Redux تحدّث الحالة فوراً. لكن جلب البيانات يأخذ وقتاً وقد يفشل. createAsyncThunk هو أداة Redux Toolkit للتعامل مع العمل غير المتزامن — التحميل والنجاح والفشل — بشكل نظيف داخل Store.",
   content: [
     { type: "heading", text: "1. لماذا المنطق غير المتزامن في Redux؟" },
     {
       type: "paragraph",
-      text: "المخفّض العادي يجب أن يكون متزامناً — يأخذ الحالة ويُرجع التالية فوراً. لكن الجلب غير متزامن. الـ thunk دالة تستطيع عملاً غير متزامن ثم تُرسل إجراءات عند الانتهاء. createAsyncThunk يبنيها لك.",
+      text: "Reducer العادي يجب أن يكون متزامناً — يأخذ الحالة ويُرجع التالية فوراً. لكن الجلب غير متزامن. الـ thunk دالة تستطيع عملاً غير متزامن ثم تُرسل Actions عند الانتهاء. createAsyncThunk يبنيها لك.",
     },
 
     { type: "heading", text: "2. فهم pending و fulfilled و rejected" },
@@ -36,7 +36,7 @@ export default {
       ],
     },
 
-    { type: "heading", text: "3. إنشاء إجراءات غير متزامنة" },
+    { type: "heading", text: "3. إنشاء Actions غير متزامنة" },
     {
       type: "code",
       code: `export const fetchUsers = createAsyncThunk(
@@ -51,7 +51,7 @@ export default {
     { type: "heading", text: "4. جلب البيانات من API" },
     {
       type: "paragraph",
-      text: "في الشريحة، تعامل مع المراحل الثلاث في extraReducers.",
+      text: "في Slice، تعامل مع المراحل الثلاث في extraReducers.",
     },
     {
       type: "code",
@@ -74,7 +74,7 @@ export default {
     {
       type: "code",
       code: `.addCase(fetchUsers.pending, (state) => { state.isLoading = true; })
-// في المكوّن:
+// في Component:
 if (isLoading) return <p>Loading...</p>;`,
     },
 
@@ -121,7 +121,7 @@ if (isLoading) return <p>Loading...</p>;`,
 
 export const deleteUser = createAsyncThunk("users/delete", async (id) => {
   await axios.delete(\`\${API}/\${id}\`);
-  return id; // أرجِع الـ id لحذفه من المخفّض
+  return id; // أرجِع الـ id لحذفه من Reducer
 });`,
     },
 
@@ -135,7 +135,7 @@ export const deleteUser = createAsyncThunk("users/delete", async (id) => {
     {
       type: "list",
       items: [
-        "ملفات منفصلة: الـ thunks، والشريحة، وخدمة Axios",
+        "ملفات منفصلة: الـ thunks، وSlice، وخدمة Axios",
         "أعد استخدام خدمة API بدل نداء axios في كل thunk",
         "شكل حالة موحّد: { data, isLoading, isError, message }",
         "استخدم rejectWithValue لرسائل أخطاء مخصّصة",
@@ -146,7 +146,7 @@ export const deleteUser = createAsyncThunk("users/delete", async (id) => {
     {
       type: "list",
       items: [
-        "المخفّضات متزامنة؛ الـ thunks تتعامل مع العمل غير المتزامن",
+        "Reducers متزامنة؛ الـ thunks تتعامل مع العمل غير المتزامن",
         "createAsyncThunk يُرسل تلقائياً pending/fulfilled/rejected",
         "تعامل معها في extraReducers",
         "تتبّع isLoading و isError و message والبيانات",
@@ -154,9 +154,9 @@ export const deleteUser = createAsyncThunk("users/delete", async (id) => {
     },
     {
       type: "qa",
-      question: "1. لماذا لا يمكن الجلب مباشرةً داخل مخفّض عادي؟",
+      question: "1. لماذا لا يمكن الجلب مباشرةً داخل Reducer عادي؟",
       answer:
-        "المخفّضات يجب أن تكون متزامنة — تُرجع الحالة التالية فوراً. الجلب غير متزامن، فيذهب في thunk.",
+        "Reducers يجب أن تكون متزامنة — تُرجع الحالة التالية فوراً. الجلب غير متزامن، فيذهب في thunk.",
     },
     {
       type: "qa",

@@ -1,4 +1,4 @@
-// القسم 8 — React Hook Form
+﻿// القسم 8 — React Hook Form
 export default {
   id: 8,
   title: "React Hook Form",
@@ -15,7 +15,7 @@ export default {
     "القيم الافتراضية",
     "إعادة تعيين النماذج",
     "الإرسال إلى API",
-    "RHF مقابل إجراءات رياكت 19",
+    "RHF مقابل Actions React 19",
   ],
   intro:
     "في القسم 7 كتبنا التحقّق يدوياً. للنماذج الكبيرة يصبح ذلك طويلاً ومكرّراً. React Hook Form مكتبة شهيرة تتعامل مع المدخلات والتحقّق والأخطاء بكود قليل جداً — وبسرعة عالية.",
@@ -32,7 +32,7 @@ export default {
     { type: "heading", text: "3. إنشاء أول نموذج" },
     {
       type: "paragraph",
-      text: "كل شيء يبدأ من خطّاف useForm. لا useState، لا onChange — RHF يجمع القيم ويسلّمها لـ onSubmit ككائن واحد.",
+      text: "كل شيء يبدأ من Hook useForm. لا useState، لا onChange — RHF يجمع القيم ويسلّمها لـ onSubmit ككائن واحد.",
     },
     {
       type: "code",
@@ -56,7 +56,7 @@ function MyForm() {
     { type: "heading", text: "4. تسجيل المدخلات (register)" },
     {
       type: "paragraph",
-      text: "register(\"name\") يربط المدخل بالنموذج. النص يصبح المفتاح في كائن data، والـ spread يضيف الخصائص اللازمة تلقائياً.",
+      text: "register(\"name\") يربط المدخل بالنموذج. النص يصبح المفتاح في كائن data، والـ spread يضيف Props اللازمة تلقائياً.",
     },
     { type: "code", code: `<input {...register("email")} />
 // data: { email: "ما كتبه المستخدم" }` },
@@ -135,12 +135,12 @@ function onSubmit(data) {
 </button>`,
     },
 
-    { type: "heading", text: "12. RHF مقابل إجراءات رياكت 19" },
+    { type: "heading", text: "12. RHF مقابل Actions React 19" },
     {
       type: "list",
       items: [
         "React Hook Form: مكتبة تُثبّت، تحقّق غنيّ مدمج، الأفضل للنماذج الكبيرة المعقّدة",
-        "إجراءات رياكت 19: مدمجة في رياكت، الأفضل للنماذج البسيطة وإجراءات الخادم",
+        "Actions React 19: مدمجة في React، الأفضل للنماذج البسيطة وActions الخادم",
         "ليسا عدوّين — كثير من التطبيقات يستخدم الاثنين معاً",
       ],
     },
@@ -151,7 +151,7 @@ function onSubmit(data) {
       items: [
         "useForm يعطي register و handleSubmit و reset و formState",
         "register(\"name\") يربط المدخل ويجعله مفتاحاً في data",
-        "القواعد في الوسيط الثاني (required، minLength، pattern)",
+        "القواعد في Middleware الثاني (required، minLength، pattern)",
         "defaultValues للملء، reset للتفريغ، isSubmitting للانتظار",
       ],
     },
@@ -162,7 +162,7 @@ function onSubmit(data) {
     },
     {
       type: "qa",
-      question: "2. متى تختار RHF بدل إجراءات رياكت 19؟",
+      question: "2. متى تختار RHF بدل Actions React 19؟",
       answer: "للنماذج الكبيرة بحقول كثيرة وتحقّق معقّد.",
     },
   ],

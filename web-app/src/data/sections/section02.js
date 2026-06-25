@@ -1,11 +1,11 @@
-// القسم 2 — إعداد بيئة التطوير
+﻿// القسم 2 — إعداد بيئة التطوير
 export default {
   id: 2,
   title: "إعداد بيئة التطوير",
   level: "مبتدئ",
   lessons: [
     "تثبيت Node.js و npm",
-    "إنشاء مشروع رياكت 19 بـ Vite",
+    "إنشاء مشروع React 19 بـ Vite",
     "هيكل مجلدات المشروع",
     "تشغيل خادم التطوير",
     "بناء التطبيق للإنتاج",
@@ -13,7 +13,7 @@ export default {
     "تثبيت React Developer Tools",
   ],
   intro:
-    "قبل أن نكتب رياكت، نحتاج إلى إعداد الجهاز. في هذا القسم نثبّت الأدوات، وننشئ مشروعاً جديداً، ونشغّله، ونبنيه.",
+    "قبل أن نكتب React، نحتاج إلى إعداد الجهاز. في هذا القسم نثبّت الأدوات، وننشئ مشروعاً جديداً، ونشغّله، ونبنيه.",
   content: [
     { type: "heading", text: "1. تثبيت Node.js و npm" },
     {
@@ -29,10 +29,10 @@ npm -v
 # 10.9.0`,
     },
 
-    { type: "heading", text: "2. إنشاء مشروع رياكت 19 بـ Vite" },
+    { type: "heading", text: "2. إنشاء مشروع React 19 بـ Vite" },
     {
       type: "paragraph",
-      text: "Vite (تُنطق «ڤيت») أداة سريعة تنشئ مشاريع رياكت وتشغّلها. شغّل الأمر التالي، واختر React ثم JavaScript:",
+      text: "Vite (تُنطق «ڤيت») أداة سريعة تنشئ مشاريع React وتشغّلها. شغّل الأمر التالي، واختر React ثم JavaScript:",
     },
     {
       type: "code",
@@ -52,7 +52,7 @@ npm install`,
 ├── node_modules/   ← الحزم (لا تلمسها)
 ├── public/         ← ملفات ثابتة
 ├── src/            ← كودك يعيش هنا
-│   ├── App.jsx     ← المكوّن الرئيسي
+│   ├── App.jsx     ← Component الرئيسي
 │   ├── main.jsx    ← نقطة البداية
 │   └── index.css   ← أنماط عامة
 ├── index.html      ← الصفحة الوحيدة
@@ -60,7 +60,7 @@ npm install`,
     },
     {
       type: "paragraph",
-      text: "ملف index.html فيه صندوق فارغ <div id=\"root\"></div>، ورياكت يضع تطبيقك بالكامل داخله من خلال main.jsx.",
+      text: "ملف index.html فيه صندوق فارغ <div id=\"root\"></div>، وReact يضع تطبيقك بالكامل داخله من خلال main.jsx.",
     },
 
     { type: "heading", text: "4. تشغيل خادم التطوير" },
@@ -89,7 +89,7 @@ npm run preview  # يختبر نسخة الإنتاج محلياً`,
     {
       type: "list",
       items: [
-        "ES7+ React snippets — اكتب rafce لإنشاء مكوّن بسرعة",
+        "ES7+ React snippets — اكتب rafce لإنشاء Component بسرعة",
         "Prettier — ينسّق الكود عند الحفظ",
         "ESLint — يحذّرك من الأخطاء أثناء الكتابة",
         "Auto Rename Tag — يعيد تسمية الوسم المقابل تلقائياً",
@@ -99,11 +99,11 @@ npm run preview  # يختبر نسخة الإنتاج محلياً`,
     { type: "heading", text: "7. تثبيت React Developer Tools" },
     {
       type: "paragraph",
-      text: "إضافة متصفح مجانية تضيف تبويبين: «Components» لفحص props و state و hooks لأي مكوّن مباشرةً، و«Profiler» لاكتشاف عمليات الرسم البطيئة.",
+      text: "إضافة متصفح مجانية تضيف تبويبين: «Components» لفحص props و state و hooks لأي Component مباشرةً، و«Profiler» لاكتشاف عمليات الرسم البطيئة.",
     },
     {
       type: "tip",
-      text: "عندما لا تكون قيمة كما تتوقع، افتح تبويب Components واضغط على المكوّن — رؤية قيمه للحقيقة تكشف الخطأ فوراً.",
+      text: "عندما لا تكون قيمة كما تتوقع، افتح تبويب Components واضغط على Component — رؤية قيمه للحقيقة تكشف الخطأ فوراً.",
     },
 
     { type: "heading", text: "✅ ملخص القسم" },
@@ -111,7 +111,7 @@ npm run preview  # يختبر نسخة الإنتاج محلياً`,
       type: "list",
       items: [
         "ثبّت Node.js و npm",
-        "أنشئ مشروع رياكت بـ Vite، كودك في مجلد src",
+        "أنشئ مشروع React بـ Vite، كودك في مجلد src",
         "الأوامر: dev (للكتابة)، build (للنشر)، preview (لاختبار البناء)",
         "ثبّت إضافات VS Code و React DevTools",
       ],
