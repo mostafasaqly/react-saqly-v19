@@ -38,6 +38,20 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
                 : `${sections.length} sections • Arabic`}
             </p>
           </div>
+          <a
+            href="https://mostafasaqly.github.io/angular-saqly-v22/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sidebar__angular-link"
+            title={isAr ? "كورس أنجولار v22" : "Angular v22 Course"}
+            aria-label={isAr ? "انتقل إلى كورس أنجولار" : "Go to Angular Course"}
+          >
+            <svg className="sidebar__angular-logo" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+              <polygon fill="#DD0031" points="125,30 125,30 125,30 31.9,63.2 46.1,186.3 125,230 125,230 125,230 203.9,186.3 218.1,63.2" />
+              <polygon fill="#C3002F" points="125,30 125,52.2 125,52.1 125,153.4 125,153.4 125,230 125,230 203.9,186.3 218.1,63.2" />
+              <path fill="#FFFFFF" d="M125,52.1L66.8,182.6h0h21.7h0l11.7-29.2h49.4l11.7,29.2h0h21.7h0L125,52.1L125,52.1z M142,135.4H108l17-40.9L142,135.4z" />
+            </svg>
+          </a>
         </div>
 
         <div className="sidebar__controls">
