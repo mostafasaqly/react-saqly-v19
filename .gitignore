@@ -3,3 +3,6 @@ dist/
 web-app/node_modules/
 web-app/dist/
 .netlify/
+
+# Claude Code
+.claude/
