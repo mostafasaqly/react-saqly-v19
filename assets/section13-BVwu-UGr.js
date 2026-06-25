@@ -1,20 +1,20 @@
-const e={id:13,title:"Suspense وواجهة use في رياكت 19",level:"متوسط إلى متقدّم",lessons:["ما هو Suspense؟","Suspense لواجهة التحميل","حدود Suspense (Boundaries)","نظرة عامة على خطّاف use","استخدام use مع الوعود","استخدام use مع السياق","حدود التحميل والخطأ","أفضل ممارسات Suspense"],intro:"في القسم 12 كتبنا علامات التحميل يدوياً. لرياكت طريقة أنظف: Suspense يتيح لمكوّن أن «يتوقّف» أثناء تحميل بياناته، ورياكت يعرض بديلاً نيابةً عنك. ومع واجهة use الجديدة يقلّ الكود كثيراً.",content:[{type:"heading",text:"1. ما هو Suspense؟"},{type:"paragraph",text:"<Suspense> غلاف. إن كان مكوّن بداخله ينتظر شيئاً (مثل بيانات)، يعرض Suspense تلقائياً بديلاً (fallback) حتى يجهز. المكوّن نفسه لا يحتاج علامة تحميل."},{type:"code",code:`<Suspense fallback={<p>Loading...</p>}>
+const e={id:13,title:"Suspense وواجهة use في React 19",level:"متوسط إلى متقدّم",lessons:["ما هو Suspense؟","Suspense لواجهة التحميل","حدود Suspense (Boundaries)","نظرة عامة على Hook use","استخدام use مع الوعود","استخدام use مع Context","حدود التحميل والخطأ","أفضل ممارسات Suspense"],intro:"في القسم 12 كتبنا علامات التحميل يدوياً. لReact طريقة أنظف: Suspense يتيح لComponent أن «يتوقّف» أثناء تحميل بياناته، وReact يعرض بديلاً نيابةً عنك. ومع واجهة use الجديدة يقلّ الكود كثيراً.",content:[{type:"heading",text:"1. ما هو Suspense؟"},{type:"paragraph",text:"<Suspense> غلاف. إن كان Component بداخله ينتظر شيئاً (مثل بيانات)، يعرض Suspense تلقائياً بديلاً (fallback) حتى يجهز. Component نفسه لا يحتاج علامة تحميل."},{type:"code",code:`<Suspense fallback={<p>Loading...</p>}>
   <Profile />
 </Suspense>`},{type:"heading",text:"2. Suspense لواجهة التحميل"},{type:"paragraph",text:"البديل يمكن أن يكون أي شيء — نص، أو مؤشّر، أو هياكل تحميل (skeletons). بينما يحمّل UserProfile بياناته، يرى المستخدم البديل."},{type:"heading",text:"3. حدود Suspense (Boundaries)"},{type:"paragraph",text:"حدّ Suspense هو المنطقة التي يغطّيها <Suspense> واحد. يمكنك استخدام عدة حدود لتحميل أجزاء مختلفة باستقلال."},{type:"code",code:`<Suspense fallback={<p>Loading profile...</p>}>
   <Profile />
 </Suspense>
 <Suspense fallback={<p>Loading posts...</p>}>
   <Posts />
-</Suspense>`},{type:"tip",text:"غلّف كل جزء مستقلّ بحدّ خاصّ به حتى لا يحجب جزء بطيء البقية."},{type:"heading",text:"4. نظرة عامة على خطّاف use"},{type:"paragraph",text:"use دالة جديدة في رياكت 19 تقرأ مورداً — وعداً (Promise) أو سياقاً (Context). تعمل مع Suspense، ويمكن استدعاؤها بشكل شرطي عكس الخطّافات العادية."},{type:"heading",text:"5. استخدام use مع الوعود"},{type:"paragraph",text:"use يفكّ الوعد. أثناء الانتظار يعرض أقرب حدّ Suspense بديله. عند التحقّق تحصل على القيمة — بدون حالة تحميل ولا useEffect."},{type:"code",code:`function Comments({ commentsPromise }) {
+</Suspense>`},{type:"tip",text:"غلّف كل جزء مستقلّ بحدّ خاصّ به حتى لا يحجب جزء بطيء البقية."},{type:"heading",text:"4. نظرة عامة على Hook use"},{type:"paragraph",text:"use دالة جديدة في React 19 تقرأ مورداً — وعداً (Promise) أو سياقاً (Context). تعمل مع Suspense، ويمكن استدعاؤها بشكل شرطي عكس Hooks العادية."},{type:"heading",text:"5. استخدام use مع الوعود"},{type:"paragraph",text:"use يفكّ الوعد. أثناء الانتظار يعرض أقرب حدّ Suspense بديله. عند التحقّق تحصل على القيمة — بدون حالة تحميل ولا useEffect."},{type:"code",code:`function Comments({ commentsPromise }) {
   const comments = use(commentsPromise);
   return comments.map((c) => <li key={c.id}>{c.text}</li>);
-}`},{type:"warning",text:"لا تنشئ الوعد داخل المكوّن الذي يستدعي use، وإلا صنع وعداً جديداً كل رسم. أنشئه بالأعلى أو مرّره كـ prop أو من موجّه/إطار عمل."},{type:"heading",text:"6. استخدام use مع السياق"},{type:"code",code:`function Button({ themed }) {
+}`},{type:"warning",text:"لا تنشئ الوعد داخل Component الذي يستدعي use، وإلا صنع وعداً جديداً كل رسم. أنشئه بالأعلى أو مرّره كـ prop أو من موجّه/إطار عمل."},{type:"heading",text:"6. استخدام use مع Context"},{type:"code",code:`function Button({ themed }) {
   if (themed) {
     const theme = use(ThemeContext); // مسموح داخل if
     return <button className={theme}>Themed</button>;
   }
   return <button>Plain</button>;
-}`},{type:"heading",text:"7. حدود التحميل والخطأ"},{type:"paragraph",text:"Suspense يتعامل مع التحميل. والأخطاء؟ مهمّة حدّ الخطأ (Error Boundary) — مكوّن يلتقط الأخطاء من أبنائه ويعرض بديلاً. تقرنهما معاً."},{type:"code",code:`<ErrorBoundary fallback={<p>حدث خطأ.</p>}>
+}`},{type:"heading",text:"7. حدود التحميل والخطأ"},{type:"paragraph",text:"Suspense يتعامل مع التحميل. والأخطاء؟ مهمّة حدّ الخطأ (Error Boundary) — Component يلتقط الأخطاء من أبنائه ويعرض بديلاً. تقرنهما معاً."},{type:"code",code:`<ErrorBoundary fallback={<p>حدث خطأ.</p>}>
   <Suspense fallback={<p>Loading...</p>}>
     <Comments commentsPromise={commentsPromise} />
   </Suspense>
