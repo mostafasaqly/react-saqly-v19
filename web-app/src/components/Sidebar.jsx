@@ -27,12 +27,8 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
         aria-label={isAr ? "قائمة الأقسام" : "Course sections"}
       >
         <div className="sidebar__brand">
-          <a
-            href="https://mostafasaqly.github.io/react-saqly-v19/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sidebar__react-link"
-            title={isAr ? "كورس React 19" : "React 19 Course"}
+          <div
+            className="sidebar__react-link sidebar__react-link--current"
             aria-label={isAr ? "أنت في كورس React" : "You are in React Course"}
           >
             <svg className="sidebar__react-logo" viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +42,7 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
             <span className="sidebar__react-label">
               {isAr ? "كورس React 19" : "React 19 Course"}
             </span>
-          </a>
+          </div>
           <div className="sidebar__brand-icons">
             <a
               href="https://mostafasaqly.github.io/vue-saqly-v3/#section-1"
@@ -148,7 +144,7 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
           </div>
         )}
 
-        <nav className="sidebar__nav" aria-label={isAr ? "الأقسام" : "Sections"}>
+        <nav className="sidebar__nav sidebar__nav--scroll" aria-label={isAr ? "الأقسام" : "Sections"}>
           {sections.map((section) => {
             const title = isAr
               ? section.title

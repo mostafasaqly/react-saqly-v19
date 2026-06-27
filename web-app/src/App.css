@@ -9,13 +9,20 @@
   width: 300px;
   flex-shrink: 0;
   background: var(--surface);
-  /* logical: حد على الجانب الداخلي (يسار في RTL، يمين في LTR) */
   border-inline-start: 1px solid var(--border);
-  padding: 20px 16px;
+  padding: 20px 16px 0;
   height: 100vh;
   position: sticky;
   top: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__nav--scroll {
+  flex: 1;
   overflow-y: auto;
+  padding-bottom: 20px;
 }
 
 .sidebar__brand {
@@ -49,6 +56,10 @@
   border-color: rgba(97, 218, 251, 0.55);
   transform: scale(1.03);
   opacity: 1;
+}
+.sidebar__react-link--current {
+  cursor: default;
+  pointer-events: none;
 }
 .sidebar__react-label {
   font-size: 12px;
@@ -946,7 +957,7 @@
     z-index: 30;
     transform: translateX(100%);
     transition: transform 0.28s ease;
-    overflow-y: auto;
+    overflow: hidden;
   }
   [dir="rtl"] .sidebar--open {
     transform: translateX(0);
@@ -963,7 +974,7 @@
     z-index: 30;
     transform: translateX(-100%);
     transition: transform 0.28s ease;
-    overflow-y: auto;
+    overflow: hidden;
   }
   [dir="ltr"] .sidebar--open {
     transform: translateX(0);
