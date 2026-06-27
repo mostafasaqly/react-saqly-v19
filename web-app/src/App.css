@@ -613,25 +613,25 @@
 
 /* ===================== Progress Box ===================== */
 .progress-box {
-  margin-bottom: 14px;
-  padding: 10px 12px;
-  background: var(--surface-2);
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  padding: 6px 4px;
+  background: transparent;
+  border-radius: 0;
+  border: none;
 }
 .progress-box__header {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .progress-box__nums {
   color: var(--primary);
 }
 .progress-bar {
-  height: 8px;
+  height: 4px;
   background: var(--border);
   border-radius: 999px;
   overflow: hidden;
@@ -645,7 +645,7 @@
 .progress-box__pct {
   display: block;
   text-align: end;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--primary);
   margin-top: 4px;
