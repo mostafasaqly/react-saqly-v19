@@ -27,24 +27,27 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
         aria-label={isAr ? "قائمة الأقسام" : "Course sections"}
       >
         <div className="sidebar__brand">
+          <a
+            href="https://mostafasaqly.github.io/react-saqly-v19/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sidebar__react-link"
+            title={isAr ? "كورس React 19" : "React 19 Course"}
+            aria-label={isAr ? "أنت في كورس React" : "You are in React Course"}
+          >
+            <svg className="sidebar__react-logo" viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="0" cy="0" r="2.05" fill="#61dafb"/>
+              <g stroke="#61dafb" strokeWidth="1" fill="none">
+                <ellipse rx="11" ry="4.2"/>
+                <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+                <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+              </g>
+            </svg>
+            <span className="sidebar__react-label">
+              {isAr ? "كورس React 19" : "React 19 Course"}
+            </span>
+          </a>
           <div className="sidebar__brand-icons">
-            <a
-              href="https://mostafasaqly.github.io/react-saqly-v19/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="sidebar__course-link sidebar__course-link--active"
-              title={isAr ? "كورس React 19" : "React 19 Course"}
-              aria-label={isAr ? "أنت في كورس React" : "You are in React Course"}
-            >
-              <svg className="sidebar__react-logo" viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="0" cy="0" r="2.05" fill="#61dafb"/>
-                <g stroke="#61dafb" strokeWidth="1" fill="none">
-                  <ellipse rx="11" ry="4.2"/>
-                  <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
-                  <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
-                </g>
-              </svg>
-            </a>
             <a
               href="https://mostafasaqly.github.io/vue-saqly-v3/#section-1"
               target="_blank"
@@ -58,24 +61,21 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
                 <path fill="#34495E" d="M161.096.001l-30.224 52.35L100.647.001H52.346l78.526 136.01L209.398.001z" />
               </svg>
             </a>
+            <a
+              href="https://mostafasaqly.github.io/angular-saqly-v22/section/1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sidebar__course-link"
+              title={isAr ? "كورس أنجولار v22" : "Angular v22 Course"}
+              aria-label={isAr ? "انتقل إلى كورس أنجولار" : "Go to Angular Course"}
+            >
+              <svg className="sidebar__angular-logo" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                <polygon fill="#DD0031" points="125,30 125,30 125,30 31.9,63.2 46.1,186.3 125,230 125,230 125,230 203.9,186.3 218.1,63.2" />
+                <polygon fill="#C3002F" points="125,30 125,52.2 125,52.1 125,153.4 125,153.4 125,230 125,230 203.9,186.3 218.1,63.2" />
+                <path fill="#FFFFFF" d="M125,52.1L66.8,182.6h0h21.7h0l11.7-29.2h49.4l11.7,29.2h0h21.7h0L125,52.1L125,52.1z M142,135.4H108l17-40.9L142,135.4z" />
+              </svg>
+            </a>
           </div>
-          <a
-            href="https://mostafasaqly.github.io/angular-saqly-v22/section/1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sidebar__angular-link"
-            title={isAr ? "كورس أنجولار v22" : "Angular v22 Course"}
-            aria-label={isAr ? "انتقل إلى كورس أنجولار" : "Go to Angular Course"}
-          >
-            <svg className="sidebar__angular-logo" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-              <polygon fill="#DD0031" points="125,30 125,30 125,30 31.9,63.2 46.1,186.3 125,230 125,230 125,230 203.9,186.3 218.1,63.2" />
-              <polygon fill="#C3002F" points="125,30 125,52.2 125,52.1 125,153.4 125,153.4 125,230 125,230 203.9,186.3 218.1,63.2" />
-              <path fill="#FFFFFF" d="M125,52.1L66.8,182.6h0h21.7h0l11.7-29.2h49.4l11.7,29.2h0h21.7h0L125,52.1L125,52.1z M142,135.4H108l17-40.9L142,135.4z" />
-            </svg>
-            <span className="sidebar__angular-label">
-              {isAr ? "كورس انجولار v22" : "Angular v22 Course"}
-            </span>
-          </a>
         </div>
 
         <div className="sidebar__controls">
