@@ -26,8 +26,26 @@
   border-bottom: 1px solid var(--border);
   margin-bottom: 16px;
 }
-.sidebar__angular-link {
+.sidebar__vue-link {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+.sidebar__vue-link:hover {
+  background: rgba(65, 184, 131, 0.15);
+  transform: scale(1.1);
+}
+.sidebar__vue-logo {
+  width: 26px;
+  height: 26px;
+}
+.sidebar__angular-link {
   display: flex;
   align-items: center;
   justify-content: center;
