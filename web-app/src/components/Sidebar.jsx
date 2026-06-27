@@ -27,32 +27,40 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
         aria-label={isAr ? "قائمة الأقسام" : "Course sections"}
       >
         <div className="sidebar__brand">
-          <span className="sidebar__logo" aria-hidden="true">⚛️</span>
-          <div>
-            <h1 className="sidebar__title">
-              {isAr ? "كورس React 19" : "React 19 Course"}
-            </h1>
-            <p className="sidebar__subtitle">
-              {isAr
-                ? `${sections.length} قسماً • بالعربية`
-                : `${sections.length} sections • Arabic`}
-            </p>
+          <div className="sidebar__brand-icons">
+            <a
+              href="https://mostafasaqly.github.io/react-saqly-v19/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sidebar__course-link sidebar__course-link--active"
+              title={isAr ? "كورس React 19" : "React 19 Course"}
+              aria-label={isAr ? "أنت في كورس React" : "You are in React Course"}
+            >
+              <svg className="sidebar__react-logo" viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="0" cy="0" r="2.05" fill="#61dafb"/>
+                <g stroke="#61dafb" strokeWidth="1" fill="none">
+                  <ellipse rx="11" ry="4.2"/>
+                  <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+                  <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+                </g>
+              </svg>
+            </a>
+            <a
+              href="https://mostafasaqly.github.io/vue-saqly-v3/#section-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sidebar__course-link"
+              title={isAr ? "كورس Vue v3" : "Vue v3 Course"}
+              aria-label={isAr ? "انتقل إلى كورس Vue" : "Go to Vue Course"}
+            >
+              <svg className="sidebar__vue-logo" viewBox="0 0 261.76 226.69" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#41B883" d="M161.096.001l-30.224 52.35L100.647.001H-.005l130.877 226.688L261.749.001z" />
+                <path fill="#34495E" d="M161.096.001l-30.224 52.35L100.647.001H52.346l78.526 136.01L209.398.001z" />
+              </svg>
+            </a>
           </div>
           <a
-            href="https://mostafasaqly.github.io/vue-saqly-v3/#section-1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sidebar__vue-link"
-            title={isAr ? "كورس Vue v3" : "Vue v3 Course"}
-            aria-label={isAr ? "انتقل إلى كورس Vue" : "Go to Vue Course"}
-          >
-            <svg className="sidebar__vue-logo" viewBox="0 0 261.76 226.69" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#41B883" d="M161.096.001l-30.224 52.35L100.647.001H-.005l130.877 226.688L261.749.001z" />
-              <path fill="#34495E" d="M161.096.001l-30.224 52.35L100.647.001H52.346l78.526 136.01L209.398.001z" />
-            </svg>
-          </a>
-          <a
-            href="https://mostafasaqly.github.io/angular-saqly-v22/"
+            href="https://mostafasaqly.github.io/angular-saqly-v22/section/1"
             target="_blank"
             rel="noopener noreferrer"
             className="sidebar__angular-link"
@@ -64,6 +72,9 @@ function Sidebar({ activeId, onSelect, isOpen, onClose, activeNavRef }) {
               <polygon fill="#C3002F" points="125,30 125,52.2 125,52.1 125,153.4 125,153.4 125,230 125,230 203.9,186.3 218.1,63.2" />
               <path fill="#FFFFFF" d="M125,52.1L66.8,182.6h0h21.7h0l11.7-29.2h49.4l11.7,29.2h0h21.7h0L125,52.1L125,52.1z M142,135.4H108l17-40.9L142,135.4z" />
             </svg>
+            <span className="sidebar__angular-label">
+              {isAr ? "كورس انجولار v22" : "Angular v22 Course"}
+            </span>
           </a>
         </div>
 
